@@ -1,0 +1,60 @@
+@import '../node_modules/antd/lib/style/themes/default.less';
+@import '../node_modules/antd/dist/antd.less'; // Import Ant Design styles by less entry
+
+@primary-color: #ae272e;
+@menu-dark-item-active-bg: hsl(219, 100%, 21%);
+@layout-header-background: #fff;
+// @layout-body-background: #1E2327;
+// @layout-trigger-background: @layout-header-background;
+// @popover-background: @layout-header-background;
+@text-color: #000;
+@menu-item-color: @text-color;
+// @component-background: #2A2F31;
+// @table-header-bg: @component-background;
+
+.header{
+    box-shadow: 1px 1px 20px #ddd;
+    z-index: 1;
+    display: flex;
+}
+
+.logo {
+    width: 150px;
+    img{
+        transition: .3s;
+    }
+}
+.ant-table table tr th{
+    border-bottom-color: #A51319;
+    border-bottom-width: 2px;
+}
+
+.status-wrap{
+    svg{
+        width: 6em;
+        height: 4em;
+    }
+    .icon-img-pink image{
+        filter: invert(35%) sepia(26%) saturate(2928%) hue-rotate(256deg) brightness(101%) contrast(89%); 
+    }
+    .icon-img-light-blue image{
+        filter: invert(44%) sepia(97%) saturate(264%) hue-rotate(169deg) brightness(91%) contrast(94%);
+    }
+    .icon-img-green-yellow image{
+        filter: invert(86%) sepia(74%) saturate(430%) hue-rotate(6deg) brightness(86%) contrast(80%);
+    }
+    .icon-img-red image{
+        filter: invert(57%) sepia(18%) saturate(1831%) hue-rotate(314deg) brightness(77%) contrast(101%);
+    }
+
+}
+.inline--form .ant-row.ant-form-item{
+    width: 23% !important;
+}
+.ant-form-inline .ant-form-item{
+    width: 25%;
+}
+
+.ant-btn:hover, .ant-btn:focus {
+    // color: #fff;
+}
