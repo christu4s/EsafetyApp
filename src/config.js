@@ -1,13 +1,14 @@
 
-import { LogoutOutlined,AppstoreFilled, PieChartFilled, ShopOutlined } from '@ant-design/icons';
+import { LogoutOutlined,AppstoreFilled, PieChartFilled, ShopOutlined , HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
 import { } from './views';
+import { Dashboard } from './views/dashboard';
 
 const Empty = () => <div />;
 
 export const routes = [
-    {path: '/', exact: true ,component: Empty},
+    {path: '/', exact: true ,component: Dashboard},
     {path: '/reports',exact: true, component: Empty},
     {path: '/user',exact: true, component: Empty},
     {path: '/group',exact: true, component: Empty},
@@ -18,7 +19,7 @@ export const routes = [
 ];
 
 export const menus = [
-    {title: 'Dashboard', icon: <AppstoreFilled />, exact: true, url: '#/'},
+    {title: 'Dashboard', icon: <HomeFilled />, exact: true, url: '#/'},
     {title: 'E-Safety Cases', icon: <UserGroupFilled />, exact: true, url: '#/cases'},
     {
         title: 'Facilities Overview', 
@@ -34,6 +35,8 @@ export const menus = [
     {title: 'Users', icon: <UserGroupFilled />, url: '#/user'},
     {title: 'Log Out', icon: <LogoutOutlined />, url: '/logout'},
 ];
+
+
 
 export const getSelectedMenuItem = () =>{
     var selected = menus.findIndex(v=> RegExp('^'+ v.url + (v.exact ? '$' : '')).test(window.location.hash) );
