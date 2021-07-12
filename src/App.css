@@ -25022,8 +25022,8 @@ div.ant-typography-edit-content.ant-typography-rtl {
   overflow: hidden;
 }
 .header {
-  height: 82px;
-  line-height: 75px;
+  height: 89px;
+  line-height: 80px;
   border-bottom: 10px solid rgba(0, 0, 0, 0.35);
 }
 .dashboard--holder .bg--patteren {
@@ -25065,5 +25065,180 @@ div.ant-typography-edit-content.ant-typography-rtl {
   font-weight: bold;
   text-align: left;
   color: #000000;
+}
+.facility--wrapper .manning--box--facility .ant-input {
+  border: 1px solid #000000;
+  height: 40px;
+  border-radius: 5x;
+  text-align: center;
+}
+.facility--wrapper .manning--box--facility h3 {
+  color: #555;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+}
+.facility--wrapper .manning--box--facility h5 {
+  color: #000;
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+}
+.facility--wrapper .area--img {
+  margin-top: 10px;
+}
+.facility--wrapper .area--header {
+  padding-left: 20px;
+}
+.facility--wrapper .area--header p {
+  margin-bottom: 0;
+}
+.facility--wrapper .area--header h2 {
+  margin-top: 0;
+  line-height: 28px;
+}
+.facility--wrapper h2 {
+  font-size: 25px;
+  font-weight: 700;
+  font-family: 'Lato', sans-serif;
+}
+.facility--wrapper h4 {
+  padding-top: 25px;
+}
+.facility--wrapper .area--box--facility {
+  margin-top: 15px;
+}
+.facility--wrapper .box--facility {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+}
+.facility--wrapper .box--holder .box--icon {
+  width: 79px;
+  height: 79px;
+  margin: 18px 20px 22px 21px;
+  padding: 18px 20px 22px 21px;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0px 8px 1.9px 0.1px rgba(0, 0, 0, 0.31);
+  background-color: #ffffff;
+}
+.facility--wrapper .box--holder .box--icon img {
+  width: 38px;
+  object-fit: contain;
+}
+.facility--wrapper .box--holder h4 {
+  font-size: 18px;
+  font-weight: 700;
+  padding-top: 40px;
+  color: #000;
+  font-family: 'Lato', sans-serif;
+}
+.ant-btn-primary {
+  padding: 12px 22px 30px;
+  border-color: #0047af;
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  height: 35px;
+  margin: 20px 0;
+  padding: 7px 24px 30px;
+  border-radius: 4px;
+  background-color: #0047af;
+}
+.upload--modal {
+  text-align: center;
+}
+.upload--modal .modal--title {
+  padding-top: 50px;
+  font-weight: 700;
+  font-size: 20px;
+  font-family: 'Lato', sans-serif;
+}
+.upload--modal .ant-upload.ant-upload-drag {
+  border: 1px solid #959595;
+  background: transparent;
+}
+.upload--modal p {
+  font-family: 'Lato', sans-serif;
+}
+.upload--modal .ant-upload-hint {
+  color: #000;
+}
+.upload--modal .ant-upload-hint span {
+  color: #448ff9;
+  font-family: 'Lato', sans-serif;
+}
+.upload--modal .ant-modal-footer {
+  display: none;
+}
+.upload--modal .ant-modal-body {
+  padding: 24px 54px;
+}
+.upload--modal .ant-modal-close-x {
+  background: #454343;
+  font-family: 'Lato', sans-serif;
+  padding: 2;
+  margin: 20px;
+  color: #fff;
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+  line-height: 31px;
+  font-size: 14px;
+}
+.custom--card {
+  margin-top: 30px;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px;
+  position: relative;
+  box-shadow: 0px 14px 11.7px 1.3px rgba(0, 0, 0, 0.5);
+}
+.custom--card:after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.31);
+  clear: both;
+  display: block;
+  content: '';
+}
+.custom--card .ant-card-body {
+  background: transparent !important;
+  position: absolute;
+  bottom: -7px;
+  left: 0;
+  right: 0;
+}
+.custom--card .ant-card-meta-title {
+  text-align: center;
+  color: #fff;
+  position: relative;
+  font-family: 'Lato', sans-serif;
+  z-index: 99;
+}
+.addmore--button .ant-btn-secondary {
+  margin-top: 30px;
+  width: 130px;
+  height: 35px;
+  padding: 5px 19px 7px 15px;
+  object-fit: contain;
+  color: #fff;
+  border-radius: 4px;
+  background-color: #6e6d6d;
+  border-color: #6e6d6d;
+}
+.area--form label {
+  display: block;
+  text-align: left;
+}
+.area--form .ant-input {
+  height: 40px;
+  border: 1px solid #959595;
 }
 /*# sourceMappingURL=App.css.map */

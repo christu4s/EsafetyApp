@@ -4,6 +4,10 @@ import { UserGroupFilled } from './icons';
 
 import { } from './views';
 import { Dashboard } from './views/dashboard';
+import { Facilities } from './views/facilities';
+import { FacilityArea, facilityArea } from './views/facilities/area';
+import { FacilityManning } from './views/facilities/manning';
+import { FacilityProcess } from './views/facilities/process/process';
 
 const Empty = () => <div />;
 
@@ -16,6 +20,11 @@ export const routes = [
     {path: '/store/:id',exact: true, component: Empty},
     {path: '/store/:id/upload',exact: true, component: Empty},
     {path: '/profile',exact: true, component: Empty},
+    {path: '/facility-overview',exact: true, component: Facilities},
+    {path: '/facility-area',exact: true, component: FacilityArea},
+    {path: '/facility-manning',exact: true, component: FacilityManning},
+    {path: '/facility-process',exact: true, component: FacilityProcess},
+    
 ];
 
 export const menus = [
@@ -36,7 +45,7 @@ export const menus = [
     {title: 'Log Out', icon: <LogoutOutlined />, url: '/logout'},
 ];
 
-
+    
 
 export const getSelectedMenuItem = () =>{
     var selected = menus.findIndex(v=> RegExp('^'+ v.url + (v.exact ? '$' : '')).test(window.location.hash) );

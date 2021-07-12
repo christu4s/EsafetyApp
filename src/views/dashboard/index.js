@@ -44,13 +44,9 @@ export const Dashboard = () =>{
                 </Col>
                 <Col span={14}>
                     <Row>
-                           {boxContent.map((v,i)=> <Col key={i} className='box--col' span={12}>
-                                <BoxHolder {...v}/>
-                                </Col>)}
-
-                       
-                 
-
+                        {boxContent.map((v,i)=> <Col key={i} className='box--col' span={12}>
+                            <BoxHolder {...v}/>
+                            </Col>)}
                     </Row>
                 </Col>
             </Row>,
