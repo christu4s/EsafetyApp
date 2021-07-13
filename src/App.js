@@ -35,10 +35,10 @@ class App extends React.Component {
       <Layout>
         <Header className="header">
           <div className="logo" >
-              <Link to="/"><img src={logo} alt="Esafety logo" style={{width: 100}} /></Link>
+              <Link to="/"><img src={logo} alt="Esafety logo" style={{width: 130}} /></Link>
           </div>
           <div style={{display: 'flex', justifyContent: 'space-between', width: 'calc(100vw - 150px)'}}>
-            <div style={{width: 500, paddingLeft: 30}}>
+            <div style={{width: 360, paddingLeft: 30}}>
               <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
             </div>
             <Dropdown overlay={userMenu}>
@@ -48,7 +48,7 @@ class App extends React.Component {
         </Header>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-          <Menu selectedKeys={[getSelectedMenuItem()]} onSelect={this.redirect} mode="inline">
+          <Menu selectedKeys={[getSelectedMenuItem()]} className='menu--holder' onSelect={this.redirect} mode="inline">
             <CustomMenu menus={menus} />
           </Menu>
         </Sider>
