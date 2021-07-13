@@ -3,6 +3,7 @@ import { LogoutOutlined,AppstoreFilled, PieChartFilled, ShopOutlined , HomeFille
 import { UserGroupFilled } from './icons';
 
 import { } from './views';
+import { AccidentsHazard } from './views/AccidentsHazards';
 import { Dashboard } from './views/dashboard';
 import { Facilities } from './views/facilities';
 import { FacilityArea, facilityArea } from './views/facilities/area';
@@ -24,6 +25,7 @@ export const routes = [
     {path: '/facility-area',exact: true, component: FacilityArea},
     {path: '/facility-manning',exact: true, component: FacilityManning},
     {path: '/facility-process',exact: true, component: FacilityProcess},
+    {path: '/accidents-hazards',exact: true, component: AccidentsHazard},
     
 ];
 
