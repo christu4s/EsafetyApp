@@ -3,9 +3,10 @@ import { LogoutOutlined,AppstoreFilled, PieChartFilled, ShopOutlined , HomeFille
 import { UserGroupFilled } from './icons';
 
 import { } from './views';
+import { AccidentsHazard } from './views/AccidentsHazards';
 import { Dashboard } from './views/dashboard';
 import { Facilities } from './views/facilities';
-import { FacilityArea, facilityArea } from './views/facilities/area';
+import { FacilityArea } from './views/facilities/area';
 import { FacilityManning } from './views/facilities/manning';
 import { FacilityProcess } from './views/facilities/process/process';
 
@@ -20,6 +21,7 @@ export const routes = [
     {path: '/facility-overview/area',exact: true, component: FacilityArea},
     {path: '/facility-overview/manning',exact: true, component: FacilityManning},
     {path: '/facility-overview/process',exact: true, component: FacilityProcess},
+    {path: '/accidents-hazards',exact: true, component: AccidentsHazard},
     
 ];
 
@@ -35,7 +37,7 @@ export const menus = [
             {title: 'Manning', exact: true, url: '#/facility-overview/manning'},
         ]
     },
-    {title: 'Major Accident Hazards', icon: <ShopOutlined />, url: '#/accident-hazards'},
+    {title: 'Major Accident Hazards', icon: <ShopOutlined />, url: '#/accidents-hazards'},
     {
         title: 'Risk Assessment', 
         icon: <UserGroupFilled />, 
@@ -78,11 +80,6 @@ export const menus = [
     {title: 'Writen Safety Case', icon: <UserGroupFilled />, url: '#/user'},
     {title: 'Users', icon: <UserGroupFilled />, url: '#/user'},
 ];  
-// Emergency Response Tiers
-// Emergency Response Organisation
-// Emergency Response Plan
-// Scenario Specific
-// Action Plan
 
 
 export const getSelectedMenuItem = (m, p = '', ret = []) =>{
