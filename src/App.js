@@ -15,10 +15,10 @@ class App extends React.Component {
   };
 
   onCollapse = collapsed => this.setState({ collapsed });
-  redirect = item =>{
-    var menu = menus[item.key];
-    if(!menu || !menu.url) return;
-    window.location.href = menu.url;
+  redirect = p =>{ console.log(p);
+    var {url} = p.item.props;
+    if(!url) return;
+    window.location.href = url;
   }
   
   render() { 
@@ -48,8 +48,8 @@ class App extends React.Component {
         </Header>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-          <Menu selectedKeys={[getSelectedMenuItem()]} className='menu--holder' onSelect={this.redirect} mode="inline">
-            <CustomMenu menus={menus} />
+          <Menu selectedKeys={getSelectedMenuItem()} className='menu--holder' onClick={this.redirect} mode="inline">
+            {customMenu(menus)}
           </Menu>
         </Sider>
         <Layout className="site-layout">
@@ -68,9 +68,10 @@ class App extends React.Component {
 
 export default withRouter(App);
 
-function CustomMenu({menus = [], parent = ''}){
-  return menus.map((v,i)=> 
-    v.children ? <Menu.SubMenu key={i} icon={v.icon}><CustomMenu menus={v.children} parent={i} /></Menu.SubMenu> 
-    : <Menu.Item key={parent + '_'  + i} icon={v.icon}>{v.title}</Menu.Item>
-  )
+function customMenu(menus, parent = ''){
+  return menus.map((v,i)=> {
+    var key = parent + '_'  + i; 
+    return v.children ? <Menu.SubMenu key={key} title={<a href={v.url}>{v.title}</a>} icon={v.icon}>{customMenu(v.children, i)}</Menu.SubMenu> 
+    : <Menu.Item key={key} url={v.url} icon={v.icon}>{v.title}</Menu.Item>;
+  })
 }

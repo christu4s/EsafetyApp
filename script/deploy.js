@@ -3,7 +3,7 @@ var archiver = require('archiver');
 var request = require('request');
 var filename = 'target.zip';
 
-var putURL = 'http://dxs.enkuire.com/wp-admin/admin-ajax.php?action=deploy';
+var putURL = 'http://esafety.enkuire.com/wp-admin/admin-ajax.php?action=deploy';
 
 var output = fs.createWriteStream(filename);
 var archive = archiver('zip');
