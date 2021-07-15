@@ -24964,6 +24964,13 @@ div.ant-typography-edit-content.ant-typography-rtl {
   display: flex;
   height: 89px;
   line-height: 80px;
+  align-items: center;
+}
+.header .header-right {
+  display: flex;
+  justify-content: space-between;
+  width: calc(100vw - 150px);
+  align-items: center;
 }
 .logo {
   width: 150px;

@@ -37,7 +37,7 @@ class App extends React.Component {
           <div className="logo" >
               <Link to="/"><img src={logo} alt="Esafety logo" style={{width: 130}} /></Link>
           </div>
-          <div style={{display: 'flex', justifyContent: 'space-between', width: 'calc(100vw - 150px)'}}>
+          <div className="header-right">
             <div style={{width: 360, paddingLeft: 30}}>
               <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
             </div>
@@ -58,7 +58,7 @@ class App extends React.Component {
               {routes.map((v, i) => <Route key={i} {...v} />)}
             </Switch>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>dXS Dashboard ©2021 Created by Caspian Digital Solution</Footer>
+          <Footer style={{ textAlign: 'center' }}>Esafety Dashboard ©2021 Created by Caspian Digital Solution</Footer>
         </Layout>
       </Layout>
     </Layout>
