@@ -1,21 +1,18 @@
 import React from 'react';
-import { Card, Table, Typography } from "antd";
 import { Row, Col } from 'antd';
 
+import area from '../../assets/area.png';
+import process from '../../assets/process@3x.png';
+import group from '../../assets/group@3x.png';
+import { BoxHolder } from '../../utils';
 
-export const BoxFacilities = ({ title, img, active }) => {
-    return (
-        <div className='box--holder'>
-            <Row>
-                <Col span={8}>
-                    <div className='box--icon box--holder--active'>
-                        <img src={img} width="50" height="50" />
-                    </div>
-                </Col>
-                <Col span={11}>
-                    <h4>{title}</h4>
-                </Col>
-            </Row>
-        </div>
-    )
+
+export const FacilitiesButtons = ()=> {
+    const boxContent = [
+        { title: 'Area', img: area, active: true },
+        { title: 'Process', img: process, active: false },
+        { title: 'Manning', img: group, active: false }
+    ];
+
+    return <Row>{boxContent.map((v, i) => <Col key={i} className='box--col' span={24}><BoxHolder {...v} /></Col>)}</Row>;
 }

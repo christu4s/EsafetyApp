@@ -1,6 +1,7 @@
-import { Row, Col, Radio  } from 'antd';
+import { Row, Col, Modal, Button, Upload, message } from 'antd';
 import React, { useState } from 'react';
-import { Modal, Button } from 'antd';
+import { BoxFacilities, FacilitiesButtons } from './components';
+import { CloudUploadOutlined  } from '@ant-design/icons';
 
 import area from '../../assets/area.png';
 import process from '../../assets/process@3x.png';
@@ -8,9 +9,9 @@ import group from '../../assets/group@3x.png';
 import computing from '../../assets/cloud-computing@3x.png';
 import image from '../../assets/image.png';
 
-import { BoxFacilities } from './components';
-import { CloudUploadOutlined, InboxOutlined , DownloadOutlined   } from '@ant-design/icons';
-import { Upload, message } from 'antd';
+export * from './area';
+export * from './manning';
+export * from './process';
 
 export const Facilities = () => {
     const { Dragger } = Upload;
@@ -109,9 +110,7 @@ export const Facilities = () => {
                 </Col>
                 <Col span={8} push={2}  style={{marginTop:35}} >
                     <Row>
-                        {boxContent.map((v, i) => <Col key={i} className='box--col' span={24}>
-                            <BoxFacilities {...v} />
-                        </Col>)}
+                        <FacilitiesButtons />
                     </Row>
                 </Col>
             </Row>

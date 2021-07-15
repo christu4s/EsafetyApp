@@ -1,12 +1,11 @@
-import { Row, Col, Radio , Card , Button , Modal , Upload, message , Input } from 'antd';
+import { Row, Col, Card , Button , Modal , Upload, message , Input } from 'antd';
 import React, { useState } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
-import group from '../../../assets/group@3x.png';
-import process from '../../../assets/process@3x.png';
-import { PlusCircleOutlined, InboxOutlined , CloudUploadOutlined   } from '@ant-design/icons';
+import { PlusCircleOutlined,  CloudUploadOutlined   } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
-import { BoxFacilities } from '../components';
+import {  FacilitiesButtons } from '../components';
+
 export const FacilityArea = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -43,16 +42,7 @@ export const FacilityArea = () => {
     };
 
     const { Meta } = Card;
-    const boxContent = [
-        { title: 'SEPERATOR AREA', img: image, active: true },
-        { title: 'COMPRESSOR AREA', img: image, active: false },
-        { title: 'LIVING QUATERS', img: image, active: false }
-    ]
-    const boxContentIcon = [
-        { title: 'Area', img: area, active: true },
-        { title: 'Process', img: process, active: false },
-        { title: 'Manning', img: group, active: false }
-    ]
+    
     return (
         <div className='facility--wrapper'>
             <Row>
@@ -82,34 +72,11 @@ export const FacilityArea = () => {
                     </Row>
 
                     <Row>
-
-                        <Col span={8}>
-                        <Card className='custom--card'
-                            hoverable
-                            style={{ width: 240 }}
-                            cover={<img alt="example" src={image} />}
-                        >
+                        {Array(3).fill(0).map((v,i)=><Col key={i} span={8}>
+                        <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
                             <Meta title="Europe Street beat" />
                         </Card>
-                        </Col>
-                        <Col span={8}>
-                        <Card className='custom--card'
-                            hoverable
-                            style={{ width: 240 }}
-                            cover={<img alt="example" src={image} />}
-                        >
-                            <Meta title="Europe Street beat" />
-                        </Card>
-                        </Col>
-                        <Col span={8}>
-                        <Card className='custom--card'
-                            hoverable
-                            style={{ width: 240 }}
-                            cover={<img alt="example" src={image} />}
-                        >
-                            <Meta title="Europe Street beat" />
-                        </Card>
-                        </Col>
+                        </Col> )}                   
                     </Row>
 
                     <Row className='addmore--button'>
@@ -130,7 +97,6 @@ export const FacilityArea = () => {
                                         Drag or drop your files here OR <span> browse </span>
                                     </p>
                                 </Dragger>,
-
                                 <div className='area--form'>
                                     <label>Name of Area</label>
                                     <Input placeholder="Lorem ipsum dolor sit amet" />
@@ -140,21 +106,10 @@ export const FacilityArea = () => {
                                         Upload Image
                                 </Button>
                             </Modal>
-
                         </Col>
                     </Row>
-
-
                 </Col>
-
-                <Col span={8} push={2}  style={{marginTop:35}} >
-                    <Row>
-                        {boxContentIcon.map((v, i) => <Col key={i} className='box--col' span={24}>
-                            <BoxFacilities {...v} />
-                        </Col>)}
-                    </Row>
-                </Col>
-
+                <Col span={8} push={2}  style={{marginTop:35}} ><FacilitiesButtons /></Col>
             </Row>
 
 

@@ -13,22 +13,23 @@ import checked from '../../assets/checked@3x.png';
 import alert from '../../assets/alert@3x.png';
 
 
-import '../dashboard/dashboard.less';
-import { BoxHolder } from './components';
+import './dashboard.css';
+import { BoxHolder } from '../../utils';
+
 export const Dashboard = () =>{
     var sectionStyle = {
         backgroundImage: `url(${Background})`
       };
 
        const boxContent = [
-        {title: 'Facilities Overview', img: blueprint, active:true },
-        {title: 'Major Accident Hazards', img: fire, active:false },
-        {title: 'Risk Assessment', img: danger,  active:false },
-        {title: 'Safety Critical Element ', img: extinguisher,  active:false},
-        {title: 'Emergency Response ', img: alert,  active:false},
-        {title: 'Safety Management System ', img: checked,  active:false},
-        {title: 'Remedial Action Plan ', img: planning,  active:false},
-        {title: 'Written Safety Case ', img: writting,  active:false},
+        {title: 'Facilities Overview', img: blueprint, active:true, url: '/facility-overview' },
+        {title: 'Major Accident Hazards', img: fire, active:false,url: '/accidents-hazards' },
+        {title: 'Risk Assessment', img: danger,  active:false, url: '/facility-overview' },
+        {title: 'Safety Critical Element ', img: extinguisher,  active:false, url: '/risk-assessment'},
+        {title: 'Emergency Response ', img: alert,  active:false, url: '/emergency-response'},
+        {title: 'Safety Management System ', img: checked,  active:false, url: '/safety-management'},
+        {title: 'Remedial Action Plan ', img: planning,  active:false, url: '/remedial-action'},
+        {title: 'Written Safety Case ', img: writting,  active:false, url: '/writen-safety'},
     ] 
 
     return(

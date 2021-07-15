@@ -1,14 +1,11 @@
 
-import { LogoutOutlined,AppstoreFilled, PieChartFilled, ShopOutlined , HomeFilled } from '@ant-design/icons';
+import { ShopOutlined , HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
-import { } from './views';
-import { AccidentsHazard } from './views/AccidentsHazards';
-import { Dashboard } from './views/dashboard';
-import { Facilities } from './views/facilities';
-import { FacilityArea } from './views/facilities/area';
-import { FacilityManning } from './views/facilities/manning';
-import { FacilityProcess } from './views/facilities/process/process';
+
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess } from './views';
+
+import facilityImg  from './assets/menu/blueprint.png';
 
 const Empty = () => <div />;
 
@@ -29,7 +26,7 @@ export const menus = [
     {title: 'Dashboard', icon: <HomeFilled />, exact: true, url: '#/'},
     {
         title: 'Facilities Overview', 
-        icon: <UserGroupFilled />, 
+        icon: <img src={facilityImg} alt="facility" />, 
         url: '#/facility-overview',
         children: [
             {title: 'Area', exact: true, url: '#/facility-overview/area'},
@@ -75,9 +72,9 @@ export const menus = [
             {title: 'Action Plan', exact: true, url: '#/emergency-response/action'},
         ]
     },
-    {title: 'Safety Management System', icon: <UserGroupFilled />, url: '#/user'},
-    {title: 'Remedial Action Plan', icon: <UserGroupFilled />, url: '#/user'},
-    {title: 'Writen Safety Case', icon: <UserGroupFilled />, url: '#/user'},
+    {title: 'Safety Management System', icon: <UserGroupFilled />, url: '#/safety-management'},
+    {title: 'Remedial Action Plan', icon: <UserGroupFilled />, url: '#/remedial-action'},
+    {title: 'Writen Safety Case', icon: <UserGroupFilled />, url: '#/writen-safety'},
     {title: 'Users', icon: <UserGroupFilled />, url: '#/user'},
 ];  
 

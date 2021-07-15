@@ -25040,9 +25040,13 @@ div.ant-typography-edit-content.ant-typography-rtl {
   object-fit: contain;
   display: block;
   margin-left: 5px;
+  filter: invert(20%) sepia(73%) saturate(5000%) hue-rotate(187deg) brightness(97%) contrast(112%);
 }
-.dashboard--holder .box--col:first-child .box--icon {
+.dashboard--holder .box--col .box--icon:hover {
   background-image: linear-gradient(to top, #387bf7, #61c5ff);
+}
+.dashboard--holder .box--col .box--icon:hover img {
+  filter: brightness(200%) saturate(0%) contrast(100%);
 }
 .dashboard--holder .box--holder h4 {
   font-family: 'Lato', sans-serif;
@@ -25226,5 +25230,60 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .area--form .ant-input {
   height: 40px;
   border: 1px solid #959595;
+}
+.ant-menu-item.ant-menu-item-selected {
+  background-image: linear-gradient(to top, #387bf7, #61c5ff);
+}
+.ant-menu-item.ant-menu-item-selected .ant-menu-title-content,
+.ant-menu-item.ant-menu-item-selected .ant-menu-item-icon {
+  color: #fff;
+}
+.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a,
+.ant-menu-item.ant-menu-item-selected .ant-menu-item-icon a {
+  color: #fff;
+}
+.ant-menu-submenu.ant-menu-submenu-inline .ant-menu-title-content a {
+  color: #000;
+}
+.ant-menu-item.ant-menu-item-selected.ant-menu-item-only-child {
+  background-image: linear-gradient(to top, #387bf7, #61c5ff);
+}
+.ant-menu-item.ant-menu-item-selected.ant-menu-item-only-child .ant-menu-title-content {
+  color: #fff;
+}
+.ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-selected .ant-menu-submenu-title {
+  background-image: linear-gradient(to top, #387bf7, #61c5ff);
+}
+.ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-selected .ant-menu-submenu-title a {
+  color: #fff;
+}
+.ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-selected .anticon.ant-menu-item-icon {
+  color: #fff;
+}
+.accident--box.bg--white {
+  background: #fff;
+  padding: 20px;
+  margin-right: 30px;
+  border-radius: 5px;
+}
+.accident--box.bg--white h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.accident--box.bg--white .accident--icon--box {
+  background: #030d27;
+  color: #fff;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 3px;
+}
+.accident--box.bg--white .accident--box--content {
+  margin-bottom: 10px;
+}
+.accident--box.bg--white .accident--box--content .ant-input {
+  border: solid 1px #000000;
+  border-radius: 4px;
 }
 /*# sourceMappingURL=App.css.map */

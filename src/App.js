@@ -15,7 +15,7 @@ class App extends React.Component {
   };
 
   onCollapse = collapsed => this.setState({ collapsed });
-  redirect = p =>{ console.log(p);
+  redirect = p =>{ 
     var {url} = p.item.props;
     if(!url) return;
     window.location.href = url;
@@ -47,7 +47,7 @@ class App extends React.Component {
           </div>
         </Header>
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+        <Sider width={300}>
           <Menu selectedKeys={getSelectedMenuItem()} className='menu--holder' onClick={this.redirect} mode="inline">
             {customMenu(menus)}
           </Menu>
