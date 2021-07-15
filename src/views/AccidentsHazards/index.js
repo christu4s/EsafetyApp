@@ -56,7 +56,7 @@ export const AccidentsHazard = () => {
     return (
         <div className='facility--wrapper'>
             <Row>
-                <Col span={16}>
+                <Col span={17}>
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
@@ -193,13 +193,72 @@ export const AccidentsHazard = () => {
 
                 </Col>
 
-                {/* <Col span={8} push={2}  style={{marginTop:35}} >
-                    <Row>
-                        {boxContentIcon.map((v, i) => <Col key={i} className='box--col' span={24}>
-                            <BoxFacilities {...v} />
-                        </Col>)}
-                    </Row>
-                </Col> */}
+                <Col span={7}   style={{marginTop:80}} >
+                    <div className='accident--box bg--white'>
+                        <div className='accident--box--content'>
+                            <h4>Prevention</h4>
+                            <div className='accident--icon--box'>
+                            <PlusCircleOutlined /> <span>Add SCE</span>
+                            </div>
+                            <div className='accident--icon--input'>
+                                <div className='form-group'>
+                                    <Input type='text' className='form-control'/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='accident--box--content'>
+                            <h4>Detection</h4>
+                            <div className='accident--icon--box'>
+                            <PlusCircleOutlined /> <span>Add SCE</span>
+                            </div>
+                            <div className='accident--icon--input'>
+                                <div className='form-group'>
+                                    <Input type='text' className='form-control'/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='accident--box--content'>
+                            <h4>Control</h4>
+                            <div className='accident--icon--box'>
+                            <PlusCircleOutlined /> <span>Add SCE</span>
+                            </div>
+                            <div className='accident--icon--input'>
+                                <div className='form-group'>
+                                    <Input type='text' className='form-control'/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='accident--box--content'>
+                            <h4>Mitigation</h4>
+                            <div className='accident--icon--box'>
+                            <PlusCircleOutlined /> <span>Add SCE</span>
+                            </div>
+                            <div className='accident--icon--input'>
+                                <div className='form-group'>
+                                    <Input type='text' className='form-control'/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='accident--box--content'>
+                            <h4>Emergency Response</h4>
+                            <div className='accident--icon--box'>
+                            <PlusCircleOutlined /> <span>Add SCE</span>
+                            </div>
+                            <div className='accident--icon--input'>
+                                <div className='form-group'>
+                                    <Input type='text' className='form-control'/>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                    </div>
+                </Col>
 
             </Row>
 

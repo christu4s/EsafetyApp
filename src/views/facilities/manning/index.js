@@ -152,7 +152,7 @@ export const FacilityManning = () => {
 
             </Col>
 
-            <Col span={8} >
+            <Col span={8} style={{marginTop:60}}>
                     <Row>
                         {boxContent.map((v, i) => <Col key={i} className='box--col' span={24}>
                             <BoxFacilities {...v} />
