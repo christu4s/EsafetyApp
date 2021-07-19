@@ -365,3 +365,80 @@
         }
     }
 }
+.custom--card--risk {
+    box-shadow: none;
+   
+    background: transparent;
+    .ant-card-cover{
+        border-radius: 4px;
+        box-shadow: 0px 8px 1.9px 0.1px rgb(0 0 0 / 31%);
+        background-color: #ffffff;
+        position: relative;
+    }
+    &:after{
+        background: none;
+    }
+    &:hover {
+        .ant-card-cover{
+            &:after{
+                background: rgba(0, 0, 0, 0.31);
+                position:absolute;
+                clear: both;
+                display: block;
+                content: '';
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+    
+            }
+        }
+        .card-actions-button{
+            display: block;
+        }
+    }
+    .ant-card-body{
+        position: relative !important
+    }
+    .card-actions-button{
+        position: absolute;
+        left: 0;
+        right: 0;
+        display: none;
+        top: -50px;
+        
+        text-align: center;
+        .ant-btn-primary{
+            background-color: #0047af;
+            border-color: #0047af;
+        }
+        .ant-btn-danger{
+            background-color: #9e0b0f;
+            border-color: #9e0b0f;
+        }
+    }
+    .card-content-risk{
+        color: #000000;
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .ant-btn-sm{
+        height: 27px !important;
+        margin: 0 4px;
+        padding: 0px 21px !important;
+    }
+}
+.pdf-view-section{
+    .ant-btn-primary{
+        background-color: #6e6d6d;
+        border-color: #6e6d6d;
+    }
+    h2{
+       span{
+        font-size: 20px;
+        font-weight: bold;
+        margin-left: 10px;
+       }
+    }
+}
