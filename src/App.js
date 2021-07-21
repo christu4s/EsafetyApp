@@ -28,6 +28,7 @@ class App extends React.Component {
       <Menu>
         <Menu.Item  key="u1"><a href="/#profile">Profile</a></Menu.Item>
         <Menu.Item key="u2">Logout</Menu.Item>
+        <Menu.Item  key="u3"><a href="/#select-account">SelectAccount</a></Menu.Item>
       </Menu>
     );
 

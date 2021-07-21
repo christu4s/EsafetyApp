@@ -3,7 +3,7 @@ import { ShopOutlined , HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
 
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess } from './views';
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, SelectAccount } from './views';
 
 import facilityImg  from './assets/menu/blueprint.png';
 
@@ -11,7 +11,7 @@ const Empty = () => <div />;
 
 export const routes = [
     {path: '/', exact: true ,component: Dashboard},
-    {path: '/select-account',exact: true, component: Empty},
+    {path: '/select-account',exact: true, component: SelectAccount},
     {path: '/user',exact: true, component: Empty},
     {path: '/profile',exact: true, component: Empty},
     {path: '/facility-overview',exact: true, component: Facilities},
