@@ -6,6 +6,8 @@ import { UserGroupFilled } from './icons';
 import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess } from './views';
 
 import facilityImg  from './assets/menu/blueprint.png';
+import { RiskAssessment } from './views/RiskAssessment';
+import { HazardIdentifications } from './views/RiskAssessment/HazardIdentifications';
 
 const Empty = () => <div />;
 
@@ -19,6 +21,8 @@ export const routes = [
     {path: '/facility-overview/manning',exact: true, component: FacilityManning},
     {path: '/facility-overview/process',exact: true, component: FacilityProcess},
     {path: '/accidents-hazards',exact: true, component: AccidentsHazard},
+    {path: '/risk-assessment',exact: true, component: RiskAssessment},
+    {path: '/hazard-identifications',exact: true, component: HazardIdentifications},
     
 ];
 

@@ -73,9 +73,11 @@ export const FacilityArea = () => {
 
                     <Row>
                         {Array(3).fill(0).map((v,i)=><Col key={i} span={8}>
+                        <a href="#/accidents-hazards">
                         <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
                             <Meta title="Europe Street beat" />
                         </Card>
+                        </a>
                         </Col> )}                   
                     </Row>
 
