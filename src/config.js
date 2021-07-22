@@ -3,7 +3,7 @@ import { ShopOutlined, HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
 
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, CriticalElement, CriticalEquipment, CriticalPersonnel, CriticalProcedure } from './views';
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, CriticalElement, CriticalEquipment, CriticalPersonnel, CriticalProcedure, EquipmentPrevention } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
 
@@ -21,6 +21,7 @@ export const routes = [
     { path: '/accidents-hazards', exact: true, component: AccidentsHazard },
     { path: '/safety-critical', exact: true, component: CriticalElement },
     { path: '/safety-critical/equipment', exact: true, component: CriticalEquipment },
+    { path: '/safety-critical/equipment/prevention', exact: true, component: EquipmentPrevention },
     { path: '/safety-critical/personnel', exact: true, component: CriticalPersonnel },
     { path: '/safety-critical/procedure', exact: true, component: CriticalProcedure },
 ];

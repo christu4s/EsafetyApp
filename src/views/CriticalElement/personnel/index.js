@@ -46,6 +46,7 @@ export const CriticalPersonnel = () => {
     const { Meta } = Card;
 
     return (
+
         <div className='facility--wrapper'>
             <Row>
                 <Col span={1}>
@@ -54,10 +55,10 @@ export const CriticalPersonnel = () => {
                             <img width='38' src={arrow} />
                             <p>back</p></a>
                     </div>
-
-
-
                 </Col>
+            </Row>
+            <Row>
+
                 <Col span={16}>
                     <Row>
                         <Col span={1}>

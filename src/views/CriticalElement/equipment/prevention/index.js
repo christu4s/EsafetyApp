@@ -1,13 +1,13 @@
 import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
 import React, { useState } from 'react';
-import alert from '../../../assets/alert@3x.png';
-import image from '../../../assets/image.png';
-import arrow from '../../../assets/left-arrow@3x.png';
+import alert from '../../../../assets/alert@3x.png';
+import image from '../../../../assets/downloadPRE@3x.png';
+import arrow from '../../../../assets/left-arrow@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
-import computing from '../../../assets/cloud-computing@3x.png';
-export * from './prevention';
+import computing from '../../../../assets/cloud-computing@3x.png';
 
-export const CriticalEquipment = () => {
+
+export const EquipmentPrevention = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
@@ -49,14 +49,14 @@ export const CriticalEquipment = () => {
             <Row>
                 <Col span={1}>
                     <div className='area--img'>
-                        <a href="/#/safety-critical">
+                        <a href="/#/safety-critical/equipment">
                             <img width='38' src={arrow} />
                             <p>back</p></a>
                     </div>
-
-
-
                 </Col>
+            </Row>
+            <Row>
+
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
@@ -66,8 +66,8 @@ export const CriticalEquipment = () => {
                         </Col>
                         <Col span={23}>
                             <div className='area--header'>
-                                <p>Safety Critical Element</p>
-                                <h2>Safety Critical Equipment</h2>
+                                <p>Safety Critical Equipment</p>
+                                <h2>Prevention</h2>
                             </div>
                         </Col>
                     </Row>
@@ -81,19 +81,10 @@ export const CriticalEquipment = () => {
                             </div>
                         </Col>
                     </Row>
-
-                    {/* <Row>
-                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                                <Meta title="Europe Street beat" />
-                            </Card>
-                        </Col>)}
-                    </Row> */}
-
-                    {/* <Row className='addmore--button'>
+                    <Row className='addmore--button'>
                         <Col>
                             <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                Add More
+                                Add SCE
                             </Button>
 
                             <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
@@ -118,7 +109,17 @@ export const CriticalEquipment = () => {
                                 </Button>
                             </Modal>
                         </Col>
-                    </Row> */}
+                    </Row>
+                    <Row>
+                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
+                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
+
+                            </Card>
+                            <Meta title="SEC #1" />
+                        </Col>)}
+                    </Row>
+
+
                 </Col>
 
             </Row>
