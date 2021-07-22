@@ -1,7 +1,7 @@
 import { Row, Col, Modal, Button, Upload, message } from 'antd';
 import React, { useState } from 'react';
 import { BoxFacilities, FacilitiesButtons } from './components';
-import { CloudUploadOutlined  } from '@ant-design/icons';
+import { CloudUploadOutlined } from '@ant-design/icons';
 
 import area from '../../assets/area.png';
 import process from '../../assets/process@3x.png';
@@ -38,7 +38,7 @@ export const Facilities = () => {
             }
             if (status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList );
+                console.log(info.fileList);
             } else if (status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
             }
@@ -67,7 +67,7 @@ export const Facilities = () => {
                         <Col span={6}>
                             <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
                                 Upload Image
-                        </Button>
+                            </Button>
                             <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                 <h3 className='modal--title text-center'>Upload Files</h3>
                                 <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
@@ -81,7 +81,7 @@ export const Facilities = () => {
                                     </p>
                                 </Dragger>,
                                 <Button type="primary" icon={<CloudUploadOutlined />}>
-                                        Upload Image
+                                    Upload Image
                                 </Button>
                             </Modal>
                         </Col>
@@ -95,20 +95,20 @@ export const Facilities = () => {
                             <h2>File uploaded</h2>
                         </Col>
                         <Col span={12}>
-                      
+
                         </Col>
                     </Row>
 
                     <Row>
                         <Col span={24}>
-                            <img width='100%' src= {image} />
+                            <img width='100%' src={image} />
                         </Col>
                     </Row>
 
 
 
                 </Col>
-                <Col span={8} push={2}  style={{marginTop:35}} >
+                <Col span={8} push={2} style={{ marginTop: 35 }} >
                     <Row>
                         <FacilitiesButtons />
                     </Row>
