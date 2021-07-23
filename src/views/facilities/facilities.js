@@ -1,4 +1,4 @@
-import { Row, Col, Modal, Button, Upload, message } from 'antd';
+import { Row, Col, Modal, Button, Upload, message, Input, Space } from 'antd';
 import React, { useState } from 'react';
 import { FacilitiesButtons } from './components';
 import { CloudUploadOutlined  } from '@ant-design/icons';
@@ -13,6 +13,8 @@ import image from '../../assets/image.png';
 export const Facilities = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -49,43 +51,54 @@ export const Facilities = () => {
         { title: 'Process', img: process, active: false },
         { title: 'Manning', img: group, active: false }
     ]
+
+    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
     return (
         <div className='facility--wrapper'>
             <Row>
                 <Col span={16}>
-                    <h2>Facilities Overview</h2>
-                    <div className='box--facility'>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        </p>
+                    <div style={{display:'flex', justifyContent: 'space-between'}}>
+                        <h2>Facilities Overview</h2>
+                        <div>
+                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
+                            <Space>
+                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
+                                <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Save</Button>
+                            </Space>}
+                        </div>
                     </div>
-
-                    <Row>
-                        <Col span={6}>
-                            <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                Upload Image
-                        </Button>
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
-
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                        Upload Image
+                    <div className='box--facility'>
+                        {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
+                    </div>
+                    {editMode && 
+                        <Row>
+                            <Col span={6}>
+                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
+                                    Upload Image
                                 </Button>
-                            </Modal>
-                        </Col>
-                        <Col span={12}>
-                            <h4>File size not more than 2 MB</h4>
-                        </Col>
-                    </Row>
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                    <Dragger {...props}>
+                                        <p className="ant-upload-drag-icon">
+                                            <img width='50' src={computing} />
+                                        </p>
+
+                                        <p className="ant-upload-hint">
+                                            Drag or drop your files here OR <span> browse </span>
+                                        </p>
+                                    </Dragger>,
+                                    <Button type="primary" icon={<CloudUploadOutlined />}>
+                                            Upload Image
+                                    </Button>
+                                </Modal>
+                            </Col>
+                            <Col span={12}>
+                                <h4>File size not more than 2 MB</h4>
+                            </Col>
+                        </Row>
+                    }
 
                     <Row>
                         <Col span={12}>
