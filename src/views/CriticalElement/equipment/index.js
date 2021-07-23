@@ -1,12 +1,13 @@
-import { Row, Col, Card , Button , Modal , Upload, message , Input } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
 import React, { useState } from 'react';
-import area from '../../../assets/area.png';
+import alert from '../../../assets/alert@3x.png';
 import image from '../../../assets/image.png';
-import { PlusCircleOutlined,  CloudUploadOutlined   } from '@ant-design/icons';
+import arrow from '../../../assets/left-arrow@3x.png';
+import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
-import {  FacilitiesButtons } from '../components';
 
-export const FacilityArea = () => {
+
+export const CriticalEquipment = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
@@ -31,7 +32,7 @@ export const FacilityArea = () => {
             }
             if (status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList );
+                console.log(info.fileList);
             } else if (status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
             }
@@ -42,21 +43,31 @@ export const FacilityArea = () => {
     };
 
     const { Meta } = Card;
-    
+
     return (
         <div className='facility--wrapper'>
             <Row>
+                <Col span={1}>
+                    <div className='area--img'>
+                        <a href="/#/safety-critical">
+                            <img width='38' src={arrow} />
+                            <p>back</p></a>
+                    </div>
+
+
+
+                </Col>
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
-                                <img width='38' src={area} />
+                                <img width='38' src={alert} />
                             </div>
                         </Col>
                         <Col span={23}>
                             <div className='area--header'>
-                                <p>Facilities Overview</p>
-                                <h2>Area</h2>
+                                <p>Safety Critical Element</p>
+                                <h2>Safety Critical Equipment</h2>
                             </div>
                         </Col>
                     </Row>
@@ -66,26 +77,24 @@ export const FacilityArea = () => {
                             <div className='box--facility area--box--facility'>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        </p>
+                                </p>
                             </div>
                         </Col>
                     </Row>
 
-                    <Row>
-                        {Array(3).fill(0).map((v,i)=><Col key={i} span={8}>
-                        <a href="#/accidents-hazards">
-                        <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                            <Meta title="Europe Street beat" />
-                        </Card>
-                        </a>
-                        </Col> )}                   
-                    </Row>
+                    {/* <Row>
+                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
+                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
+                                <Meta title="Europe Street beat" />
+                            </Card>
+                        </Col>)}
+                    </Row> */}
 
-                    <Row className='addmore--button'>
+                    {/* <Row className='addmore--button'>
                         <Col>
-                        <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                            Add More
-                        </Button>
+                            <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
+                                Add More
+                            </Button>
 
                             <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                 <h3 className='modal--title text-center'>Upload Files</h3>
@@ -105,13 +114,13 @@ export const FacilityArea = () => {
                                 </div>
 
                                 <Button type="primary" icon={<CloudUploadOutlined />}>
-                                        Upload Image
+                                    Upload Image
                                 </Button>
                             </Modal>
                         </Col>
-                    </Row>
+                    </Row> */}
                 </Col>
-                <Col span={8} push={2}  style={{marginTop:35}} ><FacilitiesButtons /></Col>
+
             </Row>
 
 
