@@ -5,7 +5,7 @@ import image from '../../../assets/image.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
-
+import test from './test.json';
 
 export const CriticalProcedure = () => {
 
@@ -44,7 +44,7 @@ export const CriticalProcedure = () => {
     };
 
     const { Meta } = Card;
-
+    const [contacts, setContacts] = useState(test);
     return (
         <div className='facility--wrapper'>
             <Row>
@@ -52,12 +52,11 @@ export const CriticalProcedure = () => {
                     <div className='area--img'>
                         <a href="/#/safety-critical">
                             <img width='38' src={arrow} />
-                            <p>back</p></a>
+                        </a>
                     </div>
-
-
-
                 </Col>
+            </Row>
+            <Row>
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
@@ -122,6 +121,37 @@ export const CriticalProcedure = () => {
                                 </Button>
                             </Modal>
                         </Col>
+                    </Row>
+                    <Row>
+                        <div className="app-container">
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Safety Critical Procedure</th>
+                                        <th colSpan="3">Document Number</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {contacts.map((contact) => (
+                                        <tr>
+                                            <td>{contact.Name}</td>
+                                            <td>{contact.Number}</td>
+                                            <td></td>
+                                            <td></td>
+
+
+                                        </tr>
+                                    ))}
+
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
                     </Row>
                 </Col>
 

@@ -51,7 +51,7 @@ export const EquipmentPrevention = () => {
                     <div className='area--img'>
                         <a href="/#/safety-critical/equipment">
                             <img width='38' src={arrow} />
-                            <p>back</p></a>
+                        </a>
                     </div>
                 </Col>
             </Row>

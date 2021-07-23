@@ -51,12 +51,12 @@ export const CriticalEquipment = () => {
                     <div className='area--img'>
                         <a href="/#/safety-critical">
                             <img width='38' src={arrow} />
-                            <p>back</p></a>
+                        </a>
                     </div>
-
-
-
                 </Col>
+            </Row>
+            <Row>
+
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
