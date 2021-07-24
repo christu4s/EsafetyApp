@@ -2,7 +2,7 @@
 import { ShopOutlined, HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan } from './views';
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
 
@@ -33,6 +33,9 @@ export const routes = [
     { path: '/emergency-response/organisation', exact: true, component: ResponseOrganisation },
     { path: '/emergency-response/plan', exact: true, component: ResponsePlan },
     { path: '/emergency-response/scenario', exact: true, component: ScenarioActionPlan },
+    { path: '/safety-management', exact: true, component: SafetyManagement },
+    { path: '/remedial-action', exact: true, component: RemedialAction },
+    { path: '/writen-safety', exact: true, component: WrittenSafetyCase },
 ];
 
 export const menus = [
