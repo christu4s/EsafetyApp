@@ -1,0 +1,98 @@
+.bg-white-box {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 40px 30px 10px;
+  
+}
+.bg-white-box p{
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 25px;
+   
+}
+
+
+.form-holder-risk .ant-form-item-label{
+    text-align: left;
+}
+.form-holder-risk .ant-form-item-label > label{
+    font-weight: 700;
+}
+.form-holder-risk .ant-input{
+    border: 1px solid #363636;
+    border-radius: 4px;
+}
+.form-holder-risk .ant-btn-default{
+    text-align: left;
+    border: none;
+    box-shadow: none;
+    padding-left: 0;
+    color: #0047af;
+}
+.form-holder-risk .ant-form-item-control-input-content{
+    text-align: right;
+}
+.form-holder-risk .ant-btn-primary{
+    margin: 0;
+}
+.divider{
+    border: solid 1px #000000;
+    background-color: #000000;
+    margin: 30px 0;
+}
+.form-sm-right-holder{
+    border: 1px solid #363636;
+    padding: 0;
+    overflow: hidden;
+}
+.form-sm-right-holder .ant-collapse > .ant-collapse-item > .ant-collapse-header{
+    background: #b7b7b7;
+    border-bottom: 1px solid #363636;
+    font-size: 14px;
+}
+.form-sm-right-holder.form-holder-risk .ant-input{
+    height: 36px;
+}
+.form-sm-right-holder.form-holder-risk .ant-form-item-label > label{font-weight: 400;}
+.form-sm-right-holder.form-holder-risk .ant-collapse > .ant-collapse-item{
+    border-bottom: none;
+}
+.form-sm-right-holder .ant-select-single .ant-select-selector .ant-select-selection-item{
+    text-align: left;
+}
+.form-sm-right-holder .ant-select:not(.ant-select-customize-input) .ant-select-selector{
+    height: 36px;
+    border: 1px solid #363636;
+    background-color: #b7b7b7;
+    border-radius: 4px;
+}
+.form-sm-right-holder .ant-collapse{
+    border:none
+}
+.form-sm-right-holder  .ant-collapse > .ant-collapse-item:last-child,
+.form-sm-right-holder  .ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header{
+    border-radius: 4px;
+}
+.divider.divider-sm{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.form-sm-right-holder .ant-btn-primary{
+    height: 31px;
+    padding: 3px 24px 20px;
+}
+.form-sm-right-holder .ant-collapse-content > .ant-collapse-content-box{
+    padding-bottom: 0;
+}
+.form-sm-right-holder .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow{
+    float: right;
+    margin-top: -5px;
+    font-size: 27px;
+}
+.form-sm-right-holder.form-holder-risk .ant-form-item-label{
+    padding-bottom: 0;
+}
+.form-sm-right-holder .ps-btn{
+    position: absolute;
+    right: -10px;
+}
