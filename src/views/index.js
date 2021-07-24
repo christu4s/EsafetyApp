@@ -4,3 +4,4 @@ export * from './AccidentsHazards';
 export * from './SelectAccount';
 export * from './RiskAssessment';
 export * from './CriticalElement';
+export * from './EmergencyResponse';

@@ -115,7 +115,7 @@ export const EquipmentPrevention = () => {
                             <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
 
                             </Card>
-                            <Meta title="SEC #1" />
+                            <Meta style={{ textAlign: 'center' }} title="SEC #1" />
                         </Col>)}
                     </Row>
 
