@@ -5,6 +5,11 @@ import { UserGroupFilled } from './icons';
 import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
+import { IndividualRisk } from './views/RiskAssessment/IndividualRisk';
+import { IndividualRiskEditUser } from './views/RiskAssessment/IndividualRisk/individualRiskEditUser';
+import { PlanRiskBreakDown } from './views/RiskAssessment/PlanRiskBreakdown';
+import { EditPlanRiskBreakdown } from './views/RiskAssessment/PlanRiskBreakdown/editPlanRiskBreakdown';
+import { LocationRisk } from './views/RiskAssessment/LocationRisk';
 
 const Empty = () => <div />;
 
@@ -18,11 +23,16 @@ export const routes = [
     { path: '/facility-overview/manning', exact: true, component: FacilityManning },
     { path: '/facility-overview/process', exact: true, component: FacilityProcess },
     { path: '/accidents-hazards', exact: true, component: AccidentsHazard },
-    { path: '/risk-assessment', exact: true, component: RiskAssessment },
-    { path: '/risk-assessment/identification-worksheet', exact: true, component: HazardIdentifications },
-    { path: '/risk-assessment/operability-worksheet', exact: true, component: HazardOperatability },
-    { path: '/risk-assessment/rescue-analysis', exact: true, component: HazardAnalysis },
-    { path: '/risk-assessment/survivability-analysis', exact: true, component: HazardEmergency },
+    {path: '/risk-assessment',exact: true, component: RiskAssessment},
+    {path: '/risk-assessment/identification-worksheet',exact: true, component: HazardIdentifications},
+    {path: '/risk-assessment/operability-worksheet',exact: true, component: HazardOperatability},
+    {path: '/risk-assessment/rescue-analysis',exact: true, component: HazardAnalysis},
+    {path: '/risk-assessment/survivability-analysis',exact: true, component: HazardEmergency},
+    {path: '/risk-assessment/individual',exact: true, component:IndividualRisk },
+    {path: '/risk-assessment/plant',exact: true, component:PlanRiskBreakDown },
+    {path: '/risk-assessment/individual-edit-user',exact: true, component:IndividualRiskEditUser },
+    {path: '/risk-assessment/edit-plan',exact: true, component:EditPlanRiskBreakdown },
+    {path: '/risk-assessment/location',exact: true, component:LocationRisk },
     { path: '/safety-critical', exact: true, component: CriticalElement },
     { path: '/safety-critical/equipment', exact: true, component: CriticalEquipment },
     { path: '/safety-critical/equipment/prevention', exact: true, component: EquipmentPrevention },
