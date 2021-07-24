@@ -1,15 +1,14 @@
 import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
 import React, { useState } from 'react';
-import alert from '../../../assets/alert@3x.png';
-import image from '../../../assets/image.png';
-import arrow from '../../../assets/left-arrow@3x.png';
+import extinguisher from '../../assets/fire-extinguisher@3x.png';
+
+import trimage from '../../assets/ft-cb-crs-img@3x.png';
+
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
-import computing from '../../../assets/cloud-computing@3x.png';
-import { Timeline } from 'antd';
-export * from './prevention';
+import computing from '../../assets/cloud-computing@3x.png';
 
 
-export const CriticalEquipment = () => {
+export const EmergencyResponse = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
@@ -49,27 +48,16 @@ export const CriticalEquipment = () => {
     return (
         <div className='facility--wrapper'>
             <Row>
-                <Col span={1}>
-                    <div className='area--img'>
-                        <a href="/#/safety-critical">
-                            <img width='38' src={arrow} />
-                        </a>
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
-                                <img width='38' src={alert} />
+                                <img width='38' src={extinguisher} />
                             </div>
                         </Col>
                         <Col span={23}>
                             <div className='area--header'>
-                                <p>Safety Critical Element</p>
-                                <h2>Safety Critical Equipment</h2>
+                                <h2>Emergency Response</h2>
                             </div>
                         </Col>
                     </Row>
@@ -84,19 +72,19 @@ export const CriticalEquipment = () => {
                         </Col>
                     </Row>
 
-                    {/* <Row>
-                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                                <Meta title="Europe Street beat" />
-                            </Card>
+                    <Row>
+                        {Array(4).fill(0).map((v, i) => <Col key={i} span={8}>
+                            <a href="#/accidents-hazards">
+                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={trimage} />}>
+                                    <Meta title="Emergency Response Tiers" />
+                                </Card>
+                            </a>
                         </Col>)}
-                    </Row> */}
+                    </Row>
 
-                    {/* <Row className='addmore--button'>
+                    <Row className='addmore--button'>
                         <Col>
-                            <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                Add More
-                            </Button>
+
 
                             <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                 <h3 className='modal--title text-center'>Upload Files</h3>
@@ -120,14 +108,7 @@ export const CriticalEquipment = () => {
                                 </Button>
                             </Modal>
                         </Col>
-                    </Row> */}
-                    <Row>
-                        <Timeline>
-                            <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-                            <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-                            <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-                            <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
-                        </Timeline></Row>
+                    </Row>
                 </Col>
 
             </Row>
