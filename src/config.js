@@ -2,24 +2,28 @@
 import { ShopOutlined, HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
-
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, CriticalElement, CriticalEquipment, CriticalPersonnel, CriticalProcedure, EquipmentPrevention } from './views';
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
 
 const Empty = () => <div />;
 
 export const routes = [
-    { path: '/', exact: true, component: Dashboard },
-    { path: '/select-account', exact: true, component: Empty },
-    { path: '/user', exact: true, component: Empty },
-    { path: '/profile', exact: true, component: Empty },
-    { path: '/facility-overview', exact: true, component: Facilities },
-    { path: '/facility-overview/area', exact: true, component: FacilityArea },
-    { path: '/facility-overview/manning', exact: true, component: FacilityManning },
-    { path: '/facility-overview/process', exact: true, component: FacilityProcess },
-    { path: '/accidents-hazards', exact: true, component: AccidentsHazard },
-    { path: '/safety-critical', exact: true, component: CriticalElement },
+    {path: '/', exact: true ,component: Dashboard},
+    {path: '/select-account',exact: true, component: SelectAccount},
+    {path: '/user',exact: true, component: Empty},
+    {path: '/profile',exact: true, component: Empty},
+    {path: '/facility-overview',exact: true, component: Facilities},
+    {path: '/facility-overview/area',exact: true, component: FacilityArea},
+    {path: '/facility-overview/manning',exact: true, component: FacilityManning},
+    {path: '/facility-overview/process',exact: true, component: FacilityProcess},
+    {path: '/accidents-hazards',exact: true, component: AccidentsHazard},
+    {path: '/risk-assessment',exact: true, component: RiskAssessment},
+    {path: '/risk-assessment/identification-worksheet',exact: true, component: HazardIdentifications},
+    {path: '/risk-assessment/operability-worksheet',exact: true, component: HazardOperatability},
+    {path: '/risk-assessment/rescue-analysis',exact: true, component: HazardAnalysis},
+    {path: '/risk-assessment/survivability-analysis',exact: true, component: HazardEmergency},
+    { path: '/safety-critical', exact:true, component: CriticalElement },
     { path: '/safety-critical/equipment', exact: true, component: CriticalEquipment },
     { path: '/safety-critical/equipment/prevention', exact: true, component: EquipmentPrevention },
     { path: '/safety-critical/personnel', exact: true, component: CriticalPersonnel },
