@@ -46,18 +46,19 @@ export const CriticalPersonnel = () => {
     const { Meta } = Card;
 
     return (
+
         <div className='facility--wrapper'>
             <Row>
                 <Col span={1}>
                     <div className='area--img'>
                         <a href="/#/safety-critical">
                             <img width='38' src={arrow} />
-                            <p>back</p></a>
+                        </a>
                     </div>
-
-
-
                 </Col>
+            </Row>
+            <Row>
+
                 <Col span={16}>
                     <Row>
                         <Col span={1}>

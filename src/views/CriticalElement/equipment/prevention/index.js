@@ -1,14 +1,13 @@
 import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
 import React, { useState } from 'react';
-import alert from '../../../assets/alert@3x.png';
-import image from '../../../assets/image.png';
-import arrow from '../../../assets/left-arrow@3x.png';
+import alert from '../../../../assets/alert@3x.png';
+import image from '../../../../assets/downloadPRE@3x.png';
+import arrow from '../../../../assets/left-arrow@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
-import computing from '../../../assets/cloud-computing@3x.png';
-import test from './test.json';
+import computing from '../../../../assets/cloud-computing@3x.png';
 
-export const CriticalProcedure = () => {
 
+export const EquipmentPrevention = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
@@ -44,19 +43,20 @@ export const CriticalProcedure = () => {
     };
 
     const { Meta } = Card;
-    const [contacts, setContacts] = useState(test);
+
     return (
         <div className='facility--wrapper'>
             <Row>
                 <Col span={1}>
                     <div className='area--img'>
-                        <a href="/#/safety-critical">
+                        <a href="/#/safety-critical/equipment">
                             <img width='38' src={arrow} />
                         </a>
                     </div>
                 </Col>
             </Row>
             <Row>
+
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
@@ -66,8 +66,8 @@ export const CriticalProcedure = () => {
                         </Col>
                         <Col span={23}>
                             <div className='area--header'>
-                                <p>Safety Critical Element</p>
-                                <h2>Safety Critical Procedure</h2>
+                                <p>Safety Critical Equipment</p>
+                                <h2>Prevention</h2>
                             </div>
                         </Col>
                     </Row>
@@ -81,22 +81,10 @@ export const CriticalProcedure = () => {
                             </div>
                         </Col>
                     </Row>
-
-                    {/* <Row>
-                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                                <Meta title="Europe Street beat" />
-                            </Card>
-                        </Col>)}
-                    </Row> */}
-
                     <Row className='addmore--button'>
                         <Col>
-                            {/* <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                Add More
-                            </Button> */}
-                            <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                Upload Document
+                            <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
+                                Add SCE
                             </Button>
 
                             <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
@@ -123,36 +111,15 @@ export const CriticalProcedure = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <div className="app-container">
+                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
+                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Safety Critical Procedure</th>
-                                        <th colSpan="3">Document Number</th>
-
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {contacts.map((contact) => (
-                                        <tr>
-                                            <td>{contact.Name}</td>
-                                            <td>{contact.Number}</td>
-                                            <td></td>
-                                            <td></td>
-
-
-                                        </tr>
-                                    ))}
-
-                                </tbody>
-                            </table>
-
-
-
-                        </div>
+                            </Card>
+                            <Meta title="SEC #1" />
+                        </Col>)}
                     </Row>
+
+
                 </Col>
 
             </Row>

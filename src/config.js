@@ -1,7 +1,8 @@
 
 import { ShopOutlined, HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount } from './views';
+
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
 
@@ -24,6 +25,7 @@ export const routes = [
     {path: '/risk-assessment/survivability-analysis',exact: true, component: HazardEmergency},
     { path: '/safety-critical', exact:true, component: CriticalElement },
     { path: '/safety-critical/equipment', exact: true, component: CriticalEquipment },
+    { path: '/safety-critical/equipment/prevention', exact: true, component: EquipmentPrevention },
     { path: '/safety-critical/personnel', exact: true, component: CriticalPersonnel },
     { path: '/safety-critical/procedure', exact: true, component: CriticalProcedure },
 ];
