@@ -44,6 +44,7 @@ export const CriticalProcedure = () => {
     };
 
     const { Meta } = Card;
+
     const [contacts, setContacts] = useState(test);
     return (
         <div className='facility--wrapper'>
@@ -123,7 +124,7 @@ export const CriticalProcedure = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <div className="app-container">
+                        <div style={{ border: '1px solid #ddd' }} className="app-container">
 
                             <table>
                                 <thead>
@@ -158,6 +159,6 @@ export const CriticalProcedure = () => {
             </Row>
 
 
-        </div>
+        </div >
     );
 }

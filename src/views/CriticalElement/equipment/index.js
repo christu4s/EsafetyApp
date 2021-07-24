@@ -5,7 +5,9 @@ import image from '../../../assets/image.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
+import { Timeline } from 'antd';
 export * from './prevention';
+
 
 export const CriticalEquipment = () => {
     const { Dragger } = Upload;
@@ -119,6 +121,13 @@ export const CriticalEquipment = () => {
                             </Modal>
                         </Col>
                     </Row> */}
+                    <Row>
+                        <Timeline>
+                            <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
+                            <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
+                            <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
+                            <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
+                        </Timeline></Row>
                 </Col>
 
             </Row>
