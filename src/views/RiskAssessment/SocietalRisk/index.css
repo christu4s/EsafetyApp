@@ -1,0 +1,31 @@
+.societal-risk-table{
+    margin-top: 30px;
+}
+.societal-risk-table h5 span{
+    display: block;
+    FONT-WEIGHT: 400;
+    font-size: 14px;
+
+}
+.societal-risk-table.manning--box--facility .ant-input{
+    border: 1px solid #000000;
+    height: 30px;
+    border-radius: 5px;
+    text-align: center;
+}
+.societal-risk-table .ant-btn-default{
+    border: none;
+    box-shadow: none;
+    color: #0047af;
+}
+.societal-risk-table .ant-btn-default span,
+.societal-risk-table .ant-btn .anticon{color: #0047af;}
+.ant-input::placeholder{color: #000;}
+.location--wrapper .ant-btn-secondary{
+    background-color: #a8a5a5;
+    border-radius: 4px;
+}
+.location--wrapper .ant-btn-secondary:hover{
+    color: #000;
+    border-color: #000;
+}
