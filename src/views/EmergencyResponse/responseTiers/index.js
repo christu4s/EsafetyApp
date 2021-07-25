@@ -123,11 +123,11 @@ export const ResponseTiers = () => {
                 <Row>
                     <Col span={23}>
                         <div className='box--facility area--box--facility manning--box--facility'>
-                            <Row>
-                                <Col span={4}>
+                            <Row gutter={20}>
+                                <Col span={3}>
                                     <h3>Emergency Response Tier</h3>
                                 </Col>
-                                <Col span={6} push={6}>
+                                <Col span={8} push={6}>
                                     <h3>Definition</h3>
                                 </Col>
                                 <Col span={6} push={6}>
