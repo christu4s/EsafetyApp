@@ -10,6 +10,7 @@ import { IndividualRiskEditUser } from './views/RiskAssessment/IndividualRisk/in
 import { PlanRiskBreakDown } from './views/RiskAssessment/PlanRiskBreakdown';
 import { EditPlanRiskBreakdown } from './views/RiskAssessment/PlanRiskBreakdown/editPlanRiskBreakdown';
 import { LocationRisk } from './views/RiskAssessment/LocationRisk';
+import { SocietalRisk } from './views/RiskAssessment/SocietalRisk';
 
 const Empty = () => <div />;
 
@@ -33,6 +34,7 @@ export const routes = [
     {path: '/risk-assessment/individual-edit-user',exact: true, component:IndividualRiskEditUser },
     {path: '/risk-assessment/edit-plan',exact: true, component:EditPlanRiskBreakdown },
     {path: '/risk-assessment/location',exact: true, component:LocationRisk },
+    {path: '/risk-assessment/societal',exact: true, component:SocietalRisk },
     { path: '/safety-critical', exact: true, component: CriticalElement },
     { path: '/safety-critical/equipment', exact: true, component: CriticalEquipment },
     { path: '/safety-critical/equipment/prevention', exact: true, component: EquipmentPrevention },
