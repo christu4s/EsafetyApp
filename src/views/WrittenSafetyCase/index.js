@@ -1,7 +1,7 @@
 import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
 import React, { useState } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
-
+import download from '../../assets/direct-download@3x.png';
 import trimage from '../../assets/ft-cb-crs-img@3x.png';
 
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
@@ -104,7 +104,95 @@ export const WrittenSafetyCase = () => {
                         </Col>
                     </Row>
                 </Col>
+                <Row>
 
+                    <Col span={30}>
+                        <div className='box--facility area--box--facility manning--box--facility'>
+                            <Row>
+                                <Col span={1}>
+
+                                </Col>
+                                <Col span={4} push={1}>
+                                    <h3>File Name</h3>
+                                </Col>
+                                {/* <Col span={4} push={1}>
+                                    <h3>Action</h3>
+                                </Col>
+                                <Col span={4} push={5}>
+                                    <h3>Actionee</h3>
+                                </Col>
+                                <Col span={4} push={6}>
+                                    <h3>Status </h3>
+                                    <p>(as of date of E-SC development)</p>
+                                </Col> */}
+                            </Row>
+                            <hr />
+                            {/* <Row gutter={16}>
+                                <Col span={6}>
+                                </Col>
+                                <Col span={6}>
+                                    <h5>Manager</h5>
+                                </Col>
+                                <Col span={6}>
+                                    <h5>Operator</h5>
+                                </Col>
+                                <Col span={6}>
+                                    <h5>Admin</h5>
+                                </Col>
+                            </Row> */}
+
+
+                            <Row gutter={40}>
+                                <Col span={1}>
+                                    <h5>1</h5>
+                                </Col>
+                                <Col span={16}>
+
+                                    <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</h5>
+
+                                </Col>
+
+                                <Col span={6}>
+                                    <img width='38' src={download} />
+                                </Col>
+
+                            </Row>
+
+                            <hr />
+
+                            <Row gutter={40}>
+                                <Col span={1}>
+                                    <h5>2</h5>
+                                </Col>
+                                <Col span={16}>
+                                    <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</h5>
+
+                                </Col>
+
+                                <Col span={6}>
+                                    <img width='38' src={download} />
+                                </Col>
+
+                            </Row>
+                            <hr />
+                            <Row gutter={40}>
+                                <Col span={1}>
+                                    <h5>3</h5>
+                                </Col>
+                                <Col span={16}>
+                                    <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</h5>
+
+                                </Col>
+
+                                <Col span={6}>
+                                    <img width='38' src={download} />
+                                </Col>
+
+                            </Row>
+                            <hr />
+                        </div>
+                    </Col>
+                </Row>
             </Row>
 
 

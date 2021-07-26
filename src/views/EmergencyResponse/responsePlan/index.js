@@ -85,11 +85,91 @@ export const ResponsePlan = () => {
 
 
                 </Col>
+            </Row>
+            <Row>
+                <Col span={30}>
+                    <div className='box--facility area--box--facility manning--box--facility'>
+                        <Row>
+                            <Col span={30} >
+                                <h3>Raise the Alarm</h3>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={30}>
+                                <Input placeholder="" />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={30} >
+                                <h3>Muster at Muster Point</h3>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={30}>
+                                <Input placeholder="" />
+                            </Col>
+
+                        </Row>
+                        <Row>
+                            <Col span={30} >
+                                <h3>Activate ERT</h3>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={30}>
+                                <Input placeholder="" />
+                            </Col>
+
+                        </Row>
+                        <Row>
+
+                            <Col span={30} >
+                                <h3>Decision to Abandon Ship</h3>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={30} >
+                                <Input placeholder="" />
+                            </Col>
+                        </Row>
+                        <Row className='addmore--button'>
+                            <Col>
+                                <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
+                                    Add More
+                                </Button>
+
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                    <Dragger {...props}>
+                                        <p className="ant-upload-drag-icon">
+                                            <img width='50' src={computing} />
+                                        </p>
+
+                                        <p className="ant-upload-hint">
+                                            Drag or drop your files here OR <span> browse </span>
+                                        </p>
+                                    </Dragger>,
+                                    <div className='area--form'>
+                                        <label>Name of Area</label>
+                                        <Input placeholder="Lorem ipsum dolor sit amet" />
+                                    </div>
+
+                                    <Button type="primary" icon={<CloudUploadOutlined />}>
+                                        Upload Image
+                                    </Button>
+                                </Modal>
+                            </Col>
+                        </Row>
 
 
+                    </div>
+                </Col>
             </Row>
 
 
-        </div>
+
+
+        </div >
     );
 }
