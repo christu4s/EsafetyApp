@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import image from '../../../assets/image.png';
 import arrow from '../../../assets/left-arrow@3x.png';
-import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
-import computing from '../../../assets/cloud-computing@3x.png';
+import { PlusCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import fire from '../../../assets/fire-1@3x.png';
+import warning from '../../../assets/triangular-warning-sign@3x.png';
 import { Timeline } from 'antd';
 export * from './prevention';
 
@@ -48,27 +49,35 @@ export const CriticalEquipment = () => {
 
     return (
         <div className='facility--wrapper'>
-            <Row>
-                <Col span={1}>
-                    <div className='area--img'>
-                        <a href="/#/safety-critical">
-                            <img width='38' src={arrow} />
-                        </a>
-                    </div>
-                </Col>
-            </Row>
+            <a href="/#/safety-critical" style={{color:'#282828'}}>
+                <Row>
+                    <Col span={1}>
+                        <div className=''>
+                        <ArrowLeftOutlined />
+                        </div>
+                    </Col>
+                    <Col span={23}>
+                        <div className=''>
+                            <p>Back
+        </p>
+                        </div>
+                    </Col>
+                </Row>
+            </a>
+
+          
             <Row>
 
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
-                                <img width='38' src={alert} />
+                                <img width='28' src={alert} />
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
-                                <p>Safety Critical Element</p>
+                            <div className='area--header' style={{marginTop:5}}>
+                                <p>Risk Assessment</p>
                                 <h2>Safety Critical Equipment</h2>
                             </div>
                         </Col>
@@ -84,49 +93,48 @@ export const CriticalEquipment = () => {
                         </Col>
                     </Row>
 
-                    {/* <Row>
-                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                                <Meta title="Europe Street beat" />
-                            </Card>
-                        </Col>)}
-                    </Row> */}
-
-                    {/* <Row className='addmore--button'>
-                        <Col>
-                            <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                Add More
-                            </Button>
-
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
-
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <div className='area--form'>
-                                    <label>Name of Area</label>
-                                    <Input placeholder="Lorem ipsum dolor sit amet" />
-                                </div>
-
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                    Upload Image
-                                </Button>
-                            </Modal>
-                        </Col>
-                    </Row> */}
-                    <Row>
+                    <Row style={{marginTop:30}}>
                         <Timeline>
-                            <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-                            <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-                            <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-                            <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
+                            <Timeline.Item>
+                                <div className='timeline--box timeline--box--withimage'>
+                                    <p> <img width="37" src ={warning}/> Hazards</p>
+                                </div>
+                            </Timeline.Item>
+                            <Timeline.Item>
+                            <div className='timeline--box timeline-bg-blue'>
+                                    <p>  Prevention</p>
+                                </div>
+                            </Timeline.Item>
+                            <Timeline.Item>
+                            <div className='timeline--box timeline-bg-blue'>
+                                    <p>Detection</p>
+                                </div>
+                            </Timeline.Item>
+                            <Timeline.Item>
+                            <div className='timeline--box timeline-bg-blue '>
+                                    <p>Control</p>
+                                </div>
+                            </Timeline.Item>
+                            <Timeline.Item>
+                            <div className='timeline--box timeline-bg-blue '>
+                                    <p>Mitigation</p>
+                                </div>
+                            </Timeline.Item>
+                            <Timeline.Item>
+                            <div className='timeline--box timeline-bg-blue '>
+                                    <p>Emergency Response</p>
+                                </div>
+                            </Timeline.Item>
+                            <Timeline.Item>
+                            <div className='timeline--box timeline-bg-blue '>
+                                    <p>Incident</p>
+                                </div>
+                            </Timeline.Item>
+                            <Timeline.Item>
+                                <div className='timeline--box timeline--box--withimage'>
+                                    <p> <img width="37" src ={fire}/> Hazards</p>
+                                </div>
+                            </Timeline.Item>
                         </Timeline></Row>
                 </Col>
 

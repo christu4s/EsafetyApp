@@ -6,7 +6,7 @@ import image from '../../../assets/screen-shot@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined , ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 
 export const ScenarioActionPlan = () => {
@@ -49,25 +49,31 @@ export const ScenarioActionPlan = () => {
 
     return (
         <div className='facility--wrapper'>
-            <Row>
-                <Col span={1}>
-                    <div className='area--img'>
-                        <a href="/#/emergency-response">
-                            <img width='38' src={arrow} />
-                        </a>
-                    </div>
-                </Col>
-            </Row>
+             <a href="/#/emergency-response" style={{color:'#282828'}}>
+                    <Row>
+                        <Col span={1}>
+                            <div className=''>
+                        <ArrowLeftOutlined />
+                        </div>
+                    </Col>
+                    <Col span={23}>
+                        <div className=''>
+                            <p>Back
+        </p>
+                        </div>
+                    </Col>
+                </Row>
+                </a>
             <Row>
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
-                            <div className='area--img'>
-                                <img width='38' src={extinguisher} />
+                            <div className='area--img' >
+                                <img width='28' src={extinguisher} />
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
+                            <div className='area--header' style={{marginTop:15}}>
 
                                 <h2>Scenario Specific Action Plan</h2>
                             </div>

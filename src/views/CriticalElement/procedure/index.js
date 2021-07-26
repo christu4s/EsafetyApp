@@ -1,9 +1,9 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input , Table, Tag, Space } from 'antd';
 import React, { useState } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import image from '../../../assets/image.png';
 import arrow from '../../../assets/left-arrow@3x.png';
-import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined  , ArrowLeftOutlined} from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import test from './test.json';
 
@@ -44,19 +44,56 @@ export const CriticalProcedure = () => {
     };
 
     const { Meta } = Card;
+    const columns = [
+        {
+          title: 'Safety Critical Procedure          ',
+          dataIndex: 'name',
+          key: 'name',
+        },
+        {
+          title: 'Document Number',
+          dataIndex: 'age',
+          key: 'age',
+        },
+        {
+          title: '',
+          dataIndex: 'address',
+          key: 'address',
+        },
+      ];
 
+      const dataSource = [
+        {
+          key: '1',
+          name: 'Mike',
+          age: 32,
+          address: '10 Downing Street',
+        },
+        {
+          key: '2',
+          name: 'John',
+          age: 42,
+          address: '10 Downing Street',
+        },
+      ];
     const [contacts, setContacts] = useState(test);
     return (
         <div className='facility--wrapper'>
-            <Row>
-                <Col span={1}>
-                    <div className='area--img'>
-                        <a href="/#/safety-critical">
-                            <img width='38' src={arrow} />
-                        </a>
-                    </div>
-                </Col>
-            </Row>
+             <a href="/#/safety-critical" style={{color:'#282828'}}>
+                <Row>
+                    <Col span={1}>
+                        <div className=''>
+                        <ArrowLeftOutlined />
+                        </div>
+                    </Col>
+                    <Col span={23}>
+                        <div className=''>
+                            <p>Back
+        </p>
+                        </div>
+                    </Col>
+                </Row>
+            </a>
             <Row>
                 <Col span={16}>
                     <Row>
@@ -66,8 +103,7 @@ export const CriticalProcedure = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
-                                <p>Safety Critical Element</p>
+                            <div className='area--header' style={{marginTop:15}}>
                                 <h2>Safety Critical Procedure</h2>
                             </div>
                         </Col>
@@ -90,6 +126,18 @@ export const CriticalProcedure = () => {
                             </Card>
                         </Col>)}
                     </Row> */}
+
+                    <Row>
+                        <Col span={24}>
+                                <div className='divider'></div>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col span={24}>
+                        <Table dataSource={dataSource} columns={columns} />;
+                        </Col>
+                    </Row>
 
                     <Row className='addmore--button'>
                         <Col>
@@ -123,10 +171,12 @@ export const CriticalProcedure = () => {
                             </Modal>
                         </Col>
                     </Row>
-                    <Row>
+
+                 
+                    {/* <Row>
                         <div style={{ border: '1px solid #ddd' }} className="app-container">
 
-                            <table>
+                            <table className='table'>
                                 <thead>
                                     <tr>
                                         <th>Safety Critical Procedure</th>
@@ -153,7 +203,14 @@ export const CriticalProcedure = () => {
 
 
                         </div>
-                    </Row>
+
+
+                       
+
+                    </Row> */}
+
+                    
+
                 </Col>
 
             </Row>

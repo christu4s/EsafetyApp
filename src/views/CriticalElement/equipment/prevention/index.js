@@ -5,7 +5,7 @@ import image from '../../../../assets/downloadPRE@3x.png';
 import arrow from '../../../../assets/left-arrow@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../../../assets/cloud-computing@3x.png';
-
+import './index.css';
 
 export const EquipmentPrevention = () => {
     const { Dragger } = Upload;
