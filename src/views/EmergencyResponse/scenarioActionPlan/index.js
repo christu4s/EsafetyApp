@@ -68,7 +68,6 @@ export const ScenarioActionPlan = () => {
                         </Col>
                         <Col span={23}>
                             <div className='area--header'>
-
                                 <h2>Scenario Specific Action Plan</h2>
                             </div>
                         </Col>
