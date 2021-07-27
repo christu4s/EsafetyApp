@@ -1,4 +1,4 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input } from 'antd';
+import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Space } from 'antd';
 import React, { useState } from 'react';
 import area from '../../assets/area.png';
 import image from '../../assets/image.png';
@@ -10,6 +10,8 @@ import computing from '../../assets/cloud-computing@3x.png';
 export const AccidentsHazard = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -65,7 +67,19 @@ export const AccidentsHazard = () => {
                         </Col>
                         <Col span={23}>
                             <div className='area--header mt-5'>
+                                <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                <div>
                                 <h2 style={{ marginTop: 25 }}>Major Accidents Hazards</h2>
+                                </div>
+                                
+                                <div>
+                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
+                            <Space>
+                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
+                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                            </Space>}
+                        </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -74,14 +88,14 @@ export const AccidentsHazard = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        </p>
+                                    {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
+                                </p>
                             </div>
                         </Col>
                     </Row>
 
 
-
+                    {editMode && 
                     <Row className=''>
                         <Col span={6}>
                             <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
@@ -108,7 +122,7 @@ export const AccidentsHazard = () => {
                             <h4>File size not more than 2 MB</h4>
                         </Col>
                     </Row>
-
+}
                     <Row>
                         <Col span={12}>
                             <h2>File uploaded</h2>
