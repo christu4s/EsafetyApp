@@ -6,7 +6,7 @@ import trimage from '../../assets/ft-cb-crs-img@3x.png';
 
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
-
+import  "./index.css";
 
 export const RemedialAction = () => {
     const { Dragger } = Upload;
@@ -52,11 +52,11 @@ export const RemedialAction = () => {
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
-                                <img width='38' src={extinguisher} />
+                                <img width='28' src={extinguisher} />
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
+                            <div className='area--header' style={{marginTop:20}}>
                                 <h2>Remedial Action Plan</h2>
                             </div>
                         </Col>
@@ -71,50 +71,48 @@ export const RemedialAction = () => {
                             </div>
                         </Col>
                     </Row>
-                    <hr />
+                   
 
                 </Col>
+                </Row>
+
+                <Row style={{marginTop:30}}>
+                    <Col span={15}>
+                        <div className='divider'></div>
+                    </Col>
+                </Row>
 
                 <Row>
-                    <Row>
-                        <Col>
-                            <h2>Table</h2>                    </Col>
-                    </Row>
-                    <Col span={30}>
-                        <div className='box--facility area--box--facility manning--box--facility'>
+                   
+                    <Col span={24}>
+                        <h2>Table</h2>                   
+                    </Col>
+
+                     
+                    
+                    <Col span={24}>
+                        <div style={{marginTop:5}} className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
                             <Row>
                                 <Col span={1}>
 
                                 </Col>
                                 <Col span={4} push={1}>
-                                    <h3>Source</h3>
+                                    <h5>Source</h5>
                                 </Col>
                                 <Col span={4} push={1}>
-                                    <h3>Action</h3>
+                                    <h5>Action</h5>
                                 </Col>
                                 <Col span={4} push={5}>
-                                    <h3>Actionee</h3>
+                                    <h5>Actionee</h5>
                                 </Col>
                                 <Col span={4} push={6}>
-                                    <h3>Status </h3>
-                                    <p>(as of date of E-SC development)</p>
+                                <h5>
+                                    Status
+                                    <span> (as of date of E-SC development)</span>
+                                </h5>
                                 </Col>
                             </Row>
                             <hr />
-                            {/* <Row gutter={16}>
-                                <Col span={6}>
-                                </Col>
-                                <Col span={6}>
-                                    <h5>Manager</h5>
-                                </Col>
-                                <Col span={6}>
-                                    <h5>Operator</h5>
-                                </Col>
-                                <Col span={6}>
-                                    <h5>Admin</h5>
-                                </Col>
-                            </Row> */}
-
 
                             <Row gutter={40}>
                                 <Col span={1}>
@@ -181,7 +179,7 @@ export const RemedialAction = () => {
                         </div>
                     </Col>
                 </Row>
-            </Row>
+           
 
 
         </div>

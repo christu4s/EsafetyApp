@@ -6,7 +6,7 @@ import image from '../../../assets/screen-shot@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined , ArrowLeftOutlined} from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 
 export const ResponseOrganisation = () => {
@@ -49,25 +49,33 @@ export const ResponseOrganisation = () => {
 
     return (
         <div className='facility--wrapper'>
-            <Row>
-                <Col span={1}>
-                    <div className='area--img'>
-                        <a href="/#/emergency-response">
-                            <img width='38' src={arrow} />
-                        </a>
-                    </div>
-                </Col>
-            </Row>
+              <a href="/#/emergency-response" style={{color:'#282828'}}>
+                <Row>
+                    <Col span={1}>
+                        <div className=''>
+                        <ArrowLeftOutlined />
+                        </div>
+                    </Col>
+                    <Col span={23}>
+                        <div className=''>
+                            <p>Back
+        </p>
+                        </div>
+                    </Col>
+                </Row>
+                </a>
+
+        
             <Row>
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
-                                <img width='38' src={extinguisher} />
+                                <img width='28' src={extinguisher} />
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
+                            <div className='area--header' style={{marginTop:15}}>
 
                                 <h2>Emergency Response Organisation</h2>
                             </div>
@@ -119,11 +127,10 @@ export const ResponseOrganisation = () => {
                             <img width='100%' src={image} />
                         </Col>
                     </Row>
-                </Col>
 
-                <Row>
-                    <Col span={30}>
-                        <div className='box--facility area--box--facility manning--box--facility'>
+                    <Row>
+                    <Col span={24}>
+                        <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
                             <Row>
                                 {/* <Col span={4}>
                                     <h3>Emergency Response Tier</h3>
@@ -168,7 +175,7 @@ export const ResponseOrganisation = () => {
                                 </Col>
                                 <Row className='addmore--button'>
                                     <Col>
-                                        <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
+                                        <Button type="default" icon={<PlusCircleOutlined />} onClick={showModal}>
                                             Add More
                                         </Button>
 
@@ -200,6 +207,10 @@ export const ResponseOrganisation = () => {
                         </div>
                     </Col>
                 </Row>
+
+                </Col>
+
+               
 
             </Row>
 

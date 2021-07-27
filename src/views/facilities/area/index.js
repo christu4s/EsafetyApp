@@ -56,7 +56,7 @@ export const FacilityArea = () => {
                                 <img width='38' src={area} />
                             </div>
                         </Col>
-                        <Col span={23}>
+                        <Col span={22}>
                         
                             <div className='area--header' >
                             <div style={{display:'flex', justifyContent: 'space-between'}}>

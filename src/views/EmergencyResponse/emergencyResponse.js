@@ -52,11 +52,11 @@ export const EmergencyResponse = () => {
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
-                                <img width='38' src={extinguisher} />
+                                <img width='28' src={extinguisher} />
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
+                            <div className='area--header' style={{marginTop:15}}>
                                 <h2>Emergency Response</h2>
                             </div>
                         </Col>
