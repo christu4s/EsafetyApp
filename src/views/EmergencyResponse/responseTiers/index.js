@@ -6,7 +6,7 @@ import image from '../../../assets/06107-f-28-fig-3@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined , ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 
 export const ResponseTiers = () => {
@@ -49,25 +49,34 @@ export const ResponseTiers = () => {
 
     return (
         <div className='facility--wrapper'>
-            <Row>
-                <Col span={1}>
-                    <div className='area--img'>
-                        <a href="/#/emergency-response">
-                            <img width='38' src={arrow} />
-                        </a>
-                    </div>
-                </Col>
-            </Row>
+
+                <a href="/#/emergency-response" style={{color:'#282828'}}>
+                    <Row>
+                        <Col span={1}>
+                            <div className=''>
+                        <ArrowLeftOutlined />
+                        </div>
+                    </Col>
+                    <Col span={23}>
+                        <div className=''>
+                            <p>Back
+        </p>
+                        </div>
+                    </Col>
+                </Row>
+                </a>
+
+           
             <Row>
                 <Col span={16}>
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
-                                <img width='38' src={extinguisher} />
+                                <img width='28' src={extinguisher} />
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
+                            <div className='area--header' style={{marginTop:15}}>
 
                                 <h2>Emergency Response Tiers</h2>
                             </div>
@@ -119,15 +128,15 @@ export const ResponseTiers = () => {
                             <img width='100%' src={image} />
                         </Col>
                     </Row>
-                </Col>
-                <Row>
-                    <Col span={23}>
-                        <div className='box--facility area--box--facility manning--box--facility'>
+
+                    <Row>
+                    <Col span={24}>
+                        <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
                             <Row gutter={20}>
-                                <Col span={3}>
+                                <Col span={5}>
                                     <h3>Emergency Response Tier</h3>
                                 </Col>
-                                <Col span={8} push={6}>
+                                <Col span={6} push={4}>
                                     <h3>Definition</h3>
                                 </Col>
                                 <Col span={6} push={6}>
@@ -135,20 +144,7 @@ export const ResponseTiers = () => {
                                 </Col>
                             </Row>
                             <hr />
-                            {/* <Row gutter={16}>
-                                <Col span={6}>
-                                </Col>
-                                <Col span={6}>
-                                    <h5>Manager</h5>
-                                </Col>
-                                <Col span={6}>
-                                    <h5>Operator</h5>
-                                </Col>
-                                <Col span={6}>
-                                    <h5>Admin</h5>
-                                </Col>
-                            </Row> */}
-
+                           
 
                             <Row gutter={16}>
                                 <Col span={6}>
@@ -193,7 +189,7 @@ export const ResponseTiers = () => {
                                 </Col>
                                 <Row className='addmore--button'>
                                     <Col>
-                                        <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
+                                        <Button type="default" icon={<PlusCircleOutlined />} onClick={showModal}>
                                             Add More
                                         </Button>
 
@@ -225,6 +221,9 @@ export const ResponseTiers = () => {
                         </div>
                     </Col>
                 </Row>
+
+                </Col>
+              
 
             </Row>
 

@@ -4,7 +4,7 @@ import alert from '../../../assets/alert@3x.png';
 import ellipse from '../../../assets/ellipse@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
-import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined , ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 
 
@@ -48,15 +48,21 @@ export const CriticalPersonnel = () => {
     return (
 
         <div className='facility--wrapper'>
-            <Row>
-                <Col span={1}>
-                    <div className='area--img'>
-                        <a href="/#/safety-critical">
-                            <img width='38' src={arrow} />
-                        </a>
-                    </div>
-                </Col>
-            </Row>
+             <a href="/#/safety-critical" style={{color:'#282828'}}>
+                <Row>
+                    <Col span={1}>
+                        <div className=''>
+                        <ArrowLeftOutlined />
+                        </div>
+                    </Col>
+                    <Col span={23}>
+                        <div className=''>
+                            <p>Back
+        </p>
+                        </div>
+                    </Col>
+                </Row>
+            </a>
             <Row>
 
                 <Col span={16}>
@@ -67,8 +73,7 @@ export const CriticalPersonnel = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
-                                <p>Safety Critical Element</p>
+                            <div className='area--header' style={{marginTop:15}}>
                                 <h2>Safety Critical Personnel</h2>
                             </div>
                         </Col>
@@ -81,6 +86,11 @@ export const CriticalPersonnel = () => {
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                                 </p>
                             </div>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={23}>
+                            <div className="divider"></div>    
                         </Col>
                     </Row>
                     <Row>

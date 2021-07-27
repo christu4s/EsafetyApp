@@ -52,11 +52,11 @@ export const WrittenSafetyCase = () => {
                     <Row>
                         <Col span={1}>
                             <div className='area--img'>
-                                <img width='38' src={extinguisher} />
+                                <img width='28' src={extinguisher} />
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
+                            <div className='area--header' style={{marginTop:15}}>
                                 <h2>Written Safety Case</h2>
                             </div>
                         </Col>
@@ -69,6 +69,12 @@ export const WrittenSafetyCase = () => {
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                                 </p>
                             </div>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col span={24}>
+                            <div className="divider" style={{marginBottom:10}}></div>
                         </Col>
                     </Row>
 
@@ -103,6 +109,9 @@ export const WrittenSafetyCase = () => {
                             </Modal>
                         </Col>
                     </Row>
+
+                    
+                    
                 </Col>
                 <Row>
 

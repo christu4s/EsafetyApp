@@ -1,0 +1,15 @@
+.management--wrapper .blue--box{
+    background-color: #123862;
+    border-radius: 4px;
+    padding: 20px;
+    color: #fff;
+    margin-bottom: 15px;
+}
+.management--wrapper .blue--box h3{
+    color: #fff;
+}
+.management--wrapper .blue--box  .ant-btn-default{
+    background-color: #6e6d6d;
+    border-color: #6e6d6d;
+    color: #fff;
+}
