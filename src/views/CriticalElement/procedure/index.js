@@ -1,7 +1,8 @@
 import { Row, Col, Card, Button, Modal, Upload, message, Input , Table, Tag, Space } from 'antd';
 import React, { useState } from 'react';
 import alert from '../../../assets/alert@3x.png';
-import image from '../../../assets/image.png';
+import download from '../../../assets/direct-download@3x.png';
+import cancel from '../../../assets/cancel@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined  , ArrowLeftOutlined} from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
@@ -212,7 +213,6 @@ export const CriticalProcedure = () => {
                     
 
                 </Col>
-
             </Row>
 
 
