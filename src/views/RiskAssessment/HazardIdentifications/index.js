@@ -1,5 +1,5 @@
-import { Row, Col, Button } from 'antd';
-import React from 'react';
+import { Row, Col, Button, Space, Input } from 'antd';
+import React, { useState } from 'react';
 import danger from '../../../assets/danger-sing@3x.png';
 import pdf from '../../../assets/pdf-1@3x.png';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -10,6 +10,9 @@ export const HazardEmergency = () => <HazardIdentifications title="Emergency Sys
 
 export const HazardIdentifications = ({title}) => {
 
+    const [editMode, setEditMode] = useState(false);
+    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    
     // Create new plugin instance
     return (
         <div className='facility--wrapper'>
@@ -22,9 +25,20 @@ export const HazardIdentifications = ({title}) => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header mt-5'>
+                            <div className='area--header mt-5' >
+                            <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                <div>
                                 <p className='mb-0 '>Risk Assessment</p>
                                 <h2 style={{ marginTop: 0 }}>{ title || 'Hazard Identification Worksheets'}</h2>
+                                </div>
+                                <div>
+                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
+                            <Space>
+                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
+                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                            </Space>}
+                        </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -32,7 +46,7 @@ export const HazardIdentifications = ({title}) => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
                                 </p>
                             </div>
                         </Col>

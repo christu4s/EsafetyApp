@@ -1,8 +1,13 @@
-import { Row, Col, Input } from 'antd';
-import React from 'react';
+import { Row, Col, Input, Space, Button } from 'antd';
+import React, { useState } from 'react';
 import group from '../../../assets/group@3x.png';
 import {  FacilitiesButtons } from '../components';
 export const FacilityManning = () => {
+
+    const [editMode, setEditMode] = useState(false);
+    const manager = '1';
+    const operator = '10';
+    const admin = '2';
 
     return (
         <div className='facility--wrapper'>
@@ -16,10 +21,21 @@ export const FacilityManning = () => {
                         </div>
                     </Col>
                     <Col span={23}>
-                        <div className='area--header'>
-                            <p>Facilities Overview</p>
-                            <h2>Manning</h2>
+                        <div className='area--header' >
+                            <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                <div>
+                                    <p>Facilities Overview</p>
+                                    <h2 >Manning</h2>
+                                </div>
+                                <div>
+                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
+                            <Space>
+                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
+                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                            </Space>}
                         </div>
+                                </div>
+                            </div>
                     </Col>
                 </Row>
                 <Row>
@@ -52,14 +68,13 @@ export const FacilityManning = () => {
                                     <h5>Number of Personnel</h5>
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="1" />
-                                    
+                                    {editMode ? <Input.TextArea defaultValue={manager} /> : <p>{manager}</p>}
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="10" />
+                                 {editMode ? <Input.TextArea defaultValue={operator} /> : <p>{operator}</p>}
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="2" />
+                                 {editMode ? <Input.TextArea defaultValue={admin} /> : <p>{admin}</p>}
                                 </Col>
                             </Row>
 
@@ -70,14 +85,14 @@ export const FacilityManning = () => {
                                     <h5>Seperator Area</h5>
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="1" />
+                                 {editMode ? <Input.TextArea defaultValue={manager} /> : <p>{manager}</p>}
                                     
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="10" />
+                                 {editMode ? <Input.TextArea defaultValue={operator} /> : <p>{operator}</p>}
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="2" />
+                                 {editMode ? <Input.TextArea defaultValue={admin} /> : <p>{admin}</p>}
                                 </Col>
                             </Row>
                             <hr/>
@@ -86,14 +101,14 @@ export const FacilityManning = () => {
                                     <h5>Compressor Area</h5>
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="1" />
+                                 {editMode ? <Input.TextArea defaultValue={manager} /> : <p>{manager}</p>}
                                     
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="10" />
+                                 {editMode ? <Input.TextArea defaultValue={operator} /> : <p>{operator}</p>}
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="2" />
+                                 {editMode ? <Input.TextArea defaultValue={admin} /> : <p>{admin}</p>}
                                 </Col>
                             </Row>
                             <hr/>
@@ -103,14 +118,14 @@ export const FacilityManning = () => {
                                     <h5>Living Quaters</h5>
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="1" />
+                                 {editMode ? <Input.TextArea defaultValue={manager} /> : <p>{manager}</p>}
                                     
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="10" />
+                                 {editMode ? <Input.TextArea defaultValue={operator} /> : <p>{operator}</p>}
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="2" />
+                                 {editMode ? <Input.TextArea defaultValue={admin} /> : <p>{admin}</p>}
                                 </Col>
                             </Row>
                             <hr/>
@@ -120,14 +135,14 @@ export const FacilityManning = () => {
                                     <h5>Total</h5>
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="1" />
+                                 {editMode ? <Input.TextArea defaultValue={manager} /> : <p>{manager}</p>}
                                     
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="10" />
+                                 {editMode ? <Input.TextArea defaultValue={operator} /> : <p>{operator}</p>}
                                 </Col>
                                  <Col span={6}>
-                                 <Input placeholder="2" />
+                                 {editMode ? <Input.TextArea defaultValue={admin} /> : <p>{admin}</p>}
                                 </Col>
                             </Row>
 
