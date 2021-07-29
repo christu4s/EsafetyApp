@@ -1,4 +1,4 @@
-import { Row, Col, Card, Upload, message } from 'antd';
+import { Row, Col, Card, Upload, message, Button, Space, Input } from 'antd';
 import React, { useState } from 'react';
 import alert from '../../assets/alert@3x.png';
 import image from '../../assets/downloadSEC@3x.png';
@@ -6,6 +6,9 @@ import image from '../../assets/downloadSEC@3x.png';
 export const CriticalElement = () => {
 
     const { Meta } = Card;
+    const [editMode, setEditMode] = useState(false);
+    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
 
     return (
         <div className='facility--wrapper'>
@@ -18,8 +21,20 @@ export const CriticalElement = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
+                            <div className='area--header '>
+                                <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                <div>
                                 <h2>Safety Critical Elements</h2>
+                                </div>
+                                
+                                <div>
+                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
+                            <Space>
+                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
+                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                            </Space>}
+                        </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -28,7 +43,7 @@ export const CriticalElement = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
                                 </p>
                             </div>
                         </Col>
