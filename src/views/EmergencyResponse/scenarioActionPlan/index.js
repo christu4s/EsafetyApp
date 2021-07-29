@@ -8,7 +8,7 @@ import cancel from '../../../assets/cancel@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined , ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 
 export const ScenarioActionPlan = () => {
@@ -51,21 +51,21 @@ export const ScenarioActionPlan = () => {
 
     return (
         <div className='facility--wrapper'>
-             <a href="/#/emergency-response" style={{color:'#282828'}}>
-                    <Row>
-                        <Col span={1}>
-                            <div className=''>
-                        <ArrowLeftOutlined />
+            <a href="/#/emergency-response" style={{ color: '#282828' }}>
+                <Row>
+                    <Col span={1}>
+                        <div className=''>
+                            <ArrowLeftOutlined />
                         </div>
                     </Col>
                     <Col span={23}>
                         <div className=''>
                             <p>Back
-        </p>
+                            </p>
                         </div>
                     </Col>
                 </Row>
-                </a>
+            </a>
             <Row>
                 <Col span={16}>
                     <Row>
@@ -75,7 +75,7 @@ export const ScenarioActionPlan = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{marginTop:15}}>
+                            <div className='area--header' style={{ marginTop: 15 }}>
 
                                 <h2>Scenario Specific Action Plan</h2>
                             </div>
@@ -240,12 +240,12 @@ export const ScenarioActionPlan = () => {
                                     </p>
                                 </Dragger>,
                                 <div className='area--form'>
-                                    <label>Name of Area</label>
+                                    <label>Name of Action Plan</label>
                                     <Input placeholder="Lorem ipsum dolor sit amet" />
                                 </div>
 
                                 <Button type="primary" icon={<CloudUploadOutlined />}>
-                                    Upload Image
+                                    Upload File
                                 </Button>
                             </Modal>
                         </Col>

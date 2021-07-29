@@ -47,7 +47,7 @@ export const WrittenSafetyCase = () => {
     };
 
     const { Meta } = Card;
-
+    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
     return (
         <div className='facility--wrapper'>
             <Row>
@@ -74,6 +74,13 @@ export const WrittenSafetyCase = () => {
                         </div>
                                 </div>
                             </div>
+                            <div>
+                                {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                    <Space>
+                                        <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                        <Button type="primary" size="small" success onClick={() => setEditMode(!editMode)}>Save</Button>
+                                    </Space>}
+                            </div>
                         </Col>
                     </Row>
 
@@ -81,7 +88,9 @@ export const WrittenSafetyCase = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}							
+
+                                    {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
+
                                 </p>
                             </div>
                         </Col>
@@ -89,44 +98,44 @@ export const WrittenSafetyCase = () => {
 
                     <Row>
                         <Col span={24}>
-                            <div className="divider" style={{marginBottom:10}}></div>
+                            <div className="divider" style={{ marginBottom: 10 }}></div>
                         </Col>
                     </Row>
 
 
-                    {editMode && 
-                    <Row className='addmore--button'>
-                        <Col>
-                            <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                Upload File
-                            </Button>
-
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
-
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <div className='area--form'>
-                                    <label>Name of Area</label>
-                                    <Input placeholder="Lorem ipsum dolor sit amet" />
-                                </div>
-
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                    Upload Image
+                    {editMode &&
+                        <Row className='addmore--button'>
+                            <Col>
+                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
+                                    Upload File
                                 </Button>
-                            </Modal>
-                        </Col>
-                    </Row>
-                }
-                    
-                    
+
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                    <Dragger {...props}>
+                                        <p className="ant-upload-drag-icon">
+                                            <img width='50' src={computing} />
+                                        </p>
+
+                                        <p className="ant-upload-hint">
+                                            Drag or drop your files here OR <span> browse </span>
+                                        </p>
+                                    </Dragger>,
+                                    <div className='area--form'>
+                                        <label>Name of File</label>
+                                        <Input placeholder="Lorem ipsum dolor sit amet" />
+                                    </div>
+
+                                    <Button type="primary" icon={<CloudUploadOutlined />}>
+                                        Upload File
+                                    </Button>
+                                </Modal>
+                            </Col>
+                        </Row>
+
+                    }
+
                 </Col>
                 <Row>
 
