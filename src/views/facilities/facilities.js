@@ -1,5 +1,5 @@
-import { Row, Col, Modal, Button, Upload, message, Input, Space } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Modal, Button, Upload, message, Input, Space, Form } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { FacilitiesButtons } from './components';
 import { CloudUploadOutlined  } from '@ant-design/icons';
 
@@ -8,12 +8,18 @@ import process from '../../assets/process@3x.png';
 import group from '../../assets/group@3x.png';
 import computing from '../../assets/cloud-computing@3x.png';
 import image from '../../assets/image.png';
+import ajax from '../../ajax';
 
 
 export const Facilities = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
+    const [content, setContent] = useState({description: '', image: ''});
+    const [form] = Form.useForm();
+
+    useEffect(()=> { ajax.get('/facility_overview').then(res => res && setContent(res) ); },[]);
+
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -46,13 +52,14 @@ export const Facilities = () => {
             console.log('Dropped files', e.dataTransfer.files);
         },
     };
-    const boxContent = [
-        { title: 'Area', img: area, active: true },
-        { title: 'Process', img: process, active: false },
-        { title: 'Manning', img: group, active: false }
-    ]
+    
+    async function  saveData(){
+        var values = form.getFieldsValue();
+        await ajax.post('/facility_overview', values); //.then(res => res && setContent(res) );
+        setEditMode(!editMode);
+    }
 
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    // const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
 
     return (
         <div className='facility--wrapper'>
@@ -64,12 +71,14 @@ export const Facilities = () => {
                             {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
                             <Space>
                                 <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Save</Button>
+                                <Button type="primary" size="small" onClick={saveData}>Save</Button>
                             </Space>}
                         </div>
                     </div>
                     <div className='box--facility'>
-                        {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
+                        <Form form={form}>
+                        {editMode ? <Form.Item name="description"><Input.TextArea defaultValue={content.description} /></Form.Item> : <p>{content.description}</p>}
+                        </Form>
                     </div>
                     {editMode && 
                         <Row>
@@ -108,14 +117,11 @@ export const Facilities = () => {
                       
                         </Col>
                     </Row>
-
                     <Row>
                         <Col span={24}>
-                            <img width='100%' src= {image} />
+                            <img width='100%' src= {content.image} />
                         </Col>
                     </Row>
-
-
 
                 </Col>
                 <Col span={8} push={2}  style={{marginTop:35}} >

@@ -1,26 +1,18 @@
-import { Row, Col, Card , Button , Modal , Upload, message , Input, Space, Form } from 'antd';
-import React, { useState, useEffect } from 'react';
+import { Row, Col, Card , Button , Modal , Upload, message , Input, Space } from 'antd';
+import React, { useState } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
 import { PlusCircleOutlined,  CloudUploadOutlined   } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import {  FacilitiesButtons } from '../components';
-import ajax from '../../../ajax';
-import { Link } from 'react-router-dom';
 
 export const FacilityArea = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const [data, setData] = useState([]);
-    const [form] = Form.useForm();
     const showModal = () => {
         setIsModalVisible(true);
     };
-
-    
-
-    useEffect(()=> { ajax.get('/facility-overview/area').then(res => res && setData(res.data) ); },[]);
 
     const handleOk = () => {
         setIsModalVisible(false);
@@ -53,8 +45,6 @@ export const FacilityArea = () => {
     const { Meta } = Card;
     
     const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
-
-    console.log(data);
 
     return (
         <div className='facility--wrapper'>
@@ -127,12 +117,12 @@ export const FacilityArea = () => {
                     </Row>
 
                     <Row>
-                        {data.map((v,i)=><Col key={i} span={8}>
-                            <Link to={"/facility-overview/area/"+ v.id} >
-                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={v.image ? v.image[0].src : image } />}>
-                                    <Meta title={v.title} />
-                                </Card>
-                            </Link>
+                        {Array(3).fill(0).map((v,i)=><Col key={i} span={8}>
+                        <a href="#/accidents-hazards">
+                        <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
+                            <Meta title="Europe Street beat" />
+                        </Card>
+                        </a>
                         </Col> )}                   
                     </Row>
 

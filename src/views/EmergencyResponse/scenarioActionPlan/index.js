@@ -75,12 +75,8 @@ export const ScenarioActionPlan = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-<<<<<<< HEAD
-                            <div className='area--header' style={{marginTop:15}}>
-=======
                             <div className='area--header' style={{ marginTop: 15 }}>
 
->>>>>>> 017baa7390b48918dfc93bc3cfe14dfc6c36501b
                                 <h2>Scenario Specific Action Plan</h2>
                             </div>
                         </Col>
