@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Space } from 'antd';
 import React, { useState } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import ellipse from '../../../assets/ellipse@3x.png';
@@ -11,6 +11,9 @@ import computing from '../../../assets/cloud-computing@3x.png';
 export const CriticalPersonnel = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -73,8 +76,20 @@ export const CriticalPersonnel = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{marginTop:15}}>
-                                <h2>Safety Critical Personnel</h2>
+                            <div className='area--header mt-5'>
+                                <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                <div>
+                                <h2 style={{ marginTop: 25 }}>Safety Critical Personnel</h2>
+                                </div>
+                                
+                                <div>
+                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
+                            <Space>
+                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
+                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                            </Space>}
+                        </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -83,7 +98,7 @@ export const CriticalPersonnel = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
                                 </p>
                             </div>
                         </Col>
