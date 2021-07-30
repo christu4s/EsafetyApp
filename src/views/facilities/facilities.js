@@ -55,7 +55,7 @@ export const Facilities = () => {
     
     async function  saveData(){
         var values = form.getFieldsValue();
-        await ajax.post('/facility_overview', values); //.then(res => res && setContent(res) );
+        await ajax.post('/facility_overview', values).then(res => res && setContent(res) );
         setEditMode(!editMode);
     }
 

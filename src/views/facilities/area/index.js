@@ -8,19 +8,28 @@ import {  FacilitiesButtons } from '../components';
 import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
 
-export const FacilityArea = () => {
+export * from './details';
+
+export const FacilityArea = ({history}) => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [data, setData] = useState([]);
+    const [loading, setLeading] = useState(true);
     const [form] = Form.useForm();
     const showModal = () => {
         setIsModalVisible(true);
     };
 
+    // console.log(p);
     
 
-    useEffect(()=> { ajax.get('/facility-overview/area').then(res => res && setData(res.data) ); },[]);
+    useEffect(()=> { 
+        ajax.get('/facility-overview/area').then(res =>{ 
+            res && setData(res.data); 
+            setLeading(false);
+        }); 
+    },[]);
 
     const handleOk = () => {
         setIsModalVisible(false);
@@ -30,31 +39,21 @@ export const FacilityArea = () => {
         setIsModalVisible(false);
     };
     const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList );
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
+        // showUploadList: false,
+        beforeUpload: ()=> false,
     };
+
+    function submit(){
+        var {title, image} = form.getFieldsValue();
+        ajax.post('/facility-overview/area', {title, image: image ? image.file: null}).then(res=> {
+            res && history.push('/facility-overview/area/' + res.id); 
+        });
+    }
+
 
     const { Meta } = Card;
     
     const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
-
-    console.log(data);
 
     return (
         <div className='facility--wrapper'>
@@ -126,15 +125,17 @@ export const FacilityArea = () => {
                         </Col>
                     </Row>
 
-                    <Row>
-                        {data.map((v,i)=><Col key={i} span={8}>
-                            <Link to={"/facility-overview/area/"+ v.id} >
-                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={v.image ? v.image[0].src : image } />}>
-                                    <Meta title={v.title} />
-                                </Card>
-                            </Link>
-                        </Col> )}                   
-                    </Row>
+                    {loading ? <div>loading....</div> :
+                        <Row>
+                            {data.map((v,i)=><Col key={i} span={8}>
+                                <Link to={"/facility-overview/area/"+ v.id} >
+                                    <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={v.image ? v.image[0].src : image } />}>
+                                        <Meta title={v.title} />
+                                    </Card>
+                                </Link>
+                            </Col> )}                   
+                        </Row>
+                    }
 
                     <Row className='addmore--button'>
                         <Col>
@@ -145,23 +146,26 @@ export const FacilityArea = () => {
                             <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                 <h3 className='modal--title text-center'>Upload Files</h3>
                                 <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
+                                <Form form={form}>
+                                    <Form.Item name="image">
+                                        <Dragger {...props}>
+                                            <p className="ant-upload-drag-icon">
+                                                <img width='50' src={computing} />
+                                            </p>
+                                            <p className="ant-upload-hint">
+                                                Drag or drop your files here OR <span> browse </span>
+                                            </p>
+                                        </Dragger>
+                                    </Form.Item>
+                                    <div className='area--form'>
+                                        <label>Name of Area</label>
+                                        <Form.Item name="title">
+                                            <Input />
+                                        </Form.Item>
+                                    </div>
+                                </Form>
 
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <div className='area--form'>
-                                    <label>Name of Area</label>
-                                    <Input placeholder="Lorem ipsum dolor sit amet" />
-                                </div>
-
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                        Upload Image
-                                </Button>
+                                <Button type="primary" onClick={submit}>Create</Button>
                             </Modal>
                         </Col>
                     </Row>

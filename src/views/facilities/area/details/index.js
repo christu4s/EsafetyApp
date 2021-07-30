@@ -1,50 +1,19 @@
-import { Row, Col, Card , Button , Modal , Upload, message , Input, Space } from 'antd';
-import React, { useState } from 'react';
-import area from '../../../assets/area.png';
-import image from '../../../assets/image.png';
-import { PlusCircleOutlined,  CloudUploadOutlined   } from '@ant-design/icons';
-import computing from '../../../assets/cloud-computing@3x.png';
-import {  FacilitiesButtons } from '../components';
+import { Row, Col, Button , Popconfirm, Input, Space } from 'antd';
+import React, { useState, useEffect } from 'react';
+import ajax from '../../../../ajax';
+import area from '../../../../assets/area.png';
+import {  FacilitiesButtons } from '../../components';
 
-export const FacilityArea = () => {
-    const { Dragger } = Upload;
-    const [isModalVisible, setIsModalVisible] = useState(false);
+export const FacilityAreaDetails = ({history, match}) => {
     const [editMode, setEditMode] = useState(false);
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
+    const [data, setData] = useState({title:'', desc:'', image: ''});
 
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList );
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
-
-    const { Meta } = Card;
+    useEffect(()=> { ajax.get('/facility-overview/area/'+ match.params.id ).then(res => res && setData(res) ); },[]);
     
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    function deleteArea(){
+        ajax.delete('/facility-overview/area/'+ match.params.id ).then( ()=> history.goBack() );
+    }
 
     return (
         <div className='facility--wrapper'>
@@ -59,20 +28,23 @@ export const FacilityArea = () => {
                         <Col span={22}>
                         
                             <div className='area--header' >
-                            <div style={{display:'flex', justifyContent: 'space-between'}}>
-                                <div>
-                                <p>Facilities Overview</p>
-                                <h2 >Area</h2>
+                                <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                    <div>
+                                        <p>Facilities Overview</p>
+                                        <h2 >{data.title}</h2>
+                                    </div>
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
+                                        <Space>
+                                            <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
+                                            <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                                        </Space>}
+                                    </div>
                                 </div>
-                                
-                                <div>
-                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
-                            <Space>
-                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
-                            </Space>}
-                        </div>
-                                </div>
+                               {editMode && <Popconfirm title="Are you sure to delete this?" onConfirm={deleteArea}>
+                                   <a style={{color:'red', float: 'right'}}>Delete</a>
+                                   </Popconfirm>
+                                   }
                             </div>
                             
                         </Col>
@@ -82,77 +54,9 @@ export const FacilityArea = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
+                                {editMode ? <Input.TextArea defaultValue={data.desc} /> : <p>{data.desc}</p>}
                         </p>
                             </div>
-                            {editMode && 
-                        <Row>
-                            <Col span={6}>
-                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                    Upload Image
-                                </Button>
-                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                    <h3 className='modal--title text-center'>Upload Files</h3>
-                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                    <Dragger {...props}>
-                                        <p className="ant-upload-drag-icon">
-                                            <img width='50' src={computing} />
-                                        </p>
-
-                                        <p className="ant-upload-hint">
-                                            Drag or drop your files here OR <span> browse </span>
-                                        </p>
-                                    </Dragger>,
-                                    <Button type="primary" icon={<CloudUploadOutlined />}>
-                                            Upload Image
-                                    </Button>
-                                </Modal>
-                            </Col>
-                            <Col span={12}>
-                                <h4>File size not more than 2 MB</h4>
-                            </Col>
-                        </Row>
-                    }
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        {Array(3).fill(0).map((v,i)=><Col key={i} span={8}>
-                        <a href="#/accidents-hazards">
-                        <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                            <Meta title="Europe Street beat" />
-                        </Card>
-                        </a>
-                        </Col> )}                   
-                    </Row>
-
-                    <Row className='addmore--button'>
-                        <Col>
-                        <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                            Add More
-                        </Button>
-
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
-
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <div className='area--form'>
-                                    <label>Name of Area</label>
-                                    <Input placeholder="Lorem ipsum dolor sit amet" />
-                                </div>
-
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                        Upload Image
-                                </Button>
-                            </Modal>
                         </Col>
                     </Row>
                 </Col>
