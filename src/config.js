@@ -2,7 +2,7 @@
 import { ShopOutlined, HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase } from './views';
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityAreaDetails, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
 import { IndividualRisk } from './views/RiskAssessment/IndividualRisk';
@@ -21,6 +21,7 @@ export const routes = [
     { path: '/profile', exact: true, component: Empty },
     { path: '/facility-overview', exact: true, component: Facilities },
     { path: '/facility-overview/area', exact: true, component: FacilityArea },
+    { path: '/facility-overview/area/:id', exact: true, component: FacilityAreaDetails },
     { path: '/facility-overview/manning', exact: true, component: FacilityManning },
     { path: '/facility-overview/process', exact: true, component: FacilityProcess },
     { path: '/accidents-hazards', exact: true, component: AccidentsHazard },
