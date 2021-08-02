@@ -62,8 +62,6 @@ export const FacilityAreaDetails = ({history, match}) => {
                 </Col>
                 <Col span={8} push={2}  style={{marginTop:35}} ><FacilitiesButtons /></Col>
             </Row>
-
-
         </div>
     );
 }
