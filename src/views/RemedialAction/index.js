@@ -1,5 +1,5 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input, Space } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Space, Form } from 'antd';
+import React, { useState, useEffect } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
 
 import trimage from '../../assets/ft-cb-crs-img@3x.png';
@@ -7,13 +7,18 @@ import trimage from '../../assets/ft-cb-crs-img@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
 import "./index.css";
+import ajax from '../../ajax';
 
 export const RemedialAction = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
-    
+    const [content, setContent] = useState({ remedial_desc: '' });
+    const [form] = Form.useForm();
+
+    useEffect(() => { ajax.get('/remedial_action').then(res => res && setContent(res)); }, []);
+    //const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -45,6 +50,14 @@ export const RemedialAction = () => {
             console.log('Dropped files', e.dataTransfer.files);
         },
     };
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/remedial_action', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
+
+    const { Meta } = Card;
+    //const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
 
     return (
         <div className='facility--wrapper'>
@@ -58,36 +71,33 @@ export const RemedialAction = () => {
                         </Col>
                         <Col span={23}>
                             <div className='area--header mt-5'>
-                                <div style={{display:'flex', justifyContent: 'space-between'}}>
-                                <div>
-                                <h2 style={{ marginTop: 25 }}>Remedial Action Plan</h2>
-                                </div>
-                                
-                                <div>
-                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
-                            <Space>
-                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
-                            </Space>}
-                        </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <h2 style={{ marginTop: 25 }}>Remedial Action Plan</h2>
+                                    </div>
+
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                            <Space>
+                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                                <Button type="primary" size="small" onClick={saveData}>Save</Button>
+                                            </Space>}
+                                    </div>
                                 </div>
                             </div>
                         </Col>
-                        <div>
-                            {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
-                                <Space>
-                                    <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
-                                    <Button type="primary" size="small" success onClick={() => setEditMode(!editMode)}>Save</Button>
-                                </Space>}
-                        </div>
+
                     </Row>
 
                     <Row>
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
-                                <p>
+                                <Form form={form}>
+                                    {editMode ? <Form.Item name="remedial_desc"><Input.TextArea defaultValue={content.remedial_desc} /></Form.Item> : <p>{content.remedial_desc}</p>}
+                                </Form>
+                                {/* <p>
                                     {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
-                                </p>
+                                </p> */}
                             </div>
                         </Col>
                     </Row>
