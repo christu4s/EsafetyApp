@@ -1,67 +1,66 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Form, Space } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, Input, Form, Space, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 
 import image from '../../../assets/06107-f-28-fig-3@3x.png';
-
-import arrow from '../../../assets/left-arrow@3x.png';
-
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
+
 export const ResponseTiers = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const [content, setContent] = useState({ tiers_desc: '', tiers_image: '' });
+    const [content, setContent] = useState({ tiers_desc: '', tiers_image: ''});
+    const [levels, setLevels] = useState([]);
     const [form] = Form.useForm();
-    const [data, setData] = useState([]);
-    //const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
     useEffect(() => {
-        ajax.get('/emergency_response_tiers').then(res => res && setContent(res));
-        ajax.get('/response_tiers_add').then(res => res && setData(res.data));
+        ajax.get('/emergency_response_tiers').then(res => res && setData(res));
     }, []);
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-    const showAddModal = () => {
-        setIsAddModalVisible(true);
-    };
+    const showModal = () => { setIsModalVisible(true); };
 
     const handleOk = () => {
         setIsModalVisible(false);
     };
 
-    const handleAddOk = () => {
-        setIsAddModalVisible(false);
-    };
-
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    const handleAddCancel = () => {
-        setIsAddModalVisible(false);
-    };
-    const props = {
-        beforeUpload: () => false,
-    };
-    async function saveData() {
-        var { tiers_desc, tiers_image } = form.getFieldsValue();
-        await ajax.post('/emergency_response_tiers', { tiers_desc: tiers_desc ? tiers_desc : null, tiers_image: tiers_image ? tiers_image.file : null }).then(res => res && setContent(res));
-        setEditMode(!editMode);
+
+    const props = { beforeUpload: () => false,};
+
+    function setData(res){
+        setContent(res);
+        try{
+            var lvl = JSON.parse(res.levels.replace(/\\/g, ''));
+            setLevels(lvl);
+        }catch(e){}
     }
-    function submit() {
-        var { title, desc, team_activation } = form.getFieldsValue();
-        ajax.post('/response_tiers_add', { title: title ? title : null, desc: desc ? desc : null, team_activation: team_activation ? team_activation : null }).then(res => {
-            res && setData(res.data);
-        });
+
+    async function saveData() {
+        var { tiers_desc = '', tiers_image } = form.getFieldsValue();
+        await ajax.post('/emergency_response_tiers', { 
+            tiers_desc, 
+            tiers_image: tiers_image ? tiers_image.file : null, 
+            levels: JSON.stringify(levels) 
+        }).then(res => res && setData(res));
+        setEditMode(!editMode);
+        setIsModalVisible(false);
     }
     const { Meta } = Card;
 
-    function addmore(){
-        setLevels([...levels,{}]);
+    function addmore(){ setLevels([...levels,{}]); }
+    function removeLevel(index){ 
+        levels.splice(index,1);
+        setLevels([...levels]); 
     }
+
+    function onLevelChange(index,key,value){
+        levels[index][key] = value;
+        setLevels([...levels]);
+    }
+
 
     return (
         <div className='facility--wrapper'>
@@ -111,26 +110,14 @@ export const ResponseTiers = () => {
                     </Row>
                     <Row>
                         <Col span={23}>
+                        <Form form={form}>
                             <div className='box--facility area--box--facility'>
-                                <p>
-                                    <Form form={form}>
-                                        {editMode ? <Form.Item name="tiers_desc"><Input.TextArea defaultValue={content.tiers_desc} /></Form.Item> : <p>{content.tiers_desc}</p>}
-                                    </Form>
-                                    {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. */}
-                                </p>
+                                <p>{editMode ? <Form.Item name="tiers_desc"><Input.TextArea defaultValue={content.tiers_desc} /></Form.Item> 
+                                : <p>{content.tiers_desc}</p>}</p>
                             </div>
-                        </Col>
-                    </Row>
-                    {editMode &&
-                        <Row>
-                            <Col span={6}>
-                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                    Upload Image
-                                </Button>
-                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                     <h3 className='modal--title text-center'>Upload Files</h3>
                                     <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                    <Form form={form}>
                                         <Form.Item name="tiers_image">
                                             <Dragger {...props}>
                                                 <p className="ant-upload-drag-icon">
@@ -141,16 +128,17 @@ export const ResponseTiers = () => {
                                                 </p>
                                             </Dragger>
                                         </Form.Item>
-                                        {/* <div className='area--form'>
-                                        <label>Name of File</label>
-                                        <Form.Item name="title">
-                                            <Input />
-                                        </Form.Item>
-                                    </div> */}
-                                    </Form>
-
                                     <Button type="primary" onClick={saveData}>Upload Image</Button>
                                 </Modal>
+                            </Form>
+                        </Col>
+                    </Row>
+                    {editMode &&
+                        <Row>
+                            <Col span={6}>
+                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
+                                    Upload Image
+                                </Button>
                             </Col>
                             <Col span={12}>
                                 <h4>File size not more than 2 MB</h4>
@@ -177,10 +165,10 @@ export const ResponseTiers = () => {
                                 <Col span={5}>
                                     <h3>Emergency Response Tier</h3>
                                 </Col>
-                                <Col span={6} push={4}>
+                                <Col span={8} push={3}>
                                     <h3>Definition</h3>
                                 </Col>
-                                <Col span={6} push={6}>
+                                <Col span={8} push={2}>
                                     <h3>Team Activation</h3>
                                 </Col>
                             </Row>
@@ -190,23 +178,31 @@ export const ResponseTiers = () => {
                                     <Col span={6}>
                                         <h5>Level {index+1}</h5>
                                     </Col>
-                                    <Col span={9}>
-                                        <Input placeholder="1" />
+                                    <Col span={8}>
+                                        <Input placeholder="1" readOnly={!editMode} value={level.definition} onChange={e => onLevelChange(index,'definition', e.target.value)} />
                                     </Col>
-                                    <Col span={9}>
-                                        <Input placeholder="10" />
+                                    <Col span={8}>
+                                        <Input placeholder="10" readOnly={!editMode} value={level.team_activation} onChange={e => onLevelChange(index,'team_activation', e.target.value)} /> 
                                     </Col>
-
+                                    <Col span={2}>
+                                        {editMode &&
+                                            <Popconfirm title="Are you sure to delete this level?" onConfirm={()=> removeLevel(index) }>
+                                                <Button type="link" icon={<DeleteOutlined danger />} />
+                                            </Popconfirm>
+                                        }
+                                    </Col>
                                 </Row>
                                 <hr />
                             </>)}
-                            <Row className='addmore--button'>
-                                <Col>
-                                    <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
-                                        Add More
-                                    </Button>
-                                </Col>
-                            </Row>
+                            {editMode && 
+                                <Row className='addmore--button'>
+                                    <Col>
+                                        <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                                            Add More
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            }
                         </div>
                     </Col>
                 </Row>

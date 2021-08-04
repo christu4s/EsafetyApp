@@ -1,4 +1,4 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input } from 'antd';
+import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Steps } from 'antd';
 import React, { useState } from 'react';
 
 import image from '../../../assets/screen-shot@3x.png';
@@ -12,6 +12,7 @@ import computing from '../../../assets/cloud-computing@3x.png';
 export const ResponsePlan = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [plans, setPlans] = useState([]);
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -46,6 +47,11 @@ export const ResponsePlan = () => {
 
     const { Meta } = Card;
 
+    function addmore(){ setPlans([...plans, '']); }
+    function editPlan(index,value){  
+        plans[index] = value;
+        setPlans([...plans]);
+    }
 
     return (
         <div className='facility--wrapper'>
@@ -95,7 +101,13 @@ export const ResponsePlan = () => {
             <Row>
                 <Col span={30}>
                     <div className='box--facility area--box--facility manning--box--facility'>
-                        <Row>
+                    <Steps progressDot direction="vertical">
+                        {plans.map((plan, index)=> <Steps.Step 
+                            title={plan} 
+                            description={/*editMode &&*/ <Input value={plan} onChange={e=> editPlan(index,e.target.value)} />} />
+                        )}
+                    </Steps>
+                        {/* <Row>
                             <Col span={30} >
                                 <h3>Raise the Alarm</h3>
                             </Col>
@@ -137,38 +149,14 @@ export const ResponsePlan = () => {
                             <Col span={30} >
                                 <Input placeholder="" />
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Row className='addmore--button'>
                             <Col>
-                                <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
+                                <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
                                     Add More
                                 </Button>
-
-                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                    <h3 className='modal--title text-center'>Upload Files</h3>
-                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                    <Dragger {...props}>
-                                        <p className="ant-upload-drag-icon">
-                                            <img width='50' src={computing} />
-                                        </p>
-
-                                        <p className="ant-upload-hint">
-                                            Drag or drop your files here OR <span> browse </span>
-                                        </p>
-                                    </Dragger>,
-                                    <div className='area--form'>
-                                        <label>Name of Area</label>
-                                        <Input placeholder="Lorem ipsum dolor sit amet" />
-                                    </div>
-
-                                    <Button type="primary" icon={<CloudUploadOutlined />}>
-                                        Upload Image
-                                    </Button>
-                                </Modal>
                             </Col>
                         </Row>
-
-
                     </div>
                 </Col>
             </Row>
