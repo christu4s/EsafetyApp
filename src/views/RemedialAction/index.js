@@ -1,10 +1,10 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input, Space, Form } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Space, Form, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
 
 import trimage from '../../assets/ft-cb-crs-img@3x.png';
 
-import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
 import "./index.css";
 import ajax from '../../ajax';
@@ -15,8 +15,8 @@ export const RemedialAction = () => {
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({ remedial_desc: '' });
     const [form] = Form.useForm();
-
-    useEffect(() => { ajax.get('/remedial_action').then(res => res && setContent(res)); }, []);
+    const [remedial_table_data, setTableData] = useState([]);
+    useEffect(() => { ajax.get('/remedial_action').then(res => res && setData(res)); }, []);
     //const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
 
     const showModal = () => {
@@ -30,34 +30,36 @@ export const RemedialAction = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
+    const props = { beforeUpload: () => false, };
+
+    function setData(res) {
+        setContent(res);
+        try {
+            var rtd = JSON.parse(res.remedial_table_data.replace(/\\/g, ''));
+            setTableData(rtd);
+        } catch (e) { }
+    }
     async function saveData() {
-        var values = form.getFieldsValue();
-        await ajax.post('/remedial_action', values).then(res => res && setContent(res));
+        var { remedial_desc = '' } = form.getFieldsValue();
+        await ajax.post('/remedial_action', {
+            remedial_desc: remedial_desc ? remedial_desc : null,
+            remedial_table_data: JSON.stringify(remedial_table_data)
+        }).then(res => res && setData(res));
         setEditMode(!editMode);
+        setIsModalVisible(false);
+    }
+    const { Meta } = Card;
+
+    function addmore() { setTableData([...remedial_table_data, {}]); }
+    function removeLevel(index) {
+        remedial_table_data.splice(index, 1);
+        setTableData([...remedial_table_data]);
     }
 
-    const { Meta } = Card;
-    //const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    function onLevelChange(index, key, value) {
+        remedial_table_data[index][key] = value;
+        setTableData([...remedial_table_data]);
+    }//const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
 
     return (
         <div className='facility--wrapper'>
@@ -143,69 +145,46 @@ export const RemedialAction = () => {
                             </Col>
                         </Row>
                         <hr />
+                        {remedial_table_data.map((tableData, index) => <>
+                            <Row gutter={40}>
+                                <Col span={1}>
+                                    <h5>1</h5>
+                                </Col>
+                                <Col span={4}>
 
-                        <Row gutter={40}>
-                            <Col span={1}>
-                                <h5>1</h5>
-                            </Col>
-                            <Col span={4}>
-                                <Input readOnly value="HAZIP" />
+                                    <Input placeholder=" " readOnly={!editMode} value={tableData.source} onChange={e => onLevelChange(index, 'source', e.target.value)} />
+                                </Col>
+                                <Col span={8}>
+                                    <Input placeholder=" " readOnly={!editMode} value={tableData.action} onChange={e => onLevelChange(index, 'action', e.target.value)} />
+                                </Col>
+                                <Col span={4}>
+                                    <Input placeholder=" " readOnly={!editMode} value={tableData.actionee} onChange={e => onLevelChange(index, 'actionee', e.target.value)} />
+                                </Col>
+                                <Col span={4}>
+                                    <Input placeholder=" " readOnly={!editMode} value={tableData.status} onChange={e => onLevelChange(index, 'status', e.target.value)} />
+                                </Col>
+                                <Col span={2}>
+                                    {editMode &&
+                                        <Popconfirm title="Are you sure to delete this level?" onConfirm={() => removeLevel(index)}>
+                                            <Button type="link" icon={<DeleteOutlined danger />} />
+                                        </Popconfirm>
+                                    }
+                                </Col>
+                            </Row>
 
-                            </Col>
-                            <Col span={8}>
-                                <Input placeholder="10" />
-                            </Col>
-                            <Col span={5}>
-                                <Input placeholder="10" />
-                            </Col>
-                            <Col span={5}>
-                                <Input readOnly value="OPEN" />
-                            </Col>
+                            <hr />
+                        </>)}
+                        {editMode &&
+                            <Row className='addmore--button'>
+                                <Col>
+                                    <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                                        Add More
+                                    </Button>
+                                </Col>
+                            </Row>
+                        }
 
-                        </Row>
 
-                        <hr />
-
-                        <Row gutter={40}>
-                            <Col span={1}>
-                                <h5>2</h5>
-                            </Col>
-                            <Col span={4}>
-                                <Input readOnly value="ESSA" />
-
-                            </Col>
-                            <Col span={8}>
-                                <Input placeholder="10" />
-                            </Col>
-                            <Col span={5}>
-                                <Input placeholder="10" />
-                            </Col>
-                            <Col span={5}>
-                                <Input readOnly value="CLOSE" />
-                            </Col>
-
-                        </Row>
-                        <hr />
-                        <Row gutter={40}>
-                            <Col span={1}>
-                                <h5>3</h5>
-                            </Col>
-                            <Col span={4}>
-                                <Input readOnly value="QRA" />
-
-                            </Col>
-                            <Col span={8}>
-                                <Input placeholder="10" />
-                            </Col>
-                            <Col span={5}>
-                                <Input placeholder="10" />
-                            </Col>
-                            <Col span={5}>
-                                <Input placeholder="" />
-                            </Col>
-
-                        </Row>
-                        <hr />
                     </div>
                 </Col>
             </Row>

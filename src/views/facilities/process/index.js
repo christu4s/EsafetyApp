@@ -4,7 +4,7 @@ import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
 import group from '../../../assets/group@3x.png';
 import process from '../../../assets/process@3x.png';
-import { PlusCircleOutlined, InboxOutlined , CloudUploadOutlined   } from '@ant-design/icons';
+import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import { BoxFacilities, FacilitiesButtons } from '../components';
 import ajax from '../../../ajax';
@@ -85,7 +85,7 @@ export const FacilityProcess = () => {
                         </Col>
                     </Row>
                     <Row>
-                    <Col span={23}>
+                        <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
                                 <Form form={form}>
@@ -93,37 +93,37 @@ export const FacilityProcess = () => {
                                     </Form>
                                 </p>
                             </div>
-                            {editMode && 
-                        <Row>
-                            <Col span={6}>
-                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                    Upload Image
-                                </Button>
-                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                    <h3 className='modal--title text-center'>Upload Files</h3>
-                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                    <Dragger {...props}>
-                                        <p className="ant-upload-drag-icon">
-                                            <img width='50' src={computing} />
-                                        </p>
-
-                                        <p className="ant-upload-hint">
-                                            Drag or drop your files here OR <span> browse </span>
-                                        </p>
-                                    </Dragger>,
-                                    <Button type="primary" icon={<CloudUploadOutlined />}>
+                            {editMode &&
+                                <Row>
+                                    <Col span={6}>
+                                        <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
                                             Upload Image
-                                    </Button>
-                                </Modal>
-                            </Col>
-                            <Col span={12}>
-                                <h4>File size not more than 2 MB</h4>
-                            </Col>
-                        </Row>
-                    }
+                                        </Button>
+                                        <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                            <h3 className='modal--title text-center'>Upload Files</h3>
+                                            <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                            <Dragger {...props}>
+                                                <p className="ant-upload-drag-icon">
+                                                    <img width='50' src={computing} />
+                                                </p>
+
+                                                <p className="ant-upload-hint">
+                                                    Drag or drop your files here OR <span> browse </span>
+                                                </p>
+                                            </Dragger>,
+                                            <Button type="primary" icon={<CloudUploadOutlined />}>
+                                                Upload Image
+                                            </Button>
+                                        </Modal>
+                                    </Col>
+                                    <Col span={12}>
+                                        <h4>File size not more than 2 MB</h4>
+                                    </Col>
+                                </Row>
+                            }
                         </Col>
                     </Row>
-                    
+
                     <Row>
                         <Col span={12}>
                             <h2>File uploaded</h2>
@@ -133,11 +133,11 @@ export const FacilityProcess = () => {
                     </Row>
                     <Row>
                         <Col span={24}>
-                            <img width='100%' src= {image} />
+                            <img width='100%' src={image} />
                         </Col>
                     </Row>
                 </Col>
-                <Col span={8} push={2}  style={{marginTop:35}} ><FacilitiesButtons /></Col>
+                <Col span={8} push={2} style={{ marginTop: 35 }} ><FacilitiesButtons /></Col>
 
             </Row>
 

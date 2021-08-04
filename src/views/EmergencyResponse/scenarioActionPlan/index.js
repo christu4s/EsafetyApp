@@ -1,5 +1,5 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Form, Space, Table } from 'antd';
+import React, { useState, useEffect } from 'react';
 
 import download from '../../../assets/direct-download@3x.png';
 import cancel from '../../../assets/cancel@3x.png';
@@ -10,10 +10,19 @@ import arrow from '../../../assets/left-arrow@3x.png';
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
 import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
-
+import ajax from '../../../ajax';
 export const ScenarioActionPlan = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [content, setContent] = useState({ scenario_desc: ' ' });
+    const [form] = Form.useForm();
+    const [data, setData] = useState([]);
+    const [tableData, setTableData] = useState([]);
+    useEffect(() => {
+        ajax.get('/scenario_action').then(res => res && setContent(res));
+        ajax.get('/scenario_action_flow').then(res => res && setTableData(res.data));
+    }, []);
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -26,26 +35,31 @@ export const ScenarioActionPlan = () => {
         setIsModalVisible(false);
     };
     const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
+        beforeUpload: () => false,
     };
 
+    const columns = [
+        { title: 'Action Plan', dataIndex: 'title', },
+        { title: 'Document Number', dataIndex: 'desc', },
+        {
+            title: '', dataIndex: 'scenario_file',
+            render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
+        },
+    ];
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/scenario_action', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
+
+    function submit() {
+        var { title = ' ', desc = ' ', scenario_file } = form.getFieldsValue();
+        ajax.post('/scenario_action_flow', { title, desc, scenario_file: scenario_file ? scenario_file.file : null }).then(res => {
+            res && setTableData(res.data);
+        });
+        setEditMode(!editMode);
+        setIsModalVisible(false);
+    }
     const { Meta } = Card;
 
 
@@ -75,9 +89,20 @@ export const ScenarioActionPlan = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{ marginTop: 15 }}>
+                            <div className='area--header mt-5'>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <h2 style={{ marginTop: 20 }}>Scenario Specific Action Plan</h2>
+                                    </div>
 
-                                <h2>Scenario Specific Action Plan</h2>
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                            <Space>
+                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                                <Button type="primary" size="small" onClick={saveData}>Save</Button>
+                                            </Space>}
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -85,171 +110,74 @@ export const ScenarioActionPlan = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                    <Form form={form}>
+                                        {editMode ? <Form.Item name="scenario_desc"><Input.TextArea defaultValue={content.scenario_desc} /></Form.Item> : <p>{content.scenario_desc}</p>}
+                                    </Form>
+
                                 </p>
                             </div>
                         </Col>
                     </Row>
 
-
+                    <hr />
 
 
                     <Row>
                         <Col span={30}>
-                            <div className='box--facility form-holder-risk location-risk-box area--box--facility manning--box--facility'>
+                            <div>
+                                <h3 style={{ marginTop: 25 }}>Flow Chat - ERP</h3>
+                            </div>
+                            <div className=''>
 
-                                <div className='location-bx-header'>
-                                    <Row>
-                                        <Col span={4}>
-                                            <h3>Action Plan</h3>
-                                        </Col>
-                                        <Col span={20} style={{ textAlign: 'center' }}>
-                                            <h3>Document Number </h3>
-                                        </Col>
-                                    </Row>
-                                </div>
+                                <div class="">
+                                    <Table dataSource={tableData} columns={columns} />
 
-                                <div className='location-box-body'>
-                                    {/* <Row gutter={16}>
-                                    <Col span={6}>
-                                    </Col>
-                                    <Col span={6}>
-                                        <h5>Separator Area
-                                        </h5>
-                                    </Col>
-                                    <Col span={6}>
-                                        <h5>Compressor Area
-                                        </h5>
-                                    </Col>
-                                    <Col span={6}>
-                                        <h5>Living Quarters
-                                        </h5>
-                                    </Col>
-                                </Row> */}
-                                    {/* <Row gutter={16}>
-                                    <Col span={6}>
-                                    </Col>
-
-                                </Row> */}
-
-
-
-                                    <Row gutter={26}>
-                                        <Col span={6}>
-                                            <h5>Fire
-                                            </h5>
-                                        </Col>
-                                        <Col span={6}>
-                                            <h5>XX-XXX-001</h5>
-                                        </Col>
-                                        <Col span={6}>
-                                            <img width='38' src={download} />
-                                        </Col>
-                                        <Col span={6}>
-                                            <img width='38' src={cancel} />
-
-                                        </Col>
-                                    </Row>
-                                    <hr />
-                                    <Row gutter={26}>
-                                        <Col span={6}>
-                                            <h5>Oil Spill
-                                            </h5>
-                                        </Col>
-                                        <Col span={6}>
-                                            <h5>XX-XXX-001</h5>
-
-                                        </Col>
-                                        <Col span={6}>
-                                            <img width='38' src={download} />
-                                        </Col>
-                                        <Col span={6}>
-                                            <img width='38' src={cancel} />
-                                        </Col>
-                                    </Row>
-                                    <hr />
-
-                                    <Row gutter={26}>
-                                        <Col span={6}>
-                                            <h5>Injury
-                                            </h5>
-                                        </Col>
-                                        <Col span={6}>
-                                            <h5>XX-XXX-001</h5>
-
-                                        </Col>
-                                        <Col span={6}>
-                                            <img width='38' src={download} />
-                                        </Col>
-                                        <Col span={6}>
-                                            <img width='38' src={cancel} />
-                                        </Col>
-                                    </Row>
-
-
-                                    {/* <Row gutter={16} style={{ textAlign: 'right' }}>
-
-
-                                    <Col span={6} push={18}>
-                                        <Button type="default" style={{ textAlign: 'right', paddingRight: 0 }} block icon={<PlusCircleOutlined />}>
-                                            Add more row
-                                        </Button>
-                                    </Col>
-                                </Row> */}
-
-                                    {/* <Row gutter={16}>
-                                    <Col span={6}>
-                                        <h5 className='text-primary'>Total</h5>
-                                    </Col>
-                                    <Col span={6}>
-                                        <Input placeholder="1" />
-
-                                    </Col>
-                                    <Col span={6}>
-                                        <Input placeholder="10" />
-                                    </Col>
-                                    <Col span={6}>
-                                        <Input placeholder="2" />
-                                    </Col>
-                                </Row> */}
                                 </div>
 
                             </div>
                         </Col>
 
                     </Row>
-                    <Row className='addmore--button'>
-                        <Col>
-                            {/* <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                Add More
-                            </Button> */}
-                            <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                Upload Document
-                            </Button>
-
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
-
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <div className='area--form'>
-                                    <label>Name of Action Plan</label>
-                                    <Input placeholder="Lorem ipsum dolor sit amet" />
-                                </div>
-
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                    Upload File
+                    {editMode &&
+                        <Row className='addmore--button'>
+                            <Col>
+                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
+                                    Upload Document
                                 </Button>
-                            </Modal>
-                        </Col>
-                    </Row>
+
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                    <Form form={form}>
+                                        <Form.Item name="scenario_file">
+                                            <Dragger {...props}>
+                                                <p className="ant-upload-drag-icon">
+                                                    <img width='50' src={computing} />
+                                                </p>
+                                                <p className="ant-upload-hint">
+                                                    Drag or drop your files here OR <span> browse </span>
+                                                </p>
+                                            </Dragger>
+                                        </Form.Item>
+                                        <div className='area--form'>
+                                            <label>Name of the Action Plan</label>
+                                            <Form.Item name="title">
+                                                <Input />
+                                            </Form.Item>
+                                            <label>Document Number</label>
+                                            <Form.Item name="desc">
+                                                <Input />
+                                            </Form.Item>
+                                        </div>
+                                    </Form>
+
+                                    <Button type="primary" onClick={submit}>Create</Button>
+                                </Modal>
+                            </Col>
+                        </Row>
+
+                    }
+
                 </Col>
             </Row>
 

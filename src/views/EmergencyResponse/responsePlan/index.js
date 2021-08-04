@@ -1,75 +1,68 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Steps } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Steps, Form, Space } from 'antd';
+import React, { useState, useEffect } from 'react';
 
 import image from '../../../assets/screen-shot@3x.png';
 
 import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined  , ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
-
+import ajax from '../../../ajax';
 export const ResponsePlan = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [plans, setPlans] = useState([]);
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
+    const [editMode, setEditMode] = useState(false);
+    const [content, setContent] = useState({ reponse_plan_desc: '', erp_flow_chat: '' });
+    const [form] = Form.useForm();
+    const [erp_flow_chat, setPlans] = useState([]);
+    const [data, setData] = useState([]);
 
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
+    useEffect(() => {
+        ajax.get('/response_plan').then(res => res && setContent(res));
+    }, []);
+    // const showModal = () => {
+    //     setIsModalVisible(true);
+    // };
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
+    // const handleOk = () => {
+    //     setIsModalVisible(false);
+    // };
+
+    // const handleCancel = () => {
+    //     setIsModalVisible(false);
+    // };
+    const props = { beforeUpload: () => false, };
 
     const { Meta } = Card;
-
-    function addmore(){ setPlans([...plans, '']); }
-    function editPlan(index,value){  
-        plans[index] = value;
-        setPlans([...plans]);
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/response_plan', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
+    function addmore() { setPlans([...erp_flow_chat, '']); }
+    function editPlan(index, value) {
+        erp_flow_chat[index] = value;
+        setPlans([...erp_flow_chat]);
     }
 
     return (
         <div className='facility--wrapper'>
-            <a href="/#/emergency-response" style={{color:'#282828'}}>
-                    <Row>
-                        <Col span={1}>
-                            <div className=''>
-                        <ArrowLeftOutlined />
+            <a href="/#/emergency-response" style={{ color: '#282828' }}>
+                <Row>
+                    <Col span={1}>
+                        <div className=''>
+                            <ArrowLeftOutlined />
                         </div>
                     </Col>
                     <Col span={23}>
                         <div className=''>
                             <p>Back
-        </p>
+                            </p>
                         </div>
                     </Col>
                 </Row>
-                </a>
+            </a>
             <Row>
                 <Col span={16}>
                     <Row>
@@ -79,9 +72,20 @@ export const ResponsePlan = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{marginTop:15}}>
+                            <div className='area--header mt-5'>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <h2 style={{ marginTop: 25 }}>Emergency Response Plan</h2>
+                                    </div>
 
-                                <h2>Emergency Response Plan</h2>
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                            <Space>
+                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                                <Button type="primary" size="small" onClick={saveData}>Save</Button>
+                                            </Space>}
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -89,7 +93,9 @@ export const ResponsePlan = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                    <Form form={form}>
+                                        {editMode ? <Form.Item name="reponse_plan_desc"><Input.TextArea defaultValue={content.reponse_plan_desc} /></Form.Item> : <p>{content.reponse_plan_desc}</p>}
+                                    </Form>
                                 </p>
                             </div>
                         </Col>
@@ -101,12 +107,12 @@ export const ResponsePlan = () => {
             <Row>
                 <Col span={30}>
                     <div className='box--facility area--box--facility manning--box--facility'>
-                    <Steps progressDot direction="vertical">
-                        {plans.map((plan, index)=> <Steps.Step 
-                            title={plan} 
-                            description={/*editMode &&*/ <Input value={plan} onChange={e=> editPlan(index,e.target.value)} />} />
-                        )}
-                    </Steps>
+                        <Steps progressDot direction="vertical">
+                            {erp_flow_chat.map((plan, index) => <Steps.Step
+                                title={plan}
+                                description={editMode && <Input value={plan} onChange={e => editPlan(index, e.target.value)} />} />
+                            )}
+                        </Steps>
                         {/* <Row>
                             <Col span={30} >
                                 <h3>Raise the Alarm</h3>
