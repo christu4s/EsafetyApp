@@ -11,7 +11,7 @@ export const ResponseTiers = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const [content, setContent] = useState({ tiers_desc: '', tiers_image: ''});
+    const [content, setContent] = useState({ tiers_desc: '', tiers_image: '' });
     const [levels, setLevels] = useState([]);
     const [form] = Form.useForm();
 
@@ -28,35 +28,35 @@ export const ResponseTiers = () => {
         setIsModalVisible(false);
     };
 
-    const props = { beforeUpload: () => false,};
+    const props = { beforeUpload: () => false, };
 
-    function setData(res){
+    function setData(res) {
         setContent(res);
-        try{
+        try {
             var lvl = JSON.parse(res.levels.replace(/\\/g, ''));
             setLevels(lvl);
-        }catch(e){}
+        } catch (e) { }
     }
 
     async function saveData() {
         var { tiers_desc = '', tiers_image } = form.getFieldsValue();
-        await ajax.post('/emergency_response_tiers', { 
-            tiers_desc, 
-            tiers_image: tiers_image ? tiers_image.file : null, 
-            levels: JSON.stringify(levels) 
+        await ajax.post('/emergency_response_tiers', {
+            tiers_desc: tiers_desc ? tiers_desc : null,
+            tiers_image: tiers_image ? tiers_image.file : null,
+            levels: JSON.stringify(levels)
         }).then(res => res && setData(res));
         setEditMode(!editMode);
         setIsModalVisible(false);
     }
     const { Meta } = Card;
 
-    function addmore(){ setLevels([...levels,{}]); }
-    function removeLevel(index){ 
-        levels.splice(index,1);
-        setLevels([...levels]); 
+    function addmore() { setLevels([...levels, {}]); }
+    function removeLevel(index) {
+        levels.splice(index, 1);
+        setLevels([...levels]);
     }
 
-    function onLevelChange(index,key,value){
+    function onLevelChange(index, key, value) {
         levels[index][key] = value;
         setLevels([...levels]);
     }
@@ -110,24 +110,24 @@ export const ResponseTiers = () => {
                     </Row>
                     <Row>
                         <Col span={23}>
-                        <Form form={form}>
-                            <div className='box--facility area--box--facility'>
-                                <p>{editMode ? <Form.Item name="tiers_desc"><Input.TextArea defaultValue={content.tiers_desc} /></Form.Item> 
-                                : <p>{content.tiers_desc}</p>}</p>
-                            </div>
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <Form form={form}>
+                                <div className='box--facility area--box--facility'>
+                                    <p>{editMode ? <Form.Item name="tiers_desc"><Input.TextArea defaultValue={content.tiers_desc} /></Form.Item>
+                                        : <p>{content.tiers_desc}</p>}</p>
+                                </div>
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                     <h3 className='modal--title text-center'>Upload Files</h3>
                                     <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                        <Form.Item name="tiers_image">
-                                            <Dragger {...props}>
-                                                <p className="ant-upload-drag-icon">
-                                                    <img width='50' src={computing} />
-                                                </p>
-                                                <p className="ant-upload-hint">
-                                                    Drag or drop your files here OR <span> browse </span>
-                                                </p>
-                                            </Dragger>
-                                        </Form.Item>
+                                    <Form.Item name="tiers_image">
+                                        <Dragger {...props}>
+                                            <p className="ant-upload-drag-icon">
+                                                <img width='50' src={computing} />
+                                            </p>
+                                            <p className="ant-upload-hint">
+                                                Drag or drop your files here OR <span> browse </span>
+                                            </p>
+                                        </Dragger>
+                                    </Form.Item>
                                     <Button type="primary" onClick={saveData}>Upload Image</Button>
                                 </Modal>
                             </Form>
@@ -159,53 +159,53 @@ export const ResponseTiers = () => {
                     </Row>
 
                     <Row>
-                    <Col span={24}>
-                        <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
-                            <Row gutter={20}>
-                                <Col span={5}>
-                                    <h3>Emergency Response Tier</h3>
-                                </Col>
-                                <Col span={8} push={3}>
-                                    <h3>Definition</h3>
-                                </Col>
-                                <Col span={8} push={2}>
-                                    <h3>Team Activation</h3>
-                                </Col>
-                            </Row>
-                            <hr />
-                            {levels.map((level,index)=> <>
-                                <Row gutter={16}>
-                                    <Col span={6}>
-                                        <h5>Level {index+1}</h5>
+                        <Col span={24}>
+                            <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+                                <Row gutter={20}>
+                                    <Col span={5}>
+                                        <h3>Emergency Response Tier</h3>
                                     </Col>
-                                    <Col span={8}>
-                                        <Input placeholder="1" readOnly={!editMode} value={level.definition} onChange={e => onLevelChange(index,'definition', e.target.value)} />
+                                    <Col span={8} push={3}>
+                                        <h3>Definition</h3>
                                     </Col>
-                                    <Col span={8}>
-                                        <Input placeholder="10" readOnly={!editMode} value={level.team_activation} onChange={e => onLevelChange(index,'team_activation', e.target.value)} /> 
-                                    </Col>
-                                    <Col span={2}>
-                                        {editMode &&
-                                            <Popconfirm title="Are you sure to delete this level?" onConfirm={()=> removeLevel(index) }>
-                                                <Button type="link" icon={<DeleteOutlined danger />} />
-                                            </Popconfirm>
-                                        }
+                                    <Col span={8} push={2}>
+                                        <h3>Team Activation</h3>
                                     </Col>
                                 </Row>
                                 <hr />
-                            </>)}
-                            {editMode && 
-                                <Row className='addmore--button'>
-                                    <Col>
-                                        <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
-                                            Add More
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            }
-                        </div>
-                    </Col>
-                </Row>
+                                {levels.map((level, index) => <>
+                                    <Row gutter={16}>
+                                        <Col span={6}>
+                                            <h5>Level {index + 1}</h5>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Input placeholder="1" readOnly={!editMode} value={level.definition} onChange={e => onLevelChange(index, 'definition', e.target.value)} />
+                                        </Col>
+                                        <Col span={8}>
+                                            <Input placeholder="10" readOnly={!editMode} value={level.team_activation} onChange={e => onLevelChange(index, 'team_activation', e.target.value)} />
+                                        </Col>
+                                        <Col span={2}>
+                                            {editMode &&
+                                                <Popconfirm title="Are you sure to delete this level?" onConfirm={() => removeLevel(index)}>
+                                                    <Button type="link" icon={<DeleteOutlined danger />} />
+                                                </Popconfirm>
+                                            }
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                </>)}
+                                {editMode &&
+                                    <Row className='addmore--button'>
+                                        <Col>
+                                            <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                                                Add More
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                }
+                            </div>
+                        </Col>
+                    </Row>
 
                 </Col>
 
