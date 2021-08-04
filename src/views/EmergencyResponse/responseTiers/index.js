@@ -59,6 +59,9 @@ export const ResponseTiers = () => {
     }
     const { Meta } = Card;
 
+    function addmore(){
+        setLevels([...levels,{}]);
+    }
 
     return (
         <div className='facility--wrapper'>
@@ -168,45 +171,27 @@ export const ResponseTiers = () => {
                     </Row>
 
                     <Row>
-                        <Col span={24}>
-                            <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
-                                <Row gutter={20}>
-                                    <Col span={5}>
-                                        <h3>Emergency Response Tier</h3>
-                                    </Col>
-                                    <Col span={6} push={4}>
-                                        <h3>Definition</h3>
-                                    </Col>
-                                    <Col span={6} push={6}>
-                                        <h3>Team Activation</h3>
-                                    </Col>
-                                </Row>
-                                <hr />
-
-
+                    <Col span={24}>
+                        <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+                            <Row gutter={20}>
+                                <Col span={5}>
+                                    <h3>Emergency Response Tier</h3>
+                                </Col>
+                                <Col span={6} push={4}>
+                                    <h3>Definition</h3>
+                                </Col>
+                                <Col span={6} push={6}>
+                                    <h3>Team Activation</h3>
+                                </Col>
+                            </Row>
+                            <hr />
+                            {levels.map((level,index)=> <>
                                 <Row gutter={16}>
                                     <Col span={6}>
-                                        <h5>Level 1</h5>
+                                        <h5>Level {index+1}</h5>
                                     </Col>
                                     <Col span={9}>
                                         <Input placeholder="1" />
-
-                                    </Col>
-                                    <Col span={9}>
-                                        <Input placeholder="10" />
-                                    </Col>
-
-                                </Row>
-
-                                <hr />
-
-                                <Row gutter={16}>
-                                    <Col span={6}>
-                                        <h5>Level 2</h5>
-                                    </Col>
-                                    <Col span={9}>
-                                        <Input placeholder="1" />
-
                                     </Col>
                                     <Col span={9}>
                                         <Input placeholder="10" />
@@ -214,50 +199,17 @@ export const ResponseTiers = () => {
 
                                 </Row>
                                 <hr />
-                                <Row gutter={16}>
-                                    <Col span={6}>
-                                        <h5>Level 3</h5>
-                                    </Col>
-                                    <Col span={9}>
-                                        <Input placeholder="1" />
-
-                                    </Col>
-                                    <Col span={9}>
-                                        <Input placeholder="10" />
-                                    </Col>
-                                    <Row className='addmore--button'>
-                                        <Col>
-                                            <Button type="default" icon={<PlusCircleOutlined />} onClick={showAddModal}>
-                                                Add More
-                                            </Button>
-
-                                            <Modal title="" className='upload--modal' visible={isAddModalVisible} onOk={handleAddOk} onCancel={handleAddCancel}>
-                                                <Form form={form}>
-                                                    <div className='area--form'>
-                                                        <label>Name of Level</label>
-                                                        <Form.Item name="title">
-                                                            <Input />
-                                                        </Form.Item>
-                                                        <label>Definition</label>
-                                                        <Form.Item name="desc">
-                                                            <Input />
-                                                        </Form.Item>
-                                                        <label>Team Activation</label>
-                                                        <Form.Item name="team_activation">
-                                                            <Input />
-                                                        </Form.Item>
-                                                    </div>
-                                                </Form>
-
-                                                <Button type="primary" onClick={submit}>Add file</Button>
-                                            </Modal>
-                                        </Col>
-                                    </Row>
-                                </Row>
-                                <hr />
-                            </div>
-                        </Col>
-                    </Row>
+                            </>)}
+                            <Row className='addmore--button'>
+                                <Col>
+                                    <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                                        Add More
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Col>
+                </Row>
 
                 </Col>
 
