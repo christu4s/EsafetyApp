@@ -1,9 +1,11 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input , Table, Tag, Space } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Tag, Space } from 'antd';
 import React, { useState } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import image from '../../../assets/image.png';
 import arrow from '../../../assets/left-arrow@3x.png';
-import { PlusCircleOutlined, CloudUploadOutlined  , ArrowLeftOutlined} from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined  , ArrowLeftOutlined , DownloadOutlined , CloseCircleOutlined } from '@ant-design/icons';
+import {Table as TableB} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import computing from '../../../assets/cloud-computing@3x.png';
 import test from './test.json';
 
@@ -134,10 +136,36 @@ export const CriticalProcedure = () => {
                     </Row>
 
                     <Row>
-                        <Col span={24}>
-                        <Table dataSource={dataSource} columns={columns} />;
-                        </Col>
-                    </Row>
+                <Col span={24}>
+                        <div className='table--holder--f'>
+                        <TableB striped bordered hover>
+                        <thead>
+                            <tr>
+                            <th>Safety Critical Procedure</th>
+                            <th>Document Number</th>
+                            <th></th>
+                            <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>Emergency Response Procedure</td>
+                            <td>XX-XXX-001</td>
+                            <td><DownloadOutlined /></td>
+                            <td className='color--red'><CloseCircleOutlined /></td>
+                            </tr>
+                            <tr>
+                            <td>Emergency Response Procedure</td>
+                            <td>XX-XXX-001</td>
+                            <td><DownloadOutlined /></td>
+                            <td className='color--red'><CloseCircleOutlined /></td>
+                            </tr>
+                           
+                        </tbody>
+                        </TableB>
+                        </div>
+                </Col>
+            </Row>
 
                     <Row className='addmore--button'>
                         <Col>

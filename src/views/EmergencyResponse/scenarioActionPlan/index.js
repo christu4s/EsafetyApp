@@ -1,12 +1,13 @@
 import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input } from 'antd';
 import React, { useState } from 'react';
-
+import {Table} from 'react-bootstrap';
 import image from '../../../assets/screen-shot@3x.png';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./index.css";
 import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined , ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined , ArrowLeftOutlined ,DownloadOutlined , CloseCircleOutlined  } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 
 export const ScenarioActionPlan = () => {
@@ -95,6 +96,76 @@ export const ScenarioActionPlan = () => {
 
             </Row>
 
+            <Row>
+                <Col span={16}>
+                    <div className='divider'></div>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col span={16}>
+                        <div className='table--holder--f'>
+                        <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                            <th>Action Plan</th>
+                            <th>Document Number</th>
+                            <th></th>
+                            <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>fire</td>
+                            <td>XX-XXX-001</td>
+                            <td><DownloadOutlined /></td>
+                            <td className='color--red'><CloseCircleOutlined /></td>
+                            </tr>
+                            <tr>
+                            <td>oil-spill</td>
+                            <td>XX-XXX-001</td>
+                            <td><DownloadOutlined /></td>
+                            <td className='color--red'><CloseCircleOutlined /></td>
+                            </tr>
+                           
+                        </tbody>
+                        </Table>
+                        </div>
+                </Col>
+            </Row>
+
+            <Row className='addmore--button'>
+                        <Col>
+                            {/* <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
+                                Add More
+                            </Button> */}
+                            <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
+                                Upload Document
+                            </Button>
+
+                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                <h3 className='modal--title text-center'>Upload Files</h3>
+                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                <Dragger {...props}>
+                                    <p className="ant-upload-drag-icon">
+                                        <img width='50' src={computing} />
+                                    </p>
+
+                                    <p className="ant-upload-hint">
+                                        Drag or drop your files here OR <span> browse </span>
+                                    </p>
+                                </Dragger>,
+                                <div className='area--form'>
+                                    <label>Name of Area</label>
+                                    <Input placeholder="Lorem ipsum dolor sit amet" />
+                                </div>
+
+                                <Button type="primary" icon={<CloudUploadOutlined />}>
+                                    Upload Image
+                                </Button>
+                            </Modal>
+                        </Col>
+                    </Row>
 
         </div>
     );

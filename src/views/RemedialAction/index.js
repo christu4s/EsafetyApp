@@ -6,7 +6,7 @@ import trimage from '../../assets/ft-cb-crs-img@3x.png';
 
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
-import  "./index.css";
+import "./index.css";
 
 export const RemedialAction = () => {
     const { Dragger } = Upload;
@@ -56,7 +56,7 @@ export const RemedialAction = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{marginTop:20}}>
+                            <div className='area--header' style={{ marginTop: 20 }}>
                                 <h2>Remedial Action Plan</h2>
                             </div>
                         </Col>
@@ -71,115 +71,115 @@ export const RemedialAction = () => {
                             </div>
                         </Col>
                     </Row>
-                   
+
 
                 </Col>
-                </Row>
+            </Row>
 
-                <Row style={{marginTop:30}}>
-                    <Col span={15}>
-                        <div className='divider'></div>
-                    </Col>
-                </Row>
+            <Row style={{ marginTop: 30 }}>
+                <Col span={15}>
+                    <div className='divider'></div>
+                </Col>
+            </Row>
 
-                <Row>
-                   
-                    <Col span={24}>
-                        <h2>Table</h2>                   
-                    </Col>
+            <Row>
 
-                     
-                    
-                    <Col span={24}>
-                        <div style={{marginTop:5}} className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
-                            <Row>
-                                <Col span={1}>
+                <Col span={24}>
+                    <h2>Table</h2>
+                </Col>
 
-                                </Col>
-                                <Col span={4} push={1}>
-                                    <h5>Source</h5>
-                                </Col>
-                                <Col span={4} push={1}>
-                                    <h5>Action</h5>
-                                </Col>
-                                <Col span={4} push={5}>
-                                    <h5>Actionee</h5>
-                                </Col>
-                                <Col span={4} push={6}>
+
+
+                <Col span={24}>
+                    <div style={{ marginTop: 5 }} className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+                        <Row>
+                            <Col span={1}>
+
+                            </Col>
+                            <Col span={4} push={1}>
+                                <h5>Source</h5>
+                            </Col>
+                            <Col span={4} push={1}>
+                                <h5>Action</h5>
+                            </Col>
+                            <Col span={4} push={5}>
+                                <h5>Actionee</h5>
+                            </Col>
+                            <Col span={4} push={6}>
                                 <h5>
                                     Status
                                     <span> (as of date of E-SC development)</span>
                                 </h5>
-                                </Col>
-                            </Row>
-                            <hr />
+                            </Col>
+                        </Row>
+                        <hr />
 
-                            <Row gutter={40}>
-                                <Col span={1}>
-                                    <h5>1</h5>
-                                </Col>
-                                <Col span={4}>
-                                    <Input readOnly value="HAZIP" />
+                        <Row gutter={40}>
+                            <Col span={1}>
+                                <h5>1</h5>
+                            </Col>
+                            <Col span={4}>
+                                <Input readOnly value="HAZIP" />
 
-                                </Col>
-                                <Col span={8}>
-                                    <Input placeholder="10" />
-                                </Col>
-                                <Col span={5}>
-                                    <Input placeholder="10" />
-                                </Col>
-                                <Col span={5}>
-                                    <Input readOnly value="OPEN" />
-                                </Col>
+                            </Col>
+                            <Col span={8}>
+                                <Input placeholder="10" />
+                            </Col>
+                            <Col span={5}>
+                                <Input placeholder="10" />
+                            </Col>
+                            <Col span={5}>
+                                <Input readOnly value="OPEN" />
+                            </Col>
 
-                            </Row>
+                        </Row>
 
-                            <hr />
+                        <hr />
 
-                            <Row gutter={40}>
-                                <Col span={1}>
-                                    <h5>2</h5>
-                                </Col>
-                                <Col span={4}>
-                                    <Input readOnly value="ESSA" />
+                        <Row gutter={40}>
+                            <Col span={1}>
+                                <h5>2</h5>
+                            </Col>
+                            <Col span={4}>
+                                <Input readOnly value="ESSA" />
 
-                                </Col>
-                                <Col span={8}>
-                                    <Input placeholder="10" />
-                                </Col>
-                                <Col span={5}>
-                                    <Input placeholder="10" />
-                                </Col>
-                                <Col span={5}>
-                                    <Input readOnly value="CLOSE" />
-                                </Col>
+                            </Col>
+                            <Col span={8}>
+                                <Input placeholder="10" />
+                            </Col>
+                            <Col span={5}>
+                                <Input placeholder="10" />
+                            </Col>
+                            <Col span={5}>
+                                <Input readOnly value="CLOSE" />
+                            </Col>
 
-                            </Row>
-                            <hr />
-                            <Row gutter={40}>
-                                <Col span={1}>
-                                    <h5>3</h5>
-                                </Col>
-                                <Col span={4}>
-                                    <Input readOnly value="QRA" />
+                        </Row>
+                        <hr />
+                        <Row gutter={40}>
+                            <Col span={1}>
+                                <h5>3</h5>
+                            </Col>
+                            <Col span={4}>
+                                <Input readOnly value="QRA" />
 
-                                </Col>
-                                <Col span={8}>
-                                    <Input placeholder="10" />
-                                </Col>
-                                <Col span={5}>
-                                    <Input placeholder="10" />
-                                </Col>
-                                <Col span={5}>
-                                    <Input placeholder="" />
-                                </Col>
+                            </Col>
+                            <Col span={8}>
+                                <Input placeholder="10" />
+                            </Col>
+                            <Col span={5}>
+                                <Input placeholder="10" />
+                            </Col>
+                            <Col span={5}>
+                                <Input placeholder="" />
+                            </Col>
 
-                            </Row>
-                            <hr />
-                        </div>
-                    </Col>
-                </Row>
-           
+                        </Row>
+                        <hr />
+                    </div>
+                </Col>
+            </Row>
+
 
 
         </div>

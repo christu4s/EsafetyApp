@@ -25058,8 +25058,8 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .facility--wrapper .manning--box--facility .ant-input {
   border: 1px solid #000000;
-  height: 40px;
-  border-radius: 5x;
+  height: 35px;
+  border-radius: 5px;
   text-align: center;
 }
 .facility--wrapper .manning--box--facility h3 {
@@ -25352,21 +25352,4 @@ div.ant-typography-edit-content.ant-typography-rtl {
   font-weight: bold;
   margin-left: 10px;
 }
-.ant-btn-sm{
-    padding: 0px 22px 7px; 
-    font-family: 'Lato', sans-serif;
-    height: 25px;
-    padding: 0px 11px 17px;
-}
-.ant-menu-sub.ant-menu-inline > .ant-menu-item, .ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title{
-  height: auto;
-    line-height: 27px;
-}
-.ant-menu-inline.ant-menu-root .ant-menu-item > .ant-menu-title-content, .ant-menu-inline.ant-menu-root .ant-menu-submenu-title > .ant-menu-title-content{
-  overflow: auto;
-  white-space: normal;
-  text-overflow: initial;
-}
-.menu--holder li span{}
-.menu--holder li.ant-menu-item.ant-menu-item-only-child span.ant-menu-title-content{font-weight: 400;}
 /*# sourceMappingURL=App.css.map */
