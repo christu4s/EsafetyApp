@@ -1,5 +1,5 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Space } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Space, Form } from 'antd';
+import React, { useState, useEffect } from 'react';
 import area from '../../assets/area.png';
 import image from '../../assets/image.png';
 import group from '../../assets/group@3x.png';
@@ -7,11 +7,21 @@ import process from '../../assets/process@3x.png';
 import fire from '../../assets/fire@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
+import ajax from '../../ajax';
+
+
 export const AccidentsHazard = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    const [content, setContent] = useState({ mah_desc: '', mah_image: '' });
+    const [data, setData] = useState([]);
+    const [form] = Form.useForm();
+    
+    useEffect(() => {
+        ajax.get('/major_accident_hazards').then(res => res && setContent(res));
+    }, []);
+
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -23,26 +33,15 @@ export const AccidentsHazard = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+    
     const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
+        beforeUpload: () => false,
     };
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/major_accident_hazards', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
 
     const { Meta } = Card;
     const boxContent = [
@@ -76,7 +75,7 @@ export const AccidentsHazard = () => {
                             {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
                             <Space>
                                 <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
                             </Space>}
                         </div>
                                 </div>
@@ -87,9 +86,11 @@ export const AccidentsHazard = () => {
                     <Row>
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
-                                <p>
-                                    {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
-                                </p>
+                            <p>
+                                <Form form={form}>
+                                    {editMode ? <Form.Item name="mah_desc"><Input.TextArea defaultValue={content.mah_desc} /></Form.Item> : <p>{content.mah_desc}</p>}
+                                </Form>
+                            </p>
                             </div>
                         </Col>
                     </Row>

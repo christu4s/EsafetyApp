@@ -1,12 +1,22 @@
-import { Row, Col, Card, Button, Space, Input } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Card, Button, Space, Input, Form } from 'antd';
+import React, { useState, useEffect } from 'react';
 import image from '../../assets/image.png';
 import danger from '../../assets/danger-sing@3x.png';
+import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import computing from '../../assets/cloud-computing@3x.png';
+import ajax from '../../ajax';
+
 
 export const RiskAssessment = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    const [content, setContent] = useState({ mah_desc: '', mah_image: '' });
+    const [data, setData] = useState([]);
+    const [form] = Form.useForm();
+    
+    useEffect(() => {
+        ajax.get('/risk_assessment').then(res => res && setContent(res));
+    }, []);
     
     const showModal = () => {
         setIsModalVisible(true);
@@ -19,6 +29,15 @@ export const RiskAssessment = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+    const props = {
+        beforeUpload: () => false,
+    };
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/risk-assessment', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
+
     const { Meta } = Card;
 
     return (
@@ -42,7 +61,7 @@ export const RiskAssessment = () => {
                             {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
                             <Space>
                                 <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
                             </Space>}
                         </div>
                                 </div>
@@ -54,7 +73,9 @@ export const RiskAssessment = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
+                                <Form form={form}>
+                                    {editMode ? <Form.Item name="risk_desc"><Input.TextArea defaultValue={content.risk_desc} /></Form.Item> : <p>{content.risk_desc}</p>}
+                                </Form>
                                 </p>
                             </div>
                         </Col>
