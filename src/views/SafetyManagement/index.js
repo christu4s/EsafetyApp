@@ -4,7 +4,7 @@ import extinguisher from '../../assets/fire-extinguisher@3x.png';
 
 import trimage from '../../assets/ft-cb-crs-img@3x.png';
 
-import { DownloadOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DownloadOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
 import './index.css';
 import ajax from '../../ajax';
@@ -33,29 +33,19 @@ export const SafetyManagement = () => {
         setIsModalVisible(false);
     };
     const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
+        beforeUpload: () => false,
     };
     async function saveData() {
         var values = form.getFieldsValue();
         await ajax.post('/safety_management', values).then(res => res && setContent(res));
         setEditMode(!editMode);
+    }
+
+    function submit() {
+        var { title, desc, commitment_file } = form.getFieldsValue();
+        ajax.post('/safety_manage_commit', { title, desc, commitment_file: commitment_file ? commitment_file.file : null }).then(res => {
+            res && setData(res.data);
+        });
     }
     const { Meta } = Card;
 
@@ -106,6 +96,45 @@ export const SafetyManagement = () => {
                             <div className='divider' style={{ marginBottom: 20 }}></div>
                         </Col>
                     </Row>
+                    {editMode &&
+                        <Row className='addmore--button'>
+                            <Col>
+                                <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
+                                    Add More
+                                </Button>
+
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                    <Form form={form}>
+                                        <Form.Item name="commitment_file">
+                                            <Dragger {...props}>
+                                                <p className="ant-upload-drag-icon">
+                                                    <img width='50' src={computing} />
+                                                </p>
+                                                <p className="ant-upload-hint">
+                                                    Drag or drop your files here OR <span> browse </span>
+                                                </p>
+                                            </Dragger>
+                                        </Form.Item>
+                                        <div className='area--form'>
+                                            <label>Name of File</label>
+                                            <Form.Item name="title">
+                                                <Input />
+                                            </Form.Item>
+                                            <label>Add Description</label>
+                                            <Form.Item name="desc">
+                                                <Input />
+                                            </Form.Item>
+                                        </div>
+                                    </Form>
+
+                                    <Button type="primary" onClick={submit}>Create</Button>
+                                </Modal>
+                            </Col>
+                        </Row>
+
+                    }
 
                     <Row>
                         <Col><h2 style={{ marginTop: 0, paddingTop: 0, fontSize: 18 }}>Management Commitment</h2>
