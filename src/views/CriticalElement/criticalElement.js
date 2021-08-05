@@ -1,14 +1,21 @@
 import { Row, Col, Card, Upload, message, Button, Space, Input } from 'antd';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import alert from '../../assets/alert@3x.png';
-import image from '../../assets/downloadSEC@3x.png';
+import imageEquipment from '../../assets/critical-element-equipment.png';
+import imagePersonnel from '../../assets/critical-element-personnel.png';
+import imageProcedure from '../../assets/critical-element-procedure.png';
 
 export const CriticalElement = () => {
 
     const { Meta } = Card;
     const [editMode, setEditMode] = useState(false);
     const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
-
+    const subpages = [
+        {title: 'Equipment', url: '/safety-critical/equipment', image: imageEquipment},
+        {title: 'Personnel', url: '/safety-critical/personnel', image: imagePersonnel},
+        {title: 'Procedure', url: '/safety-critical/procedure', image: imageProcedure},
+    ]
 
     return (
         <div className='facility--wrapper'>
@@ -50,10 +57,12 @@ export const CriticalElement = () => {
                     </Row>
 
                     <Row>
-                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                                <Meta title="Safety Critical Equipment" />
-                            </Card>
+                        {subpages.map((sub, i) => <Col key={i} span={8}>
+                            <Link to={sub.url}>
+                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={sub.image} />}>
+                                    <Meta title={sub.title} />
+                                </Card>
+                            </Link>
                         </Col>)}
                     </Row>
 
