@@ -1,10 +1,10 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input, Table, Tag, Space, Form } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Table, Tag, Space, Form, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import download from '../../../assets/direct-download@3x.png';
 import cancel from '../../../assets/cancel@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
-import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import test from './test.json';
 import ajax from '../../../ajax';
@@ -13,14 +13,16 @@ export const CriticalProcedure = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
+    const [now, setNow] = useState(); 
     const [content, setContent] = useState({ procedure_desc: ' ' });
     const [form] = Form.useForm();
-    const [data, setData] = useState([]);
     const [tableData, setTableData] = useState([]);
+    const refresh = () => setNow(new Date());
+    
     useEffect(() => {
         ajax.get('/critical_procedure').then(res => res && setContent(res));
         ajax.get('/safety_critical_procedure').then(res => res && setTableData(res.data));
-    }, []);
+    }, [now]);
 
     async function saveData() {
         var values = form.getFieldsValue();
@@ -50,14 +52,22 @@ export const CriticalProcedure = () => {
             title: '', dataIndex: 'procedure_file',
             render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
         },
+        { 
+            title:'', dataIndex: '', 
+            render: (value, row, index) => <Popconfirm onConfirm={()=> deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger/></Popconfirm> 
+        },
     ];
+    function deleteRow(id){
+        ajax.delete('/safety_critical_procedure/' + id).then(refresh);
+    }
     function submit() {
         var { title = ' ', desc = ' ', procedure_file } = form.getFieldsValue();
         ajax.post('/safety_critical_procedure', { title, desc, procedure_file: procedure_file ? procedure_file.file : null }).then(res => {
             res && setTableData(res.data);
+            refresh();
+            setEditMode(!editMode);
+            setIsModalVisible(false);
         });
-        setEditMode(!editMode);
-        setIsModalVisible(false);
     }
     const [contacts, setContacts] = useState(test);
     return (
@@ -124,7 +134,7 @@ export const CriticalProcedure = () => {
 
                     <Row>
                         <Col span={24}>
-                            <Table dataSource={tableData} columns={columns} />;
+                            <Table dataSource={tableData} columns={columns} />
                         </Col>
                     </Row>
 
