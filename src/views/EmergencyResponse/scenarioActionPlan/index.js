@@ -11,6 +11,10 @@ import extinguisher from '../../../assets/fire-extinguisher@3x.png';
 import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
+import { Link } from 'react-router-dom';
+
+
+
 export const ScenarioActionPlan = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -48,7 +52,7 @@ export const ScenarioActionPlan = () => {
         },
         {
             title: '', dataIndex: '',
-            render: (value, row, index) => <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
+            render: (value, row, index) => editMode && <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
         },
     ];
 
@@ -76,7 +80,7 @@ export const ScenarioActionPlan = () => {
 
     return (
         <div className='facility--wrapper'>
-            <a href="/#/emergency-response" style={{ color: '#282828' }}>
+            <Link to='/emergency-response' style={{ color: '#282828' }}>
                 <Row>
                     <Col span={1}>
                         <div className=''>
@@ -90,7 +94,7 @@ export const ScenarioActionPlan = () => {
                         </div>
                     </Col>
                 </Row>
-            </a>
+            </Link>
             <Row>
                 <Col span={16}>
                     <Row>

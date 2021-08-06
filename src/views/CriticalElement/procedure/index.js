@@ -54,7 +54,7 @@ export const CriticalProcedure = () => {
         },
         {
             title: '', dataIndex: '',
-            render: (value, row, index) => <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
+            render: (value, row, index) => editMode && <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
         },
     ];
     function deleteRow(id) {

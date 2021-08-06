@@ -6,6 +6,7 @@ import extinguisher from '../../../assets/fire-extinguisher@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
+import { Link } from 'react-router-dom';
 
 export const ResponseTiers = () => {
     const { Dragger } = Upload;
@@ -65,7 +66,7 @@ export const ResponseTiers = () => {
     return (
         <div className='facility--wrapper'>
 
-            <a href="/#/emergency-response" style={{ color: '#282828' }}>
+            <Link to='/emergency-response' style={{ color: '#282828' }}>
                 <Row>
                     <Col span={1}>
                         <div className=''>
@@ -79,7 +80,8 @@ export const ResponseTiers = () => {
                         </div>
                     </Col>
                 </Row>
-            </a>
+
+            </Link>
 
 
             <Row>

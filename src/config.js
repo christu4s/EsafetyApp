@@ -2,7 +2,7 @@
 import { ShopOutlined, HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityAreaDetails, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EquipmentDetection, EquipmentControl, EquipmentMitigation, EquipmentEmergencyResponse, EquipmentIncident, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase } from './views';
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityAreaDetails, EquipmentPreventionDetails, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EquipmentDetection, EquipmentControl, EquipmentMitigation, EquipmentEmergencyResponse, EquipmentIncident, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
 import { IndividualRisk } from './views/RiskAssessment/IndividualRisk';
@@ -39,6 +39,7 @@ export const routes = [
     { path: '/safety-critical', exact: true, component: CriticalElement },
     { path: '/safety-critical/equipment', exact: true, component: CriticalEquipment },
     { path: '/safety-critical/equipment/prevention', exact: true, component: EquipmentPrevention },
+    { path: '/safety-critical/equipment/prevention/:id', exact: true, component: EquipmentPreventionDetails },
     { path: '/safety-critical/equipment/detection', exact: true, component: EquipmentDetection },
     { path: '/safety-critical/equipment/control', exact: true, component: EquipmentControl },
     { path: '/safety-critical/equipment/mitigation', exact: true, component: EquipmentMitigation },
