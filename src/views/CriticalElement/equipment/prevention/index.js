@@ -8,9 +8,9 @@ import computing from '../../../../assets/cloud-computing@3x.png';
 import './index.css';
 import ajax from '../../../../ajax';
 import { Link } from 'react-router-dom';
+export * from './details';
 
-
-export const EquipmentPrevention = () => {
+export const EquipmentPrevention = ({ history }) => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -46,7 +46,7 @@ export const EquipmentPrevention = () => {
     function submit() {
         var { title = '', add_sce } = form.getFieldsValue();
         ajax.post('/procedure_addSCE', { title, add_sce: add_sce ? add_sce.file : image }).then(res => {
-            res && setData(res.data);
+            res && history.push('/procedure_addSCE/' + res.id);
             refresh();
             setEditMode(!editMode);
             setIsModalVisible(false);
@@ -147,10 +147,11 @@ export const EquipmentPrevention = () => {
                     }
                     <Row>
                         {data.map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={v.add_sce.length ? v.add_sce[0].src : image} />}>
-
-                            </Card>
-                            <Meta style={{ textAlign: 'center' }} title={v.title} />
+                            <Link to={"/safety-critical/equipment/prevention/" + v.id} >
+                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={v.add_sce.length ? v.add_sce[0].src : image} />}>
+                                </Card>
+                                <Meta style={{ textAlign: 'center' }} title={v.title} />
+                            </Link>
                         </Col>)}
                     </Row>
 

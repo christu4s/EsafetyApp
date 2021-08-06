@@ -107,8 +107,6 @@ export const WrittenSafetyCase = () => {
                                     <Form form={form}>
                                         {editMode ? <Form.Item name="safety_desc"><Input.TextArea defaultValue={content.safety_desc} /></Form.Item> : <p>{content.safety_desc}</p>}
                                     </Form>
-                                    {/* {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>} */}
-
                                 </p>
                             </div>
                         </Col>
