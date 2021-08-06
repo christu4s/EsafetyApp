@@ -10,7 +10,7 @@ import ajax from '../../ajax';
 export const RiskAssessment = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const [content, setContent] = useState({ mah_desc: '', mah_image: '' });
+    const [content, setContent] = useState({ risk_desc: '', risk_image: '' });
     const [data, setData] = useState([]);
     const [form] = Form.useForm();
     
