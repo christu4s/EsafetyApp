@@ -2,13 +2,9 @@ import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Form, Spa
 import React, { useState, useEffect } from 'react';
 
 import download from '../../../assets/direct-download@3x.png';
-import cancel from '../../../assets/cancel@3x.png';
-
-
-import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined, DownloadOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
