@@ -1,5 +1,5 @@
 import { Row, Col, Card , Button , Modal , Upload, message , Input , Form, Checkbox, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
 import danger from '../../../assets/danger-sing@3x.png';
@@ -7,6 +7,7 @@ import { PlusCircleOutlined,  CloudUploadOutlined , ArrowLeftOutlined   } from '
 import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../../facilities/components';
 import { useHistory } from "react-router-dom";
+import ajax from '../../../ajax';
 
 // import './index.css';
 export const PlanRiskBreakDown = () => {
@@ -14,7 +15,13 @@ export const PlanRiskBreakDown = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    const [content, setContent] = useState({ plant_desc: '', plant_image: '' });
+    const [data, setData] = useState([]);
+    const [form] = Form.useForm();
+
+    useEffect(() => {
+        ajax.get('/plant_risk').then(res => res && setContent(res));
+    }, []);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -36,28 +43,17 @@ export const PlanRiskBreakDown = () => {
           console.log('Failed:', errorInfo);
         };      
 
+    const { Meta } = Card;
+    
     const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList );
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
+        beforeUpload: () => false,
     };
 
-    const { Meta } = Card;
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/plant_risk', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
     
     return (
         <div className='facility--wrapper'>
@@ -95,7 +91,7 @@ export const PlanRiskBreakDown = () => {
                             {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
                             <Space>
                                 <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
                             </Space>}
                         </div>
                                 </div>
@@ -107,7 +103,7 @@ export const PlanRiskBreakDown = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
+                                {editMode ? <Form.Item name="plant_desc"><Input.TextArea defaultValue={content.plant_desc} /></Form.Item> : <p>{content.plant_desc}</p>}
                                 </p>
                             </div>
                         </Col>
