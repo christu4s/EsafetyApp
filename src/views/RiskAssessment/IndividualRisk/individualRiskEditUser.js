@@ -6,6 +6,7 @@ import danger from '../../../assets/danger-sing@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined  , CaretUpOutlined} from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../../facilities/components';
+import './index.css';
 import { Collapse } from 'antd';
 
 

@@ -1,0 +1,40 @@
+.table--holder--f{
+    background-color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    overflow: hidden;
+
+}
+a{text-decoration: none !important;}
+.table--holder--f th ,
+.table--holder--f thead{
+    border: none;
+ 
+}
+.table--holder--f th ,
+.table--holder--f td{
+    padding: 13px;
+} 
+.table--holder--f table{
+    margin-bottom: 0;
+    margin-top: -1px;
+}
+.table--holder--f th:first-child{
+    border-bottom-left-radius:5px ;
+}
+.table--holder--f th:last-child{
+    border-bottom-right-radius:5px ;
+}
+
+.table--holder--f thead{
+    border: none;
+    background-color: #123862;
+    color: #fff;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px; 
+}
+.color--red{color: #f23838;}
+.ant-btn .anticon{
+    margin-top: 2px 0;
+    vertical-align: top;
+}

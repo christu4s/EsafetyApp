@@ -105,6 +105,20 @@ export const RemedialAction = () => {
                     </Row>
 
 
+
+                </Col>
+            </Row>
+
+            <Row style={{ marginTop: 30 }}>
+                <Col span={15}>
+                    <div className='divider'></div>
+                </Col>
+            </Row>
+
+            <Row>
+
+                <Col span={24}>
+                    <h2>Table</h2>
                 </Col>
             </Row>
 
