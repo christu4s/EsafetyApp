@@ -1,4 +1,4 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Form, Space, Table } from 'antd';
+import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Form, Space, Table, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 
 import download from '../../../assets/direct-download@3x.png';
@@ -8,7 +8,7 @@ import cancel from '../../../assets/cancel@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
 export const ScenarioActionPlan = () => {
@@ -17,12 +17,13 @@ export const ScenarioActionPlan = () => {
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({ scenario_desc: ' ' });
     const [form] = Form.useForm();
-    const [data, setData] = useState([]);
+    const [now, setNow] = useState();
+    const refresh = () => setNow(new Date());
     const [tableData, setTableData] = useState([]);
     useEffect(() => {
         ajax.get('/scenario_action').then(res => res && setContent(res));
         ajax.get('/scenario_action_flow').then(res => res && setTableData(res.data));
-    }, []);
+    }, [now]);
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -45,7 +46,15 @@ export const ScenarioActionPlan = () => {
             title: '', dataIndex: 'scenario_file',
             render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
         },
+        {
+            title: '', dataIndex: '',
+            render: (value, row, index) => <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
+        },
     ];
+
+    function deleteRow(id) {
+        ajax.delete('/scenario_action_flow/' + id).then(refresh);
+    }
     async function saveData() {
         var values = form.getFieldsValue();
         await ajax.post('/scenario_action', values).then(res => res && setContent(res));
@@ -56,9 +65,11 @@ export const ScenarioActionPlan = () => {
         var { title = ' ', desc = ' ', scenario_file } = form.getFieldsValue();
         ajax.post('/scenario_action_flow', { title, desc, scenario_file: scenario_file ? scenario_file.file : null }).then(res => {
             res && setTableData(res.data);
+            refresh();
+            setEditMode(!editMode);
+            setIsModalVisible(false);
         });
-        setEditMode(!editMode);
-        setIsModalVisible(false);
+
     }
     const { Meta } = Card;
 

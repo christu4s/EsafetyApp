@@ -13,12 +13,12 @@ export const CriticalProcedure = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const [now, setNow] = useState(); 
+    const [now, setNow] = useState();
     const [content, setContent] = useState({ procedure_desc: ' ' });
     const [form] = Form.useForm();
     const [tableData, setTableData] = useState([]);
     const refresh = () => setNow(new Date());
-    
+
     useEffect(() => {
         ajax.get('/critical_procedure').then(res => res && setContent(res));
         ajax.get('/safety_critical_procedure').then(res => res && setTableData(res.data));
@@ -52,12 +52,12 @@ export const CriticalProcedure = () => {
             title: '', dataIndex: 'procedure_file',
             render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
         },
-        { 
-            title:'', dataIndex: '', 
-            render: (value, row, index) => <Popconfirm onConfirm={()=> deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger/></Popconfirm> 
+        {
+            title: '', dataIndex: '',
+            render: (value, row, index) => <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
         },
     ];
-    function deleteRow(id){
+    function deleteRow(id) {
         ajax.delete('/safety_critical_procedure/' + id).then(refresh);
     }
     function submit() {
