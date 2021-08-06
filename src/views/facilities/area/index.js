@@ -129,7 +129,7 @@ export const FacilityArea = ({ history }) => {
                         <Row>
                             {data.map((v, i) => <Col key={i} span={8}>
                                 <Link to={"/facility-overview/area/" + v.id} >
-                                    <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={v.image ? v.image[0].src : image} />}>
+                                    <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={v.image.length ? v.image[0].src : image} />}>
                                         <Meta title={v.title} />
                                     </Card>
                                 </Link>

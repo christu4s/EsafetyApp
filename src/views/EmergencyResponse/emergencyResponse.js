@@ -2,11 +2,14 @@ import { Row, Col, Card, Button, Modal, Upload, message, Input, Space, Form } fr
 import React, { useState, useEffect } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
 
-import trimage from '../../assets/ft-cb-crs-img@3x.png';
-
+import imageTiers from '../../assets/tiers.png';
+import imageResponseOrg from '../../assets/responseOrg.png';
+import imageResponsePlan from '../../assets/fire-alarm.png';
+import imageActionPlan from '../../assets/ActionPlan.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
 import ajax from '../../ajax';
+import { Link } from 'react-router-dom';
 
 export const EmergencyResponse = () => {
     const { Dragger } = Upload;
@@ -57,7 +60,13 @@ export const EmergencyResponse = () => {
         setEditMode(!editMode);
     }
     const { Meta } = Card;
+    const subpages = [
+        { title: 'Response Tiers', url: '/emergency-response/tiers', image: imageTiers },
+        { title: 'Response Organisation', url: '/emergency-response/organisation', image: imageResponseOrg },
+        { title: 'Response Plan', url: '/emergency-response/plan', image: imageResponsePlan },
+        { title: 'Scenario Specific Action Plan', url: '/emergency-response/scenario', image: imageActionPlan },
 
+    ]
     return (
         <div className='facility--wrapper'>
             <Row>
@@ -101,12 +110,12 @@ export const EmergencyResponse = () => {
                     </Row>
 
                     <Row>
-                        {Array(4).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <a href="#/accidents-hazards">
-                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={trimage} />}>
-                                    <Meta title="Emergency Response Tiers" />
+                        {subpages.map((page, i) => <Col key={i} span={8}>
+                            <Link to={page.url}>
+                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={page.image} />}>
+                                    <Meta title={page.title} />
                                 </Card>
-                            </a>
+                            </Link>
                         </Col>)}
                     </Row>
 
