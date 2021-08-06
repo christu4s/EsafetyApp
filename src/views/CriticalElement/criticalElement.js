@@ -1,12 +1,36 @@
-import { Row, Col, Card, Upload, message } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Card, Upload, message, Button, Space, Input, Form } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import alert from '../../assets/alert@3x.png';
-import image from '../../assets/downloadSEC@3x.png';
+import imageEquipment from '../../assets/critical-element-equipment.png';
+import imagePersonnel from '../../assets/critical-element-personnel.png';
+import imageProcedure from '../../assets/critical-element-procedure.png';
+import ajax from '../../ajax';
 
 export const CriticalElement = () => {
 
     const { Meta } = Card;
+    const [editMode, setEditMode] = useState(false);
+    const [content, setContent] = useState({ critical_element_desc: '' });
+    const [form] = Form.useForm();
+    const [now, setNow] = useState();
+    const refresh = () => setNow(new Date());
+    useEffect(() => {
+        ajax.get('/safetyCriticalElement').then(res => res && setContent(res));
 
+    }, [now]);
+
+    const subpages = [
+        { title: 'Equipment', url: '/safety-critical/equipment', image: imageEquipment },
+        { title: 'Personnel', url: '/safety-critical/personnel', image: imagePersonnel },
+        { title: 'Procedure', url: '/safety-critical/procedure', image: imageProcedure },
+    ]
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/safetyCriticalElement', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+        refresh();
+    }
     return (
         <div className='facility--wrapper'>
             <Row>
@@ -18,8 +42,20 @@ export const CriticalElement = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
-                                <h2>Safety Critical Elements</h2>
+                            <div className='area--header '>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <h2>Safety Critical Elements</h2>
+                                    </div>
+
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                            <Space>
+                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
+                                            </Space>}
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -28,17 +64,21 @@ export const CriticalElement = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                    <Form form={form}>
+                                        {editMode ? <Form.Item name="critical_element_desc"><Input.TextArea defaultValue={content.critical_element_desc} /></Form.Item> : <p>{content.critical_element_desc}</p>}
+                                    </Form>
                                 </p>
                             </div>
                         </Col>
                     </Row>
 
                     <Row>
-                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                                <Meta title="Safety Critical Equipment" />
-                            </Card>
+                        {subpages.map((sub, i) => <Col key={i} span={8}>
+                            <Link to={sub.url}>
+                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={sub.image} />}>
+                                    <Meta title={sub.title} />
+                                </Card>
+                            </Link>
                         </Col>)}
                     </Row>
 

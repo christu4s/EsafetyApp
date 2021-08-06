@@ -1,20 +1,25 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Card, Button, Modal, Upload, Input, Form, Space, Popconfirm } from 'antd';
+import React, { useState, useEffect } from 'react';
 
-import image from '../../../assets/screen-shot@3x.png';
-
-import arrow from '../../../assets/left-arrow@3x.png';
-
+import image from '../../../assets/06107-f-28-fig-3@3x.png';
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined , ArrowLeftOutlined} from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
+import ajax from '../../../ajax';
+import { Link } from 'react-router-dom';
 
 export const ResponseOrganisation = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
+    const [editMode, setEditMode] = useState(false);
+    const [content, setContent] = useState({ organisation_desc: '', organisation_image: '' });
+    const [team_members, setTeams] = useState([]);
+    const [form] = Form.useForm();
+
+    useEffect(() => {
+        ajax.get('/emergency_response_organisation').then(res => res && setData(res));
+    }, []);
+    const showModal = () => { setIsModalVisible(true); };
 
     const handleOk = () => {
         setIsModalVisible(false);
@@ -23,49 +28,60 @@ export const ResponseOrganisation = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
 
+    const props = { beforeUpload: () => false, };
+
+    function setData(res) {
+        setContent(res);
+        try {
+            var tem = JSON.parse(res.team_members.replace(/\\/g, ''));
+            setTeams(tem);
+        } catch (e) { }
+    }
+
+    async function saveData() {
+        var { organisation_desc = '', organisation_image } = form.getFieldsValue();
+        await ajax.post('/emergency_response_organisation', {
+            organisation_desc: organisation_desc ? organisation_desc : null,
+            organisation_image: organisation_image ? organisation_image.file : null,
+            team_members: JSON.stringify(team_members)
+        }).then(res => res && setData(res));
+        setEditMode(!editMode);
+        setIsModalVisible(false);
+    }
     const { Meta } = Card;
+
+    function addmore() { setTeams([...team_members, {}]); }
+    function removeLevel(index) {
+        team_members.splice(index, 1);
+        setTeams([...team_members]);
+    }
+
+    function onLevelChange(index, key, value) {
+        team_members[index][key] = value;
+        setTeams([...team_members]);
+    }
 
 
     return (
         <div className='facility--wrapper'>
-              <a href="/#/emergency-response" style={{color:'#282828'}}>
+            <Link to='/emergency-response' style={{ color: '#282828' }}>
                 <Row>
                     <Col span={1}>
                         <div className=''>
-                        <ArrowLeftOutlined />
+                            <ArrowLeftOutlined />
                         </div>
                     </Col>
                     <Col span={23}>
                         <div className=''>
                             <p>Back
-        </p>
+                            </p>
                         </div>
                     </Col>
                 </Row>
-                </a>
 
-        
+
+            </Link>
             <Row>
                 <Col span={16}>
                     <Row>
@@ -75,46 +91,60 @@ export const ResponseOrganisation = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{marginTop:15}}>
+                            <div className='area--header mt-5'>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <h2 style={{ marginTop: 25 }}>Emergency Response Organisation</h2>
+                                    </div>
 
-                                <h2>Emergency Response Organisation</h2>
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                            <Space>
+                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                                <Button type="primary" size="small" onClick={saveData}>Save</Button>
+                                            </Space>}
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
                     <Row>
                         <Col span={23}>
-                            <div className='box--facility area--box--facility'>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                </p>
-                            </div>
+                            <Form form={form}>
+                                <div className='box--facility area--box--facility'>
+                                    <p>{editMode ? <Form.Item name="organisation_desc"><Input.TextArea defaultValue={content.organisation_desc} /></Form.Item>
+                                        : <p>{content.organisation_desc}</p>}</p>
+                                </div>
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                    <Form.Item name="tiers_image">
+                                        <Dragger {...props}>
+                                            <p className="ant-upload-drag-icon">
+                                                <img width='50' src={computing} />
+                                            </p>
+                                            <p className="ant-upload-hint">
+                                                Drag or drop your files here OR <span> browse </span>
+                                            </p>
+                                        </Dragger>
+                                    </Form.Item>
+                                    <Button type="primary" onClick={saveData}>Upload Image</Button>
+                                </Modal>
+                            </Form>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col span={6}>
-                            <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                Upload Image
-                            </Button>
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
+                    {editMode &&
+                        <Row>
+                            <Col span={6}>
+                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
                                     Upload Image
                                 </Button>
-                            </Modal>
-                        </Col>
-                        <Col span={12}>
-                            <h4>File size not more than 2 MB</h4>
-                        </Col>
-                    </Row>
+                            </Col>
+                            <Col span={12}>
+                                <h4>File size not more than 2 MB</h4>
+                            </Col>
+                        </Row>
+                    }
                     <Row>
                         <Col span={12}>
                             <h2>File uploaded</h2>
@@ -124,93 +154,55 @@ export const ResponseOrganisation = () => {
                     </Row>
                     <Row>
                         <Col span={24}>
-                            <img width='100%' src={image} />
+                            <img width='100%' src={content.tiers_image ? content.tiers_image[0].src : image} />
                         </Col>
                     </Row>
 
                     <Row>
-                    <Col span={24}>
-                        <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
-                            <Row>
-                                {/* <Col span={4}>
-                                    <h3>Emergency Response Tier</h3>
-                                </Col> */}
-                                <Col span={12} >
-                                    <h3>Team Member</h3>
-                                </Col>
-                                <Col span={12}>
-                                    <h3>Roles and Responbilities</h3>
-                                </Col>
-                            </Row>
-                            <hr />
-                            <Row gutter={16}>
-
-                                <Col span={12}>
-                                    <Input placeholder="1" />
-
-                                </Col>
-                                <Col span={12}>
-                                    <Input placeholder="10" />
-                                </Col>
-                            </Row>
-                            <hr />
-                            <Row gutter={16}>
-
-                                <Col span={12}>
-                                    <Input placeholder="1" />
-
-                                </Col>
-                                <Col span={12}>
-                                    <Input placeholder="10" />
-                                </Col>
-                            </Row>
-                            <hr />
-                            <Row gutter={16}>
-
-                                <Col span={12}>
-                                    <Input placeholder="1" />
-                                </Col>
-                                <Col span={12}>
-                                    <Input placeholder="10" />
-                                </Col>
-                                <Row className='addmore--button'>
-                                    <Col>
-                                        <Button type="default" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                            Add More
-                                        </Button>
-
-                                        <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                            <h3 className='modal--title text-center'>Upload Files</h3>
-                                            <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                            <Dragger {...props}>
-                                                <p className="ant-upload-drag-icon">
-                                                    <img width='50' src={computing} />
-                                                </p>
-
-                                                <p className="ant-upload-hint">
-                                                    Drag or drop your files here OR <span> browse </span>
-                                                </p>
-                                            </Dragger>,
-                                            <div className='area--form'>
-                                                <label>Name of Area</label>
-                                                <Input placeholder="Lorem ipsum dolor sit amet" />
-                                            </div>
-
-                                            <Button type="primary" icon={<CloudUploadOutlined />}>
-                                                Upload Image
-                                            </Button>
-                                        </Modal>
+                        <Col span={24}>
+                            <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+                                <Row gutter={20}>
+                                    <Col span={12} >
+                                        <h3>Team Member</h3>
+                                    </Col>
+                                    <Col span={12}>
+                                        <h3>Roles and Responbilities</h3>
                                     </Col>
                                 </Row>
-                            </Row>
-                            <hr />
-                        </div>
-                    </Col>
-                </Row>
+                                <hr />
+                                {team_members.map((team, index) => <>
+                                    <Row gutter={16}>
+                                        <Col span={10}>
+                                            <Input placeholder="1" readOnly={!editMode} value={team.teamMembers} onChange={e => onLevelChange(index, 'teamMembers', e.target.value)} />
+                                        </Col>
+                                        <Col span={10}>
+                                            <Input placeholder="10" readOnly={!editMode} value={team.roles} onChange={e => onLevelChange(index, 'roles', e.target.value)} />
+                                        </Col>
+                                        <Col span={2}>
+                                            {editMode &&
+                                                <Popconfirm title="Are you sure to delete this level?" onConfirm={() => removeLevel(index)}>
+                                                    <Button type="link" icon={<DeleteOutlined danger />} />
+                                                </Popconfirm>
+                                            }
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                </>)}
+                                {editMode &&
+                                    <Row className='addmore--button'>
+                                        <Col>
+                                            <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                                                Add More
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                }
+                            </div>
+                        </Col>
+                    </Row>
 
                 </Col>
 
-               
 
             </Row>
 

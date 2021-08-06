@@ -1,16 +1,28 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Space, Form } from 'antd';
+import React, { useState, useEffect } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
 
-import trimage from '../../assets/ft-cb-crs-img@3x.png';
-
+import imageTiers from '../../assets/tiers.png';
+import imageResponseOrg from '../../assets/responseOrg.png';
+import imageResponsePlan from '../../assets/fire-alarm.png';
+import imageActionPlan from '../../assets/ActionPlan.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
-
+import ajax from '../../ajax';
+import { Link } from 'react-router-dom';
 
 export const EmergencyResponse = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [content, setContent] = useState({ response_desc: '' });
+    const [form] = Form.useForm();
+
+    useEffect(() => {
+        ajax.get('/emergency_respons').then(res => res && setContent(res));
+        //ajax.get('/writen-safety').then(res => res && setTableData(res.data));
+    }, []);
+
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -42,9 +54,19 @@ export const EmergencyResponse = () => {
             console.log('Dropped files', e.dataTransfer.files);
         },
     };
-
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/emergency_respons', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
     const { Meta } = Card;
+    const subpages = [
+        { title: 'Response Tiers', url: '/emergency-response/tiers', image: imageTiers },
+        { title: 'Response Organisation', url: '/emergency-response/organisation', image: imageResponseOrg },
+        { title: 'Response Plan', url: '/emergency-response/plan', image: imageResponsePlan },
+        { title: 'Scenario Specific Action Plan', url: '/emergency-response/scenario', image: imageActionPlan },
 
+    ]
     return (
         <div className='facility--wrapper'>
             <Row>
@@ -56,8 +78,20 @@ export const EmergencyResponse = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{marginTop:15}}>
-                                <h2>Emergency Response</h2>
+                            <div className='area--header '>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <h2>Emergency Response</h2>
+                                    </div>
+
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                            <Space>
+                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                                <Button type="primary" size="small" onClick={saveData}>Save</Button>
+                                            </Space>}
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -66,19 +100,22 @@ export const EmergencyResponse = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                    <Form form={form}>
+                                        {editMode ? <Form.Item name="response_desc"><Input.TextArea defaultValue={content.response_desc} /></Form.Item> : <p>{content.response_desc}</p>}
+                                    </Form>
+                                    {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. */}
                                 </p>
                             </div>
                         </Col>
                     </Row>
 
                     <Row>
-                        {Array(4).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <a href="#/accidents-hazards">
-                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={trimage} />}>
-                                    <Meta title="Emergency Response Tiers" />
+                        {subpages.map((page, i) => <Col key={i} span={8}>
+                            <Link to={page.url}>
+                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={page.image} />}>
+                                    <Meta title={page.title} />
                                 </Card>
-                            </a>
+                            </Link>
                         </Col>)}
                     </Row>
 

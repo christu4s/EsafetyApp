@@ -1,18 +1,34 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input, Tag, Space } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Table, Tag, Space, Form, Popconfirm } from 'antd';
+import React, { useState, useEffect } from 'react';
 import alert from '../../../assets/alert@3x.png';
-import image from '../../../assets/image.png';
+import download from '../../../assets/direct-download@3x.png';
+import cancel from '../../../assets/cancel@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
-import { PlusCircleOutlined, CloudUploadOutlined  , ArrowLeftOutlined , DownloadOutlined , CloseCircleOutlined } from '@ant-design/icons';
-import {Table as TableB} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import test from './test.json';
-
+import ajax from '../../../ajax';
 export const CriticalProcedure = () => {
 
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [now, setNow] = useState();
+    const [content, setContent] = useState({ procedure_desc: ' ' });
+    const [form] = Form.useForm();
+    const [tableData, setTableData] = useState([]);
+    const refresh = () => setNow(new Date());
+
+    useEffect(() => {
+        ajax.get('/critical_procedure').then(res => res && setContent(res));
+        ajax.get('/safety_critical_procedure').then(res => res && setTableData(res.data));
+    }, [now]);
+
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/critical_procedure', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -25,73 +41,48 @@ export const CriticalProcedure = () => {
         setIsModalVisible(false);
     };
     const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
+        beforeUpload: () => false,
     };
 
     const { Meta } = Card;
     const columns = [
+        { title: 'Safety Critical Procedure', dataIndex: 'title' },
+        { title: 'Document Number', dataIndex: 'desc' },
         {
-          title: 'Safety Critical Procedure          ',
-          dataIndex: 'name',
-          key: 'name',
+            title: '', dataIndex: 'procedure_file',
+            render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
         },
         {
-          title: 'Document Number',
-          dataIndex: 'age',
-          key: 'age',
+            title: '', dataIndex: '',
+            render: (value, row, index) => editMode && <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
         },
-        {
-          title: '',
-          dataIndex: 'address',
-          key: 'address',
-        },
-      ];
-
-      const dataSource = [
-        {
-          key: '1',
-          name: 'Mike',
-          age: 32,
-          address: '10 Downing Street',
-        },
-        {
-          key: '2',
-          name: 'John',
-          age: 42,
-          address: '10 Downing Street',
-        },
-      ];
+    ];
+    function deleteRow(id) {
+        ajax.delete('/safety_critical_procedure/' + id).then(refresh);
+    }
+    function submit() {
+        var { title = ' ', desc = ' ', procedure_file } = form.getFieldsValue();
+        ajax.post('/safety_critical_procedure', { title, desc, procedure_file: procedure_file ? procedure_file.file : null }).then(res => {
+            res && setTableData(res.data);
+            refresh();
+            setEditMode(!editMode);
+            setIsModalVisible(false);
+        });
+    }
     const [contacts, setContacts] = useState(test);
     return (
         <div className='facility--wrapper'>
-             <a href="/#/safety-critical" style={{color:'#282828'}}>
+            <a href="/#/safety-critical" style={{ color: '#282828' }}>
                 <Row>
                     <Col span={1}>
                         <div className=''>
-                        <ArrowLeftOutlined />
+                            <ArrowLeftOutlined />
                         </div>
                     </Col>
                     <Col span={23}>
                         <div className=''>
                             <p>Back
-        </p>
+                            </p>
                         </div>
                     </Col>
                 </Row>
@@ -105,8 +96,20 @@ export const CriticalProcedure = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{marginTop:15}}>
-                                <h2>Safety Critical Procedure</h2>
+                            <div className='area--header mt-5'>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <h2 style={{ marginTop: 25 }}>Safety Critical Procedure</h2>
+                                    </div>
+
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                            <Space>
+                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
+                                            </Space>}
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -115,132 +118,66 @@ export const CriticalProcedure = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                    <Form form={form}>
+                                        {editMode ? <Form.Item name="procedure_desc"><Input.TextArea defaultValue={content.procedure_desc} /></Form.Item> : <p>{content.procedure_desc}</p>}
+                                    </Form>
                                 </p>
                             </div>
                         </Col>
                     </Row>
 
-                    {/* <Row>
-                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                                <Meta title="Europe Street beat" />
-                            </Card>
-                        </Col>)}
-                    </Row> */}
+                    <Row>
+                        <Col span={24}>
+                            <div className='divider'></div>
+                        </Col>
+                    </Row>
 
                     <Row>
                         <Col span={24}>
-                                <div className='divider'></div>
+                            <Table dataSource={tableData} columns={columns} />
                         </Col>
                     </Row>
 
-                    <Row>
-                <Col span={24}>
-                        <div className='table--holder--f'>
-                        <TableB striped bordered hover>
-                        <thead>
-                            <tr>
-                            <th>Safety Critical Procedure</th>
-                            <th>Document Number</th>
-                            <th></th>
-                            <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            <td>Emergency Response Procedure</td>
-                            <td>XX-XXX-001</td>
-                            <td><DownloadOutlined /></td>
-                            <td className='color--red'><CloseCircleOutlined /></td>
-                            </tr>
-                            <tr>
-                            <td>Emergency Response Procedure</td>
-                            <td>XX-XXX-001</td>
-                            <td><DownloadOutlined /></td>
-                            <td className='color--red'><CloseCircleOutlined /></td>
-                            </tr>
-                           
-                        </tbody>
-                        </TableB>
-                        </div>
-                </Col>
-            </Row>
-
-                    <Row className='addmore--button'>
-                        <Col>
-                            {/* <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                Add More
-                            </Button> */}
-                            <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                Upload Document
-                            </Button>
-
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
-
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <div className='area--form'>
-                                    <label>Name of Area</label>
-                                    <Input placeholder="Lorem ipsum dolor sit amet" />
-                                </div>
-
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                    Upload Image
+                    {editMode &&
+                        <Row className='addmore--button'>
+                            <Col>
+                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
+                                    Upload Document
                                 </Button>
-                            </Modal>
-                        </Col>
-                    </Row>
 
-                 
-                    {/* <Row>
-                        <div style={{ border: '1px solid #ddd' }} className="app-container">
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                    <Form form={form}>
+                                        <Form.Item name="procedure_file">
+                                            <Dragger {...props}>
+                                                <p className="ant-upload-drag-icon">
+                                                    <img width='50' src={computing} />
+                                                </p>
+                                                <p className="ant-upload-hint">
+                                                    Drag or drop your files here OR <span> browse </span>
+                                                </p>
+                                            </Dragger>
+                                        </Form.Item>
+                                        <div className='area--form'>
+                                            <label>Name of the Safety Critical Procedure</label>
+                                            <Form.Item name="title">
+                                                <Input />
+                                            </Form.Item>
+                                            <label>Document Number</label>
+                                            <Form.Item name="desc">
+                                                <Input />
+                                            </Form.Item>
+                                        </div>
+                                    </Form>
 
-                            <table className='table'>
-                                <thead>
-                                    <tr>
-                                        <th>Safety Critical Procedure</th>
-                                        <th colSpan="3">Document Number</th>
+                                    <Button type="primary" onClick={submit}>Create</Button>
+                                </Modal>
+                            </Col>
+                        </Row>
 
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {contacts.map((contact) => (
-                                        <tr>
-                                            <td>{contact.Name}</td>
-                                            <td>{contact.Number}</td>
-                                            <td></td>
-                                            <td></td>
-
-
-                                        </tr>
-                                    ))}
-
-                                </tbody>
-                            </table>
-
-
-
-                        </div>
-
-
-                       
-
-                    </Row> */}
-
-                    
-
+                    }
                 </Col>
-
             </Row>
 
 

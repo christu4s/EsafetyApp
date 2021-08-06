@@ -1,5 +1,5 @@
-import { Row, Col, Card , Button , Modal , Upload, message , Input , Form, Checkbox } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Card , Button , Modal , Upload, message , Input , Form, Checkbox, Space } from 'antd';
+import React, { useState, useEffect } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
 import danger from '../../../assets/danger-sing@3x.png';
@@ -7,12 +7,22 @@ import { PlusCircleOutlined,  CloudUploadOutlined , ArrowLeftOutlined   } from '
 import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../../facilities/components';
 import { useHistory } from "react-router-dom";
+import ajax from '../../../ajax';
 
 // import './index.css';
 export const PlanRiskBreakDown = () => {
     let history = useHistory();
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [content, setContent] = useState({ plant_desc: '', plant_image: '' });
+    const [data, setData] = useState([]);
+    const [form] = Form.useForm();
+
+    useEffect(() => {
+        ajax.get('/plant_risk').then(res => res && setContent(res));
+    }, []);
+
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -24,8 +34,6 @@ export const PlanRiskBreakDown = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-
-  
         const onFinish = (values) => {
           console.log('Success:', values);
           history.push('/risk-assessment/edit-plan');
@@ -33,32 +41,19 @@ export const PlanRiskBreakDown = () => {
       
         const onFinishFailed = (errorInfo) => {
           console.log('Failed:', errorInfo);
-        };
-
-      
-
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList );
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
+        };      
 
     const { Meta } = Card;
+    
+    const props = {
+        beforeUpload: () => false,
+    };
+
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/plant_risk', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
     
     return (
         <div className='facility--wrapper'>
@@ -86,11 +81,20 @@ export const PlanRiskBreakDown = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header'>
-                                <p>Risk Assessment
-</p>
-                                <h2>
-Plant Risk Breakdown</h2>
+                            <div className='area--header' >
+                            <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                <div>
+                                    <p>Risk Assessment</p>
+                                    <h2 >Plant Risk Breakdown</h2>
+                                </div>
+                                <div>
+                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
+                            <Space>
+                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
+                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
+                            </Space>}
+                        </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -99,12 +103,13 @@ Plant Risk Breakdown</h2>
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        </p>
+                                {editMode ? <Form.Item name="plant_desc"><Input.TextArea defaultValue={content.plant_desc} /></Form.Item> : <p>{content.plant_desc}</p>}
+                                </p>
                             </div>
                         </Col>
                     </Row>
 
+                    {editMode && 
                     <Row>
                     <Col span={6}>
                         <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
@@ -129,7 +134,9 @@ Plant Risk Breakdown</h2>
                         <Col span={12}>
                             <h4>File size not more than 2 MB</h4>
                         </Col>
-                    </Row>
+                    </Row>                    
+                    }
+
                     <Row>
                         <Col span={12}>
                             <h2>File uploaded</h2>

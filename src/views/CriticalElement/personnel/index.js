@@ -1,16 +1,19 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Space } from 'antd';
 import React, { useState } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import ellipse from '../../../assets/ellipse@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
-import { PlusCircleOutlined, CloudUploadOutlined , ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 
 
 export const CriticalPersonnel = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -22,43 +25,24 @@ export const CriticalPersonnel = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
+    const props = {};
 
     const { Meta } = Card;
 
     return (
 
         <div className='facility--wrapper'>
-             <a href="/#/safety-critical" style={{color:'#282828'}}>
+            <a href="/#/safety-critical" style={{ color: '#282828' }}>
                 <Row>
                     <Col span={1}>
                         <div className=''>
-                        <ArrowLeftOutlined />
+                            <ArrowLeftOutlined />
                         </div>
                     </Col>
                     <Col span={23}>
                         <div className=''>
                             <p>Back
-        </p>
+                            </p>
                         </div>
                     </Col>
                 </Row>
@@ -73,8 +57,20 @@ export const CriticalPersonnel = () => {
                             </div>
                         </Col>
                         <Col span={23}>
-                            <div className='area--header' style={{marginTop:15}}>
-                                <h2>Safety Critical Personnel</h2>
+                            <div className='area--header mt-5'>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <h2 style={{ marginTop: 25 }}>Safety Critical Personnel</h2>
+                                    </div>
+
+                                    <div>
+                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
+                                            <Space>
+                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
+                                                <Button type="primary" size="small" success onClick={() => setEditMode(!editMode)}>Save</Button>
+                                            </Space>}
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -83,14 +79,14 @@ export const CriticalPersonnel = () => {
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                    {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
                                 </p>
                             </div>
                         </Col>
                     </Row>
                     <Row>
                         <Col span={23}>
-                            <div className="divider"></div>    
+                            <div className="divider"></div>
                         </Col>
                     </Row>
                     <Row>
