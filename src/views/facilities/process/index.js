@@ -17,6 +17,11 @@ export const FacilityProcess = () => {
     const [content, setContent] = useState({ process_desc: '', process_image: '' });
     const [data, setData] = useState([]);
     const [form] = Form.useForm();
+    const [now, setNow] = useState();
+    const refresh = () => setNow(new Date());
+    const [tableData, setTableData] = useState([]);
+    const [levels, setLevels] = useState([]);
+
     
     useEffect(() => {
         ajax.get('/facilities_process').then(res => res && setContent(res));
@@ -37,12 +42,33 @@ export const FacilityProcess = () => {
     const props = {
         beforeUpload: () => false,
     };
-    async function saveData() {
-        var values = form.getFieldsValue();
-        await ajax.post('/facilities_process', values).then(res => res && setContent(res));
-        setEditMode(!editMode);
-    }
+    // async function saveData() {
+    //     var values = form.getFieldsValue();
+    //     await ajax.post('/facilities_process', values).then(res => res && setContent(res));
+    //     setEditMode(!editMode);
+    // }
 
+    async function saveData() {
+        var { process_desc = '', process_image } = form.getFieldsValue();
+        await ajax.post('/facilities_process', {
+            process_desc: process_desc ? process_desc : null,
+            process_image: process_image ? process_image.file : null,
+            levels: JSON.stringify(levels)
+        }).then(res => res && setData(res));
+        setEditMode(!editMode);
+        setIsModalVisible(false);
+    }
+    
+
+    function submit() {
+        var { title, process_image } = form.getFieldsValue();
+        ajax.post('/facilities_process', { title, process_image: process_image ? process_image.file : null }).then(res => {
+            res && setTableData(res.data);
+            refresh();
+            setEditMode(!editMode);
+            setIsModalVisible(false);
+        });
+    }
 
     const { Meta } = Card;
     const boxContent = [
@@ -101,7 +127,9 @@ export const FacilityProcess = () => {
                                         </Button>
                                         <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                             <h3 className='modal--title text-center'>Upload Files</h3>
-                                            <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                            <p className=' text-center'>File size not more than 2 MB</p>
+                                        <Form form={form}>
+                                        <Form.Item name="process_image">
                                             <Dragger {...props}>
                                                 <p className="ant-upload-drag-icon">
                                                     <img width='50' src={computing} />
@@ -110,8 +138,10 @@ export const FacilityProcess = () => {
                                                 <p className="ant-upload-hint">
                                                     Drag or drop your files here OR <span> browse </span>
                                                 </p>
-                                            </Dragger>,
-                                            <Button type="primary" icon={<CloudUploadOutlined />}>
+                                            </Dragger>
+                                        </Form.Item>
+                                        </Form>,
+                                            <Button type="primary" onClick={saveData} icon={<CloudUploadOutlined />}>
                                                 Upload Image
                                             </Button>
                                         </Modal>
@@ -133,7 +163,8 @@ export const FacilityProcess = () => {
                     </Row>
                     <Row>
                         <Col span={24}>
-                            <img width='100%' src={image} />
+                            
+                            <img width='100%' src={content.process_image ? content.process_image[0].src : image} />
                         </Col>
                     </Row>
                 </Col>
