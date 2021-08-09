@@ -114,28 +114,11 @@ export const RemedialAction = () => {
                     <div className='divider'></div>
                 </Col>
             </Row>
-
             <Row>
 
                 <Col span={24}>
                     <h2>Table</h2>
                 </Col>
-            </Row>
-
-            <Row style={{ marginTop: 30 }}>
-                <Col span={15}>
-                    <div className='divider'></div>
-                </Col>
-            </Row>
-
-            <Row>
-
-                <Col span={24}>
-                    <h2>Table</h2>
-                </Col>
-
-
-
                 <Col span={24}>
                     <div style={{ marginTop: 5 }} className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
                         <Row>
