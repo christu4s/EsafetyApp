@@ -1,5 +1,5 @@
 import { Row, Col, Card , Button , Modal , Upload, message , Input , Form, Checkbox, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
 import danger from '../../../assets/danger-sing@3x.png';
@@ -8,13 +8,29 @@ import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../../facilities/components';
 import { useHistory } from "react-router-dom";
 import './index.css';
+import ajax from '../../../ajax';
+
 export const LocationRisk = () => {
     let history = useHistory();
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [content, setContent] = useState({ location_desc: ''});
     const [editMode, setEditMode] = useState(false);
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
-    
+    const [data, setData] = useState([]);
+    const [form] = Form.useForm();
+
+    const props = {
+        beforeUpload: () => false,
+    };
+    async function saveData() {
+        var values = form.getFieldsValue();
+        await ajax.post('/location_risk', values).then(res => res && setContent(res));
+        setEditMode(!editMode);
+    }
+
+    useEffect(() => {
+        ajax.get('/location_risk').then(res => res && setContent(res));
+    }, []);
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -37,29 +53,7 @@ export const LocationRisk = () => {
           console.log('Failed:', errorInfo);
         };
 
-      
-
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-                console.log(info.fileList );
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
-
+        
     const { Meta } = Card;
     
     return (
@@ -99,7 +93,7 @@ export const LocationRisk = () => {
                             {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
                             <Space>
                                 <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
                             </Space>}
                         </div>
                                 </div>
@@ -109,11 +103,29 @@ export const LocationRisk = () => {
 
                     <Row>
                         <Col span={23}>
+                        <Form form={form}>
                             <div className='box--facility area--box--facility'>
                                 <p>
-                                {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
+                                
+                                    {editMode ? <Form.Item name="locaion_desc"><Input.TextArea defaultValue={content.location_desc} /></Form.Item> : <p>{content.location_desc}</p>}
                                 </p>
                             </div>
+                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
+                                    <Form.Item name="location_image">
+                                        <Dragger {...props}>
+                                            <p className="ant-upload-drag-icon">
+                                                <img width='50' src={computing} />
+                                            </p>
+                                            <p className="ant-upload-hint">
+                                                Drag or drop your files here OR <span> browse </span>
+                                            </p>
+                                        </Dragger>
+                                    </Form.Item>
+                                    <Button type="primary" onClick={saveData}>Upload Image</Button>
+                                </Modal>
+                            </Form>
                         </Col>
                     </Row>
 
@@ -153,7 +165,7 @@ export const LocationRisk = () => {
                     </Row>
                     <Row>
                         <Col span={24}>
-                            <img width='100%' src= {image} />
+                            <img width='100%' src={content.location_image ? content.location_image[0].src : image} />
                         </Col>
                     </Row>
 
