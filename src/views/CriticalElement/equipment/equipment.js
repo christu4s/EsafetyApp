@@ -116,7 +116,7 @@ export const CriticalEquipment = () => {
 
                                 <div className='timeline--box timeline-bg-blue'>
                                     <Link to={page.url}>
-                                        < p > {page.title}</p>
+                                        <p style={{color:'#fff'}}> {page.title}</p>
                                     </Link>
                                 </div>
                             </Timeline.Item>)}

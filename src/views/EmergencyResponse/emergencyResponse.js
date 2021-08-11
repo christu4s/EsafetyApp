@@ -112,7 +112,7 @@ export const EmergencyResponse = () => {
                     <Row>
                         {subpages.map((page, i) => <Col key={i} span={8}>
                             <Link to={page.url}>
-                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={page.image} />}>
+                                <Card className='custom--card' hoverable cover={<img alt="example" src={page.image} />}>
                                     <Meta title={page.title} />
                                 </Card>
                             </Link>

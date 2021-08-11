@@ -1,18 +1,26 @@
-import { Row, Col, Button , Popconfirm, Input, Space } from 'antd';
+import { Row, Col, Button , Popconfirm, Input, Space, Form } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../../../../ajax';
 import area from '../../../../assets/area.png';
+import { ButtonUpload } from '../../../../utils';
 import {  FacilitiesButtons } from '../../components';
 
 export const FacilityAreaDetails = ({history, match}) => {
     const [editMode, setEditMode] = useState(false);
     const [data, setData] = useState({title:'', desc:'', image: ''});
+    const [form] = Form.useForm();
+    const {id}= match.params;
 
-
-    useEffect(()=> { ajax.get('/facility-overview/area/'+ match.params.id ).then(res => res && setData(res) ); },[]);
+    useEffect(()=> { ajax.get('/facility-overview/area/'+ id ).then(res => res && setData(res) ); },[]);
     
     function deleteArea(){
-        ajax.delete('/facility-overview/area/'+ match.params.id ).then( ()=> history.goBack() );
+        ajax.delete('/facility-overview/area/'+ id ).then( ()=> history.goBack() );
+    }
+
+    function updateArea(){
+        const {desc, image} = form.getFieldsValue();
+        ajax.post('/facility-overview/area/'+ match.params.id, {desc, image: image ? image.file : null } )
+        .then( res=> res && setData(res)  );
     }
 
     return (
@@ -37,7 +45,7 @@ export const FacilityAreaDetails = ({history, match}) => {
                                         {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
                                         <Space>
                                             <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                            <Button type="primary" size="small" success onClick={()=> setEditMode(!editMode) }>Save</Button>
+                                            <Button type="primary" size="small" success onClick={updateArea}>Save</Button>
                                         </Space>}
                                     </div>
                                 </div>
@@ -49,16 +57,14 @@ export const FacilityAreaDetails = ({history, match}) => {
                             
                         </Col>
                     </Row>
-
-                    <Row>
-                        <Col span={23}>
-                            <div className='box--facility area--box--facility'>
-                                <p>
-                                {editMode ? <Input.TextArea defaultValue={data.desc} /> : <p>{data.desc}</p>}
-                        </p>
-                            </div>
-                        </Col>
-                    </Row>
+                    <Form form={form}>
+                        <div className='box--facility area--box--facility' style={{marginBottom: 40}}>
+                            {editMode ? <Form.Item name="desc"><Input.TextArea  defaultValue={data.desc} /></Form.Item> : <p>{data.desc}</p>}
+                        </div>
+                        {editMode ? <ButtonUpload name='image' onSubmit={updateArea} /> : null}
+                    </Form>
+                    <h2>File uploaded</h2>
+                    {data.image.length ?  <img width='100%' src={data.image[0].src} />: null}
                 </Col>
                 <Col span={8} push={2}  style={{marginTop:35}} ><FacilitiesButtons /></Col>
             </Row>

@@ -9,30 +9,14 @@ import { CardHolder } from '../../utils';
 
 
 export const RiskAssessment = () => {
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({ risk_desc: '', risk_image: '' });
-    const [data, setData] = useState([]);
     const [form] = Form.useForm();
     
     useEffect(() => {
         ajax.get('/risk_assessment').then(res => res && setContent(res));
     }, []);
     
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-    const props = {
-        beforeUpload: () => false,
-    };
     async function saveData() {
         var values = form.getFieldsValue();
         await ajax.post('/risk-assessment', values).then(res => res && setContent(res));
@@ -90,14 +74,6 @@ export const RiskAssessment = () => {
 
                 <Col span={23}>
                 <Row>
-                        {/* {Array(8).fill(0).map((v,i)=><Col key={i} span={6}>
-                      
-                        <Card className='custom--card custom--card--risk' hoverable style={{ width: 230 }} cover={<img alt="example" src={image} />}>
-                            <div className='card-content-risk'>
-                                Hazard Identification Worksheets
-                            </div>
-                        </Card>
-                        </Col> )}      */}
                         {subpages.map((sub, i) => <Col key={i} span={6}><CardHolder {...sub} /></Col>)}              
                     </Row>
                 </Col>

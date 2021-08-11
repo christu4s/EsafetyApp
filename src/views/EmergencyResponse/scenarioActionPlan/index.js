@@ -117,38 +117,21 @@ export const ScenarioActionPlan = () => {
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col span={23}>
-                            <div className='box--facility area--box--facility'>
-                                <p>
-                                    <Form form={form}>
-                                        {editMode ? <Form.Item name="scenario_desc"><Input.TextArea defaultValue={content.scenario_desc} /></Form.Item> : <p>{content.scenario_desc}</p>}
-                                    </Form>
+                    <div className='box--facility area--box--facility'>
+                        <p>
+                            <Form form={form}>
+                                {editMode ? <Form.Item name="scenario_desc"><Input.TextArea defaultValue={content.scenario_desc} /></Form.Item> : <p>{content.scenario_desc}</p>}
+                            </Form>
 
-                                </p>
-                            </div>
-                        </Col>
-                    </Row>
-
+                        </p>
+                    </div>
                     <hr />
-
-
-                    <Row>
-                        <Col span={30}>
-                            <div>
-                                <h3 style={{ marginTop: 25 }}>Flow Chat - ERP</h3>
-                            </div>
-                            <div className=''>
-
-                                <div class="">
-                                    <Table dataSource={tableData} columns={columns} />
-
-                                </div>
-
-                            </div>
-                        </Col>
-
-                    </Row>
+                    <div>
+                        <h3 style={{ marginTop: 25 }}>Flow Chat - ERP</h3>
+                    </div>
+                    <div class="esafty-table">
+                        <Table dataSource={tableData} columns={columns} />
+                    </div>
                     {editMode &&
                         <Row className='addmore--button'>
                             <Col>
@@ -191,78 +174,6 @@ export const ScenarioActionPlan = () => {
 
                 </Col>
             </Row>
-
-            <Row>
-                <Col span={16}>
-                    <div className='divider'></div>
-                </Col>
-            </Row>
-
-            <Row>
-                <Col span={16}>
-                        <div className='table--holder--f'>
-                        <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                            <th>Action Plan</th>
-                            <th>Document Number</th>
-                            <th></th>
-                            <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            <td>fire</td>
-                            <td>XX-XXX-001</td>
-                            <td><DownloadOutlined /></td>
-                            <td className='color--red'><CloseCircleOutlined /></td>
-                            </tr>
-                            <tr>
-                            <td>oil-spill</td>
-                            <td>XX-XXX-001</td>
-                            <td><DownloadOutlined /></td>
-                            <td className='color--red'><CloseCircleOutlined /></td>
-                            </tr>
-                           
-                        </tbody>
-                        </Table>
-                        </div>
-                </Col>
-            </Row>
-
-            <Row className='addmore--button'>
-                        <Col>
-                            {/* <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                Add More
-                            </Button> */}
-                            <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                Upload Document
-                            </Button>
-
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
-
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <div className='area--form'>
-                                    <label>Name of Area</label>
-                                    <Input placeholder="Lorem ipsum dolor sit amet" />
-                                </div>
-
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                    Upload Image
-                                </Button>
-                            </Modal>
-                        </Col>
-                    </Row>
-
         </div>
     );
 }

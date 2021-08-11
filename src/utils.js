@@ -1,7 +1,9 @@
-import { Card, Select, Table } from "antd";
+import { Card, Button, Table, Modal, Upload, Form } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { CloudUploadOutlined } from '@ant-design/icons';
 import ajax from "./ajax";
+import computing from './assets/cloud-computing@3x.png';
 
 export function MainTable({columns = [], api = '', params, form, numbered=true, pageSize=10,  ...props}){
   const [data, setData] = useState([]);
@@ -48,3 +50,35 @@ export const CardHolder = ({url, image, title}) => <Link to={url}>
       <Card.Meta title={title} />
   </Card>
 </Link>
+
+
+export function ButtonUpload({children, name, onSubmit}){
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const toggleModal = () =>  setIsModalVisible(!isModalVisible); 
+
+  async function onSave(){
+    if(typeof onSubmit == 'function') await onSubmit();
+    toggleModal();
+  }
+  
+  return <div><Button type="primary" icon={<CloudUploadOutlined />} onClick={toggleModal}>Upload Image</Button>
+      <Modal title="" className='upload--modal' visible={isModalVisible} onOk={toggleModal} onCancel={toggleModal}>
+        <h3 className='modal--title text-center'>Upload Files</h3>
+        <p className=' text-center'>File size not more than 2 MB</p>
+        <Form.Item name={name}>
+          <Upload.Dragger beforeUpload={() => false}>
+              <p className="ant-upload-drag-icon">
+                  <img width='50' src={computing} />
+              </p>
+              <p className="ant-upload-hint">
+                  Drag or drop your files here OR <span> browse </span>
+              </p>
+          </Upload.Dragger>
+        </Form.Item>
+        {children}
+        <Button type="primary" onClick={onSave} icon={<CloudUploadOutlined />}>
+            Upload Image
+        </Button>
+      </Modal>
+    </div>
+}

@@ -63,9 +63,7 @@ export const FacilityManning = () => {
                             </div>
                     </Col>
                 </Row>
-                <Row>
-                    <Col span={23}>
-                        <div className='box--facility area--box--facility manning--box--facility'>
+                <div className='box--facility area--box--facility manning--box--facility'>
                            <Row>
                                <Col span={4}>
                                     <h3>Hours Spent Per Day</h3>
@@ -105,8 +103,6 @@ export const FacilityManning = () => {
                                 {fields.map((f,ind)=><Col key={ind} span={6}><p style={{textAlign:'center'}} >{data.sum(f)}</p></Col>)}
                             </Row>
                         </div>
-                    </Col>
-                </Row>
             </Col>
             <Col span={8} style={{marginTop:60}}><FacilitiesButtons /></Col>
         </Row>

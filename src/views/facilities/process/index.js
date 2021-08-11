@@ -70,17 +70,6 @@ export const FacilityProcess = () => {
         });
     }
 
-    const { Meta } = Card;
-    const boxContent = [
-        { title: 'SEPERATOR AREA', img: image, active: true },
-        { title: 'COMPRESSOR AREA', img: image, active: false },
-        { title: 'LIVING QUATERS', img: image, active: false }
-    ]
-    const boxContentIcon = [
-        { title: 'Area', img: area, active: true },
-        { title: 'Process', img: process, active: false },
-        { title: 'Manning', img: group, active: false }
-    ]
     return (
         <div className='facility--wrapper'>
             <Row>
@@ -110,66 +99,49 @@ export const FacilityProcess = () => {
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col span={23}>
-                            <div className='box--facility area--box--facility'>
-                                <p>
+                    <div className='box--facility area--box--facility'>
+                        <p>
+                        <Form form={form}>
+                                {editMode ? <Form.Item name="process_desc"><Input.TextArea defaultValue={content.process_desc} /></Form.Item> : <p>{content.process_desc}</p>}
+                            </Form>
+                        </p>
+                    </div>
+                    {editMode &&
+                        <Row>
+                            <Col span={6}>
+                                <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
+                                    Upload Image
+                                </Button>
+                                <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                    <h3 className='modal--title text-center'>Upload Files</h3>
+                                    <p className=' text-center'>File size not more than 2 MB</p>
                                 <Form form={form}>
-                                        {editMode ? <Form.Item name="process_desc"><Input.TextArea defaultValue={content.process_desc} /></Form.Item> : <p>{content.process_desc}</p>}
-                                    </Form>
-                                </p>
-                            </div>
-                            {editMode &&
-                                <Row>
-                                    <Col span={6}>
-                                        <Button type="primary" icon={<CloudUploadOutlined />} onClick={showModal}>
-                                            Upload Image
-                                        </Button>
-                                        <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                            <h3 className='modal--title text-center'>Upload Files</h3>
-                                            <p className=' text-center'>File size not more than 2 MB</p>
-                                        <Form form={form}>
-                                        <Form.Item name="process_image">
-                                            <Dragger {...props}>
-                                                <p className="ant-upload-drag-icon">
-                                                    <img width='50' src={computing} />
-                                                </p>
+                                <Form.Item name="process_image">
+                                    <Dragger {...props}>
+                                        <p className="ant-upload-drag-icon">
+                                            <img width='50' src={computing} />
+                                        </p>
 
-                                                <p className="ant-upload-hint">
-                                                    Drag or drop your files here OR <span> browse </span>
-                                                </p>
-                                            </Dragger>
-                                        </Form.Item>
-                                        </Form>,
-                                            <Button type="primary" onClick={saveData} icon={<CloudUploadOutlined />}>
-                                                Upload Image
-                                            </Button>
-                                        </Modal>
-                                    </Col>
-                                    <Col span={12}>
-                                        <h4>File size not more than 2 MB</h4>
-                                    </Col>
-                                </Row>
-                            }
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        <Col span={12}>
-                            <h2>File uploaded</h2>
-                        </Col>
-                        <Col span={12}>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={24}>
-                            
-                            <img width='100%' src={content.process_image ? content.process_image[0].src : image} />
-                        </Col>
-                    </Row>
+                                        <p className="ant-upload-hint">
+                                            Drag or drop your files here OR <span> browse </span>
+                                        </p>
+                                    </Dragger>
+                                </Form.Item>
+                                </Form>
+                                    <Button type="primary" onClick={saveData} icon={<CloudUploadOutlined />}>
+                                        Upload Image
+                                    </Button>
+                                </Modal>
+                            </Col>
+                            <Col span={12}>
+                                <h4>File size not more than 2 MB</h4>
+                            </Col>
+                        </Row>
+                    }
+                    <h2 style={{marginTop:30}}>File uploaded</h2>
+                    <img width='100%' src={content.process_image ? content.process_image[0].src : image} />
                 </Col>
                 <Col span={8} push={2} style={{ marginTop: 35 }} ><FacilitiesButtons /></Col>
-
             </Row>
 
 
