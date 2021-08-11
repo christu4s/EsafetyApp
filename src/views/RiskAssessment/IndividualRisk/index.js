@@ -52,7 +52,6 @@ export const IndividualRisk = () => {
         };
         async function saveData() {
             var values = form.getFieldsValue();
-            console.log(values);
             await ajax.post('/individual_risk', values).then(res => res && setContent(res));
             setEditMode(!editMode);
         }
