@@ -20,11 +20,13 @@ export const ResponsePlan = () => {
     const [content, setContent] = useState({ reponse_plan_desc: '', erp_flow_chat: '' });
     const [form] = Form.useForm();
     const [erp_flow_chat, setPlans] = useState([]);
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
 
     useEffect(() => {
-        ajax.get('/response_plan').then(res => res && setContent(res));
+        ajax.get('/response_plan').then(res => res && setData(res));
     }, []);
+
+
     // const showModal = () => {
     //     setIsModalVisible(true);
     // };
@@ -40,9 +42,20 @@ export const ResponsePlan = () => {
 
     const { Meta } = Card;
     async function saveData() {
-        var values = form.getFieldsValue();
-        await ajax.post('/response_plan', values).then(res => res && setContent(res));
+        var { reponse_plan_desc = '' } = form.getFieldsValue();
+        await ajax.post('/response_plan', {
+            reponse_plan_desc: reponse_plan_desc ? reponse_plan_desc : null,
+            erp_flow_chat: JSON.stringify(erp_flow_chat)
+        }).then(res => res && setData(res));
         setEditMode(!editMode);
+        setIsModalVisible(false);
+    }
+    function setData(res) {
+        setContent(res);
+        try {
+            var tem = JSON.parse(res.erp_flow_chat.replace(/\\/g, ''));
+            setPlans(tem);
+        } catch (e) { }
     }
     function addmore() { setPlans([...erp_flow_chat, '']); }
     function editPlan(index, value) {

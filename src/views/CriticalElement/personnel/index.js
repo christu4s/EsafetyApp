@@ -1,18 +1,24 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input, Space } from 'antd';
-import React, { useState } from 'react';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Space, Form, Popconfirm } from 'antd';
+import React, { useState, useEffect } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import ellipse from '../../../assets/ellipse@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
-import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
-
+//import Form from 'rc-field-form/es/Form';
+import ajax from '../../../ajax';
 
 export const CriticalPersonnel = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    const [content, setContent] = useState({ personnel_desc: '' });
+    const [personnel_data, setLevels] = useState([]);
+    const [form] = Form.useForm();
+    useEffect(() => {
+        ajax.get('/critical_personnel').then(res => res && setData(res));
+    }, []);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -27,7 +33,35 @@ export const CriticalPersonnel = () => {
     };
     const props = {};
 
+    function setData(res) {
+        setContent(res);
+        try {
+            var lvl = JSON.parse(res.personnel_data.replace(/\\/g, ''));
+            setLevels(lvl);
+        } catch (e) { }
+    }
+
+    async function saveData() {
+        var { personnel_desc = '' } = form.getFieldsValue();
+        await ajax.post('/critical_personnel', {
+            personnel_desc: personnel_desc ? personnel_desc : null,
+            personnel_data: JSON.stringify(personnel_data)
+        }).then(res => res && setData(res));
+        setEditMode(!editMode);
+        setIsModalVisible(false);
+    }
     const { Meta } = Card;
+
+    function addmore() { setLevels([...personnel_data, {}]); }
+    function removeLevel(index) {
+        personnel_data.splice(index, 1);
+        setLevels([...personnel_data]);
+    }
+
+    function onLevelChange(index, key, value) {
+        personnel_data[index][key] = value;
+        setLevels([...personnel_data]);
+    }
 
     return (
 
@@ -67,7 +101,7 @@ export const CriticalPersonnel = () => {
                                         {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
                                             <Space>
                                                 <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
-                                                <Button type="primary" size="small" success onClick={() => setEditMode(!editMode)}>Save</Button>
+                                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
                                             </Space>}
                                     </div>
                                 </div>
@@ -77,11 +111,12 @@ export const CriticalPersonnel = () => {
 
                     <Row>
                         <Col span={23}>
-                            <div className='box--facility area--box--facility'>
-                                <p>
-                                    {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
-                                </p>
-                            </div>
+                            <Form form={form}>
+                                <div className='box--facility area--box--facility'>
+                                    <p>{editMode ? <Form.Item name="personnel_desc"><Input.TextArea defaultValue={content.personnel_desc} /></Form.Item>
+                                        : <p>{content.personnel_desc}</p>}</p>
+                                </div>
+                            </Form>
                         </Col>
                     </Row>
                     <Row>
@@ -89,56 +124,61 @@ export const CriticalPersonnel = () => {
                             <div className="divider"></div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col span={23}>
-                            <div className='box--facility area--box--facility'>
-                                <p>
-                                    <div className=''>
-                                        <img width='80' src={ellipse} />
+                    {personnel_data.map((level, index) => <>
+                        <Row>
+                            <Col span={23}>
+                                <div className='box--facility area--box--facility'>
 
-                                    </div>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                </p>
-                            </div>
-                        </Col>
-                    </Row>
-                    {/* <Row>
-                        {Array(3).fill(0).map((v, i) => <Col key={i} span={8}>
-                            <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
-                                <Meta title="Europe Street beat" />
-                            </Card>
-                        </Col>)}
-                    </Row> */}
 
-                    <Row className='addmore--button'>
-                        <Col>
-                            <Button type="secondary" icon={<PlusCircleOutlined />} onClick={showModal}>
-                                Add More
-                            </Button>
+                                    <Col>
+                                        <div className=''>
+                                            <img width='80' src={ellipse} />
 
-                            <Modal title="" className='upload--modal' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                <h3 className='modal--title text-center'>Upload Files</h3>
-                                <p className=' text-center'>Recommended Image dimension max 1500px (w) x 1000px (h) File size not more than 2 MB</p>
-                                <Dragger {...props}>
-                                    <p className="ant-upload-drag-icon">
-                                        <img width='50' src={computing} />
-                                    </p>
 
-                                    <p className="ant-upload-hint">
-                                        Drag or drop your files here OR <span> browse </span>
-                                    </p>
-                                </Dragger>,
-                                <div className='area--form'>
-                                    <label>Name of Area</label>
-                                    <Input placeholder="Lorem ipsum dolor sit amet" />
+                                            <Form.Item label='Name :'>
+                                                <Input placeholder='Enter Name' readOnly={!editMode} value={level.name} onChange={e => onLevelChange(index, 'name', e.target.value)} />
+                                            </Form.Item>
+
+
+
+                                            <Form.Item label='Position:'>
+                                                <Input placeholder='Enter Position' readOnly={!editMode} value={level.position} onChange={e => onLevelChange(index, 'position', e.target.value)} />
+                                            </Form.Item>
+                                        </div></Col>
+                                    <Col>
+                                        <div className=''>
+
+                                            <Form.Item label='Contact :' >
+                                                <Input placeholder='Enter Contact' readOnly={!editMode} value={level.contact} onChange={e => onLevelChange(index, 'contact', e.target.value)} />
+                                            </Form.Item>
+
+
+                                            <Form.Item label='Email :' >
+                                                <Input placeholder='Enter Vaild Email' readOnly={!editMode} value={level.email} onChange={e => onLevelChange(index, 'email', e.target.value)} />
+                                            </Form.Item>
+                                        </div>
+
+                                    </Col>
+                                    <Col span={2}>
+                                        {editMode &&
+                                            <Popconfirm title="Are you sure to delete this level?" onConfirm={() => removeLevel(index)}>
+                                                <Button type="link" icon={<DeleteOutlined danger />} />
+                                            </Popconfirm>
+                                        }
+                                    </Col>
                                 </div>
+                            </Col>
+                        </Row> </>)}
 
-                                <Button type="primary" icon={<CloudUploadOutlined />}>
-                                    Upload Image
+                    {editMode &&
+                        <Row className='addmore--button'>
+                            <Col>
+                                <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                                    Add More
                                 </Button>
-                            </Modal>
-                        </Col>
-                    </Row>
+                            </Col>
+                        </Row>
+                    }
                 </Col>
 
             </Row>
