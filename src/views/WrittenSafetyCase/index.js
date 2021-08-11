@@ -160,7 +160,7 @@ export const WrittenSafetyCase = () => {
 
             </Row>
 
-            <div class="">
+            <div class="esafty-table">
                 <Table dataSource={tableData} columns={columns} />
             </div>
         </div>

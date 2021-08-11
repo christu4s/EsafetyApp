@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import axios from 'axios';
 
-var ajax_url = 'http://esafety.actsyn.com/api';
+var ajax_url = '//esafety.actsyn.com/api';
 
 export default class ajax{
     static message(resp, key){

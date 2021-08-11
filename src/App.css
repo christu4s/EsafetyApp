@@ -24978,9 +24978,14 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .logo img {
   transition: 0.3s;
 }
-.ant-table table tr th {
-  border-bottom-color: #A51319;
-  border-bottom-width: 2px;
+.esafty-table {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+.esafty-table table tr th {
+  border-bottom-color: #ddd;
+  background-color: #fff;
 }
 .inline--form .ant-row.ant-form-item {
   width: 23% !important;
@@ -25185,6 +25190,8 @@ div.ant-typography-edit-content.ant-typography-rtl {
   border: 1px;
   position: relative;
   box-shadow: 0px 14px 11.7px 1.3px rgba(0, 0, 0, 0.5);
+  width: 200px;
+  height: 200px;
 }
 .custom--card:after {
   position: absolute;
@@ -25197,6 +25204,14 @@ div.ant-typography-edit-content.ant-typography-rtl {
   clear: both;
   display: block;
   content: '';
+}
+.custom--card .ant-card-cover {
+  height: 100%;
+}
+.custom--card .ant-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .custom--card .ant-card-body {
   background: transparent !important;
@@ -25211,6 +25226,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
   position: relative;
   font-family: 'Lato', sans-serif;
   z-index: 99;
+  white-space: normal;
 }
 .addmore--button .ant-btn-secondary {
   margin-top: 30px;
