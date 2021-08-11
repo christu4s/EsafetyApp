@@ -7,6 +7,7 @@ import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../components';
 import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
+import { CardHolder } from '../../../utils';
 
 export * from './details';
 
@@ -128,11 +129,7 @@ export const FacilityArea = ({ history }) => {
                     {loading ? <div>loading....</div> :
                         <Row>
                             {data.map((v, i) => <Col key={i} span={8}>
-                                <Link to={"/facility-overview/area/" + v.id} >
-                                    <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={v.image.length ? v.image[0].src : image} />}>
-                                        <Meta title={v.title} />
-                                    </Card>
-                                </Link>
+                                <CardHolder image={v.image.length ? v.image[0].src : image} title={v.title} url={"/facility-overview/area/" + v.id} />
                             </Col>)}
                         </Row>
                     }

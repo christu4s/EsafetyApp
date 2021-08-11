@@ -6,6 +6,7 @@ import imageEquipment from '../../assets/critical-element-equipment.png';
 import imagePersonnel from '../../assets/critical-element-personnel.png';
 import imageProcedure from '../../assets/critical-element-procedure.png';
 import ajax from '../../ajax';
+import { CardHolder } from '../../utils';
 
 export const CriticalElement = () => {
 
@@ -73,13 +74,7 @@ export const CriticalElement = () => {
                     </Row>
 
                     <Row>
-                        {subpages.map((sub, i) => <Col key={i} span={8}>
-                            <Link to={sub.url}>
-                                <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={sub.image} />}>
-                                    <Meta title={sub.title} />
-                                </Card>
-                            </Link>
-                        </Col>)}
+                        {subpages.map((sub, i) => <Col key={i} span={8}><CardHolder {...sub} /></Col>)}
                     </Row>
 
 

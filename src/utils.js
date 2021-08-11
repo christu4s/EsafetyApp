@@ -1,4 +1,4 @@
-import { Select, Table } from "antd";
+import { Card, Select, Table } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ajax from "./ajax";
@@ -31,23 +31,6 @@ export function MainTable({columns = [], api = '', params, form, numbered=true, 
 
 
 
-
-export function GroupSelect(props){
-  const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState([]);
-
-  async function fetch(search){
-    setLoading(true);
-    var groups = await ajax.get('/group', {search});
-    if(groups) setOptions(groups.data.map(v=>({label: v.title,value: v.id})));
-    setLoading(false);
-  }
-
-  useEffect(()=>{ fetch() },[]);
-
-  return <Select showSearch {...props} filterOption={false} loading={loading} onSearch={fetch} options={options} />
-}
-
 export const BoxHolder = ({title, img , active, url })=>{
   return (<Link to={url}>
               <div className='box--holder' style={{display: 'flex'}}>
@@ -59,3 +42,9 @@ export const BoxHolder = ({title, img , active, url })=>{
       </Link>
   )
 }
+
+export const CardHolder = ({url, image, title}) => <Link to={url}>
+  <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
+      <Card.Meta title={title} />
+  </Card>
+</Link>

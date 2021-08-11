@@ -5,6 +5,7 @@ import danger from '../../assets/danger-sing@3x.png';
 import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
 import ajax from '../../ajax';
+import { CardHolder } from '../../utils';
 
 
 export const RiskAssessment = () => {
@@ -38,7 +39,11 @@ export const RiskAssessment = () => {
         setEditMode(!editMode);
     }
 
-    const { Meta } = Card;
+    const subpages = [
+        { title: 'Hazard Identification Worksheets', url: '/safety-critical/equipment', image: image },
+        { title: 'Hazard Identification Worksheets', url: '/safety-critical/personnel', image: image },
+        { title: 'Hazard Identification Worksheets', url: '/safety-critical/procedure', image: image },
+    ]
 
     return (
         <div className='facility--wrapper'>
@@ -81,29 +86,19 @@ export const RiskAssessment = () => {
                         </Col>
                     </Row>
 
-
-
-
                 </Col>
 
                 <Col span={23}>
                 <Row>
-                        {Array(8).fill(0).map((v,i)=><Col key={i} span={6}>
+                        {/* {Array(8).fill(0).map((v,i)=><Col key={i} span={6}>
                       
                         <Card className='custom--card custom--card--risk' hoverable style={{ width: 230 }} cover={<img alt="example" src={image} />}>
                             <div className='card-content-risk'>
                                 Hazard Identification Worksheets
                             </div>
-                            <div className='card-actions-button'>
-                            <Button type="primary" size='small'>
-                                Edit 
-                                </Button>
-                                <Button type="danger"  size='small'>
-                                    Delete
-                                    </Button>
-                            </div>
                         </Card>
-                        </Col> )}                   
+                        </Col> )}      */}
+                        {subpages.map((sub, i) => <Col key={i} span={6}><CardHolder {...sub} /></Col>)}              
                     </Row>
                 </Col>
                 
