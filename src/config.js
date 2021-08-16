@@ -5,6 +5,12 @@ import { UserGroupFilled } from './icons';
 import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityAreaDetails, EquipmentPreventionDetails, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EquipmentDetection, EquipmentControl, EquipmentMitigation, EquipmentEmergencyResponse, EquipmentIncident, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase, AccidentsHazardItem, SafetyManagementItem } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
+import HazardsImg from './assets/menu/fire.png';
+import RiskImg from './assets/menu/riskAssessment.png';
+import WrittenImg from './assets/menu/written.png';
+import emergencyImg from './assets/menu/emergency.png';
+import safetCriticalImg from './assets/menu/safetCritical.png';
+
 import { IndividualRisk } from './views/RiskAssessment/IndividualRisk';
 import { IndividualRiskEditUser } from './views/RiskAssessment/IndividualRisk/individualRiskEditUser';
 import { PlanRiskBreakDown } from './views/RiskAssessment/PlanRiskBreakdown';
@@ -71,10 +77,10 @@ export const menus = [
             { title: 'Manning', exact: true, url: '#/facility-overview/manning' },
         ]
     },
-    { title: 'Major Accident Hazards', icon: <ShopOutlined />, url: '#/accidents-hazards' },
+    { title: 'Major Accident Hazards', icon: <img src={HazardsImg} alt="Major Accident Hazards" />, url: '#/accidents-hazards' },
     {
         title: 'Risk Assessment',
-        icon: <UserGroupFilled />,
+        icon: <img src={RiskImg} alt="Major Accident Hazards" height={20} />, 
         url: '#/risk-assessment',
         children: [
             { title: 'Hazard Identification Worksheets', exact: true, url: '#/risk-assessment/identification-worksheet' },
@@ -89,7 +95,7 @@ export const menus = [
     },
     {
         title: 'Safety Critical Element',
-        icon: <UserGroupFilled />,
+        icon: <img src={safetCriticalImg} alt="Major Accident Hazards" height={20} />, 
         url: '#/safety-critical',
         children: [
             { title: 'Safety Critical Equipment', exact: true, url: '#/safety-critical/equipment' },
@@ -99,7 +105,7 @@ export const menus = [
     },
     {
         title: 'Emergency Response',
-        icon: <UserGroupFilled />,
+        icon: <img src={emergencyImg} alt='Emergency Response' height={20} />, 
         url: '#/emergency-response',
         children: [
             { title: 'Emergency Response Tiers', exact: true, url: '#/emergency-response/tiers' },
@@ -111,7 +117,7 @@ export const menus = [
     },
     { title: 'Safety Management System', icon: <UserGroupFilled />, url: '#/safety-management' },
     { title: 'Remedial Action Plan', icon: <UserGroupFilled />, url: '#/remedial-action' },
-    { title: 'Writen Safety Case', icon: <UserGroupFilled />, url: '#/writen-safety' },
+    { title: 'Writen Safety Case', icon: <img src={WrittenImg} alt="Writen Safety Case" height={20} />, url: '#/writen-safety' },
     // { title: 'Users', icon: <UserGroupFilled />, url: '#/user' },
 ];
 

@@ -57,7 +57,7 @@ export const PageTemplate = ({
                         <DescField editMode={editMode} value={desc} name={descName} />
                     </div>}
                     {editMode && <Space>
-                        {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" accept="image/*" />}
+                        {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                     </Space>}
                     {(imageName || pdfName) && <h2>File uploaded</h2>}
@@ -93,8 +93,8 @@ export function PdfViewer({files = [], index = 0}){
     </div> 
 }
 
-export function ListItems({api,editMode, imageKey = 'image', addMore=true, popupExtra}){
-    const [data, setData] = useState([]);
+export function ListItems({api,editMode, list = [], imageKey = 'image', popupExtra}){
+    const [data, setData] = useState(list);
     const [form] = Form.useForm();
     const history = useHistory();
     const {pathname} = history.location;
@@ -105,9 +105,19 @@ export function ListItems({api,editMode, imageKey = 'image', addMore=true, popup
     }
 
     return <div><Row>
-            {data && data.map((v, i) => <Col key={i} span={8}>
-                <CardHolder image={v[imageKey].length ? v[imageKey][0].src : image} title={v.title} url={v.url || `${pathname}/${v.id}`} />
-            </Col>)}
+            {data && data.map((v, i) =>{ 
+                var src, url;
+                if(api){
+                    src = v[imageKey].length ? v[imageKey][0].src : image;
+                    url = `${pathname}/${v.id}`;
+                }else{
+                    src = v.image;
+                    url = v.url;
+                }
+                return <Col key={i} span={8}>
+                <CardHolder image={src} title={v.title} url={url} />
+            </Col>
+        })}
         </Row>
         {api && editMode && <Form style={{marginTop:30}} form={form}>
             <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
