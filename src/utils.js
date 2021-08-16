@@ -1,36 +1,9 @@
-import { Card, Button, Table, Modal, Upload, Form, Input, Space } from "antd";
-import { useEffect, useState } from "react";
+import { Card, Button, Modal, Upload, Form, Input, Space } from "antd";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import ajax from "./ajax";
 import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
-
-export function MainTable({columns = [], api = '', params, form, numbered=true, pageSize=10,  ...props}){
-  const [data, setData] = useState([]);
-  const [pagination, setPagination] = useState({current: 1, pageSize})
-  const [loading, setLoading] = useState(false);
-
-  const onChange = async (pagination, filters, sorter = {}) => {
-    setLoading(true);
-    const {pageSize, current} = pagination;
-    ajax.get(api, {page: current, count:pageSize,...params, sorter}, form).then(res => { 
-      setData(res.data);
-      setPagination({...pagination, total: res.total});
-      setLoading(false);
-    })
-  }
-
-  useEffect(()=>{ onChange(pagination); },[api, params]);
-
-  useEffect(()=>{ 
-    if(!numbered || !columns.length) return; 
-    if(columns[0].dataIndex!='no') columns.unshift({title: 'No', dataIndex: 'no' });
-    columns[0].render = (v,r,i)=> pagination.pageSize*(pagination.current-1)+i+1; 
-  },[pagination]);
- 
-  return <Table dataSource={data} rowKey={r=> 'test' + r.id } columns={columns} loading={loading} pagination={pagination} onChange={onChange} {...props}/>;
-}
 
 
 

@@ -1,8 +1,10 @@
 import { Row, Col, Form, Space, Carousel } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
-import { ButtonUpload, DescField, EditButtons } from '../utils';
+import { ButtonUpload, CardHolder, DescField, EditButtons } from '../utils';
 import imagePdf from '../assets/pdf-1@3x.png';
+import image from '../assets/image.png';
+import { useHistory } from 'react-router-dom';
 
 export const PageTemplate = ({
     title, 
@@ -20,10 +22,7 @@ export const PageTemplate = ({
     const desc = content[descName], image = content[imageName], pdf = content[pdfName]; 
 
     async function saveData() {
-        var values = form.getFieldsValue();
-        if(imageName && values[imageName]) values[imageName] = values[imageName].file;
-        if(pdfName && values[pdfName]) values[pdfName] = values[pdfName].file;
-        await ajax.post(api, values).then(res => res && setContent(res));
+        await ajax.post(api, getFormFields(form)).then(res => res && setContent(res));
         setEditMode(!editMode);
     }
 
@@ -35,7 +34,7 @@ export const PageTemplate = ({
         <div className='facility--wrapper'>
             <Form form={form}>
             <Row>
-                <Col span={17}>
+                <Col span={16}>
                     <Row>
                         {iconUrl && <Col span={1}>
                             <div className='area--img'>
@@ -54,9 +53,9 @@ export const PageTemplate = ({
                             </div>
                         </Col>
                     </Row>
-                    <div className='box--facility area--box--facility'>
+                    {descName && <div className='box--facility area--box--facility'>
                         <DescField editMode={editMode} value={desc} name={descName} />
-                    </div>
+                    </div>}
                     {editMode && <Space>
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
@@ -64,9 +63,9 @@ export const PageTemplate = ({
                     {(imageName || pdfName) && <h2>File uploaded</h2>}
                     {imageName && <ImageViewer images={image} />}
                     {pdfName && <PdfViewer files={pdf} />}
-                    {typeof children=='function' ? children(content) : children}
+                    {typeof children=='function' ? children(content, editMode) : children}
                 </Col>
-                <Col >
+                <Col span={8} push={1} style={{ marginTop: 35 }}>
                     {right}
                 </Col>
             </Row>
@@ -77,7 +76,6 @@ export const PageTemplate = ({
 
 export function ImageViewer({images = []}){
     if(!images || !images.length) return null;
-  
   
     return <Carousel>
         {images.map((v,i)=> v.type.includes('image') && <div key={i}><img width="100%" src={v.src} alt="" /></div>)}
@@ -93,4 +91,35 @@ export function PdfViewer({files = [], index = 0}){
       <h2 style={{ marginTop: 15 }}><img width='30' src={imagePdf} /> <span> {name}</span></h2>
       <iframe src={src} width="100%" height="700" frameBorder="0" />
     </div> 
-  }
+}
+
+export function ListItems({api,editMode, imageKey = 'image', addMore=true, popupExtra}){
+    const [data, setData] = useState([]);
+    const [form] = Form.useForm();
+    const history = useHistory();
+    useEffect(()=>{ api && ajax.get(api).then(res => res && setData(res.data)) },[]);
+
+    async function saveData(){
+        await ajax.post(api,getFormFields(form)).then(res=> res && history.push(`${api}/${res.id}`))
+    }
+
+    return <div><Row>
+        {data && data.map((v, i) => <Col key={i} span={8}>
+            <CardHolder image={v[imageKey].length ? v[imageKey][0].src : image} title={v.title} url={v.url || `${api}/${v.id}`} />
+        </Col>)}
+    </Row>
+    {api && editMode && <Form style={{marginTop:30}} form={form}>
+            <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
+                {popupExtra}
+            </ButtonUpload>
+        </Form>}
+    </div>
+}
+
+function getFormFields(form){
+    var values = form.getFieldsValue(), ret = {};
+    for(var [key,value] of Object.entries(values)){
+        ret[key] = value.file || value;
+    }
+    return ret;
+}
