@@ -44,9 +44,9 @@ export const PageTemplate = ({
                         <Col span={23}>
                             <div className='area--header mt-5' >
                             <div style={{display:'flex', justifyContent: 'space-between'}}>
-                                <div>
-                                <p className='mb-0 '>{title}</p>
-                                <h2 style={{ marginTop: 0 }}>{typeof subtitle=='function' ? subtitle(content, editMode) : subtitle}</h2>
+                                <div style={{alignSelf:'center'}}>
+                                    <p className='mb-0 '>{title}</p>
+                                    <h2 style={{ marginTop: 0 }}>{typeof subtitle=='function' ? subtitle(content, editMode) : subtitle}</h2>
                                 </div>
                                 <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={saveData} /></div>
                                 </div>
@@ -97,18 +97,19 @@ export function ListItems({api,editMode, imageKey = 'image', addMore=true, popup
     const [data, setData] = useState([]);
     const [form] = Form.useForm();
     const history = useHistory();
+    const {pathname} = history.location;
     useEffect(()=>{ api && ajax.get(api).then(res => res && setData(res.data)) },[]);
 
     async function saveData(){
-        await ajax.post(api,getFormFields(form)).then(res=> res && history.push(`${api}/${res.id}`))
+        await ajax.post(api,getFormFields(form)).then(res=> res && history.push(`${pathname}/${res.id}`))
     }
 
     return <div><Row>
-        {data && data.map((v, i) => <Col key={i} span={8}>
-            <CardHolder image={v[imageKey].length ? v[imageKey][0].src : image} title={v.title} url={v.url || `${api}/${v.id}`} />
-        </Col>)}
-    </Row>
-    {api && editMode && <Form style={{marginTop:30}} form={form}>
+            {data && data.map((v, i) => <Col key={i} span={8}>
+                <CardHolder image={v[imageKey].length ? v[imageKey][0].src : image} title={v.title} url={v.url || `${pathname}/${v.id}`} />
+            </Col>)}
+        </Row>
+        {api && editMode && <Form style={{marginTop:30}} form={form}>
             <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
                 {popupExtra}
             </ButtonUpload>
