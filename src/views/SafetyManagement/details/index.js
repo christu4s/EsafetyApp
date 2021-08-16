@@ -3,6 +3,19 @@ import React, { useState, useEffect } from 'react';
 import danger from '../../../assets/danger-sing@3x.png';
 import ajax from '../../../ajax';
 import { ButtonUpload, DescField, EditButtons, FileViewer } from '../../../utils';
+import { PageTemplate } from './../../template';
+
+export const SafetyManagement = ({match}) => {
+    const { id } = match.params;
+    return <PageTemplate
+        iconUrl={danger} 
+        subtitle="Safety Management System" 
+        api={"/safety_management/"+id} 
+        descName="desc"
+        imageName="commitment_file"
+        >
+    </PageTemplate>
+}
 
 export const SafetyManagementItem = ({match}) => {
     const [editMode, setEditMode] = useState(false);
