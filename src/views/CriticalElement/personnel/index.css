@@ -1,0 +1,6 @@
+.el-personnel input[readonly], 
+.el-personnel textarea[readonly], 
+.el-personnel input[readonly]:focus{
+    border: none;
+    box-shadow: none;
+}

@@ -24,10 +24,10 @@
     border-radius: 100px;
 }
 .timeline--box.timeline--box--withimage{
+    width: 213px;
     background-color: #fcfcfc;
-    height: 60px;
+    height: 40px;
     padding: 11px 82px 16px 22px;
-    object-fit: contain;
     border-radius: 8px;
 }
 .timeline-bg-blue{

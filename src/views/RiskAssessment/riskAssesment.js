@@ -1,11 +1,21 @@
 import { Row, Col, Card, Button, Space, Input, Form } from 'antd';
 import React, { useState, useEffect } from 'react';
 import image from '../../assets/image.png';
+
+import individualImage from '../../assets/riskAssessment/individual.png';
+import locationImage from '../../assets/riskAssessment/location.png';
+import operatablityImage from '../../assets/riskAssessment/operatablity.png';
+import plantImage from '../../assets/riskAssessment/plant.png';
+import societalImage from '../../assets/riskAssessment/societal.png';
+import emergencyImage from '../../assets/riskAssessment/emergency.png';
+import escapeImage from '../../assets/riskAssessment/escape.png';
+import identificationImage from '../../assets/riskAssessment/identification.png';
+
+
 import danger from '../../assets/danger-sing@3x.png';
-import { PlusCircleOutlined, CloudUploadOutlined } from '@ant-design/icons';
-import computing from '../../assets/cloud-computing@3x.png';
+
 import ajax from '../../ajax';
-import { CardHolder } from '../../utils';
+import { CardHolder, DescField, EditButtons } from '../../utils';
 
 
 export const RiskAssessment = () => {
@@ -24,9 +34,14 @@ export const RiskAssessment = () => {
     }
 
     const subpages = [
-        { title: 'Hazard Identification Worksheets', url: '/safety-critical/equipment', image: image },
-        { title: 'Hazard Identification Worksheets', url: '/safety-critical/personnel', image: image },
-        { title: 'Hazard Identification Worksheets', url: '/safety-critical/procedure', image: image },
+        { title: 'Hazard Identification Worksheets',  url: '/risk-assessment/identification-worksheet', image: identificationImage },
+        { title: 'Hazard and Operability Worksheets',  url: '/risk-assessment/operability-worksheet', image: operatablityImage },
+        { title: 'Escape, Evacuation, Rescue Analysis',  url: '/risk-assessment/rescue-analysis', image: escapeImage },
+        { title: 'Emergency System Survivability Analysis',  url: '/risk-assessment/survivability-analysis', image: emergencyImage },
+        { title: 'Individual Risk',  url: '/risk-assessment/individual', image: individualImage },
+        { title: 'Plant Risk Breakdown',  url: '/risk-assessment/plant', image: plantImage },
+        { title: 'Location Risk',  url: '/risk-assessment/location', image: locationImage },
+        { title: 'Societal Risk',  url: '/risk-assessment/societal', image: societalImage }
     ]
 
     return (
@@ -45,14 +60,7 @@ export const RiskAssessment = () => {
                                 <div>
                                 <h2 style={{ marginTop: 25 }}>Risk Assessment</h2>
                                 </div>
-                                
-                                <div>
-                            {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
-                            <Space>
-                                <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
-                            </Space>}
-                        </div>
+                                <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={saveData} /></div>
                                 </div>
                             </div>
                         </Col>
@@ -63,7 +71,7 @@ export const RiskAssessment = () => {
                             <div className='box--facility area--box--facility'>
                                 <p>
                                 <Form form={form}>
-                                    {editMode ? <Form.Item name="risk_desc"><Input.TextArea defaultValue={content.risk_desc} /></Form.Item> : <p>{content.risk_desc}</p>}
+                                    <DescField editMode={editMode} value={content.risk_desc} name="risk_desc" />
                                 </Form>
                                 </p>
                             </div>

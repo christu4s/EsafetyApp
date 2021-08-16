@@ -26,9 +26,8 @@ class App extends React.Component {
 
     const userMenu = (
       <Menu>
-        <Menu.Item  key="u1"><a href="/#profile">Profile</a></Menu.Item>
-        <Menu.Item key="u2">Logout</Menu.Item>
-        <Menu.Item  key="u3"><a href="/#select-account">SelectAccount</a></Menu.Item>
+        {/* <Menu.Item  key="u1"><a href="/#profile">Profile</a></Menu.Item> */}
+        <Menu.Item key="u2"><a href="/?logout=1">Logout</a></Menu.Item>
       </Menu>
     );
 

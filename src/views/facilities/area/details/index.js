@@ -2,7 +2,7 @@ import { Row, Col, Button , Popconfirm, Input, Space, Form } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../../../../ajax';
 import area from '../../../../assets/area.png';
-import { ButtonUpload } from '../../../../utils';
+import { ButtonUpload, DescField, EditButtons, FileViewer } from '../../../../utils';
 import {  FacilitiesButtons } from '../../components';
 
 export const FacilityAreaDetails = ({history, match}) => {
@@ -20,7 +20,10 @@ export const FacilityAreaDetails = ({history, match}) => {
     function updateArea(){
         const {desc, image} = form.getFieldsValue();
         ajax.post('/facility-overview/area/'+ match.params.id, {desc, image: image ? image.file : null } )
-        .then( res=> res && setData(res)  );
+        .then( res=>{ 
+            res && setData(res); 
+            setEditMode(false);  
+        });
     }
 
     return (
@@ -34,19 +37,14 @@ export const FacilityAreaDetails = ({history, match}) => {
                             </div>
                         </Col>
                         <Col span={22}>
-                        
                             <div className='area--header' >
                                 <div style={{display:'flex', justifyContent: 'space-between'}}>
                                     <div>
-                                        <p>Facilities Overview</p>
+                                        <p>Facilities Area</p>
                                         <h2 >{data.title}</h2>
                                     </div>
                                     <div>
-                                        {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
-                                        <Space>
-                                            <Button type="primary" size="small" danger onClick={()=> setEditMode(!editMode) }>Cancel</Button>
-                                            <Button type="primary" size="small" success onClick={updateArea}>Save</Button>
-                                        </Space>}
+                                    <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={updateArea} /></div>
                                     </div>
                                 </div>
                                {editMode && <Popconfirm title="Are you sure to delete this?" onConfirm={deleteArea}>
@@ -54,17 +52,16 @@ export const FacilityAreaDetails = ({history, match}) => {
                                    </Popconfirm>
                                    }
                             </div>
-                            
                         </Col>
                     </Row>
                     <Form form={form}>
                         <div className='box--facility area--box--facility' style={{marginBottom: 40}}>
-                            {editMode ? <Form.Item name="desc"><Input.TextArea  defaultValue={data.desc} /></Form.Item> : <p>{data.desc}</p>}
+                            <DescField editMode={editMode} value={data.desc} name="desc" />
                         </div>
-                        {editMode ? <ButtonUpload name='image' onSubmit={updateArea} /> : null}
+                        {editMode && <ButtonUpload name='image' onSubmit={updateArea} />}
                     </Form>
                     <h2>File uploaded</h2>
-                    {data.image.length ?  <img width='100%' src={data.image[0].src} />: null}
+                    <FileViewer images={data.image} />
                 </Col>
                 <Col span={8} push={2}  style={{marginTop:35}} ><FacilitiesButtons /></Col>
             </Row>

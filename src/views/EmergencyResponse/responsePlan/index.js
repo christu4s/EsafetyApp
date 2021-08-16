@@ -14,41 +14,24 @@ import { Link } from 'react-router-dom';
 
 
 export const ResponsePlan = () => {
-    const { Dragger } = Upload;
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({ reponse_plan_desc: '', erp_flow_chat: '' });
     const [form] = Form.useForm();
     const [erp_flow_chat, setPlans] = useState([]);
-    // const [data, setData] = useState([]);
 
     useEffect(() => {
         ajax.get('/response_plan').then(res => res && setData(res));
     }, []);
 
-
-    // const showModal = () => {
-    //     setIsModalVisible(true);
-    // };
-
-    // const handleOk = () => {
-    //     setIsModalVisible(false);
-    // };
-
-    // const handleCancel = () => {
-    //     setIsModalVisible(false);
-    // };
-    const props = { beforeUpload: () => false, };
-
-    const { Meta } = Card;
     async function saveData() {
         var { reponse_plan_desc = '' } = form.getFieldsValue();
         await ajax.post('/response_plan', {
             reponse_plan_desc: reponse_plan_desc ? reponse_plan_desc : null,
             erp_flow_chat: JSON.stringify(erp_flow_chat)
-        }).then(res => res && setData(res));
-        setEditMode(!editMode);
-        setIsModalVisible(false);
+        }).then(res => { 
+            res && setData(res);
+            setEditMode(!editMode);
+        });
     }
     function setData(res) {
         setContent(res);
@@ -106,23 +89,18 @@ export const ResponsePlan = () => {
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col span={23}>
-                            <div className='box--facility area--box--facility'>
-                                <p>
-                                    <Form form={form}>
-                                        {editMode ? <Form.Item name="reponse_plan_desc"><Input.TextArea defaultValue={content.reponse_plan_desc} /></Form.Item> : <p>{content.reponse_plan_desc}</p>}
-                                    </Form>
-                                </p>
-                            </div>
-                        </Col>
-                    </Row>
-
-
-                </Col>
-            </Row>
-            <Row>
-                <Col span={30}>
+                    <div className='box--facility area--box--facility'>
+                        <p>
+                            <Form form={form}>
+                                {editMode ? <Form.Item name="reponse_plan_desc"><Input.TextArea defaultValue={content.reponse_plan_desc} /></Form.Item> : <p>{content.reponse_plan_desc}</p>}
+                            </Form>
+                        </p>
+                    </div>                
+                    {editMode && <div className='addmore--button'>
+                        <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                            Add More
+                        </Button>
+                    </div>}
                     <div className='box--facility area--box--facility manning--box--facility'>
                         <Steps progressDot direction="vertical">
                             {erp_flow_chat.map((plan, index) => <Steps.Step
@@ -130,59 +108,10 @@ export const ResponsePlan = () => {
                                 description={editMode && <Input value={plan} onChange={e => editPlan(index, e.target.value)} />} />
                             )}
                         </Steps>
-                        {/* <Row>
-                            <Col span={30} >
-                                <h3>Raise the Alarm</h3>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={30}>
-                                <Input placeholder="" />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={30} >
-                                <h3>Muster at Muster Point</h3>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={30}>
-                                <Input placeholder="" />
-                            </Col>
-
-                        </Row>
-                        <Row>
-                            <Col span={30} >
-                                <h3>Activate ERT</h3>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={30}>
-                                <Input placeholder="" />
-                            </Col>
-
-                        </Row>
-                        <Row>
-
-                            <Col span={30} >
-                                <h3>Decision to Abandon Ship</h3>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={30} >
-                                <Input placeholder="" />
-                            </Col>
-                        </Row> */}
-                        <Row className='addmore--button'>
-                            <Col>
-                                <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
-                                    Add More
-                                </Button>
-                            </Col>
-                        </Row>
                     </div>
                 </Col>
             </Row>
+            
 
 
 

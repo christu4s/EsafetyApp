@@ -2,7 +2,7 @@
 import { ShopOutlined, HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityAreaDetails, EquipmentPreventionDetails, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EquipmentDetection, EquipmentControl, EquipmentMitigation, EquipmentEmergencyResponse, EquipmentIncident, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase } from './views';
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityAreaDetails, EquipmentPreventionDetails, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EquipmentDetection, EquipmentControl, EquipmentMitigation, EquipmentEmergencyResponse, EquipmentIncident, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase, AccidentsHazardItem, SafetyManagementItem } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
 import { IndividualRisk } from './views/RiskAssessment/IndividualRisk';
@@ -24,7 +24,8 @@ export const routes = [
     { path: '/facility-overview/area/:id', exact: true, component: FacilityAreaDetails },
     { path: '/facility-overview/manning', exact: true, component: FacilityManning },
     { path: '/facility-overview/process', exact: true, component: FacilityProcess },
-    { path: '/accidents-hazards', exact: true, component: AccidentsHazard },
+    { path: '/accidents-hazards',exact:true, component: AccidentsHazard },
+    { path: '/accidents-hazards/:id', exact: true, component: AccidentsHazardItem },
     { path: '/risk-assessment', exact: true, component: RiskAssessment },
     { path: '/risk-assessment/identification-worksheet', exact: true, component: HazardIdentifications },
     { path: '/risk-assessment/operability-worksheet', exact: true, component: HazardOperatability },
@@ -53,6 +54,7 @@ export const routes = [
     { path: '/emergency-response/plan', exact: true, component: ResponsePlan },
     { path: '/emergency-response/scenario', exact: true, component: ScenarioActionPlan },
     { path: '/safety-management', exact: true, component: SafetyManagement },
+    { path: '/safety-management/:id', exact: true, component: SafetyManagementItem },
     { path: '/remedial-action', exact: true, component: RemedialAction },
     { path: '/writen-safety', exact: true, component: WrittenSafetyCase },
 ];
@@ -110,7 +112,7 @@ export const menus = [
     { title: 'Safety Management System', icon: <UserGroupFilled />, url: '#/safety-management' },
     { title: 'Remedial Action Plan', icon: <UserGroupFilled />, url: '#/remedial-action' },
     { title: 'Writen Safety Case', icon: <UserGroupFilled />, url: '#/writen-safety' },
-    { title: 'Users', icon: <UserGroupFilled />, url: '#/user' },
+    // { title: 'Users', icon: <UserGroupFilled />, url: '#/user' },
 ];
 
 

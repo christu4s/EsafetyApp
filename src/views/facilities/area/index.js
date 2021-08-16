@@ -7,7 +7,7 @@ import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../components';
 import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
-import { CardHolder } from '../../../utils';
+import { CardHolder, DescField, EditButtons } from '../../../utils';
 
 export * from './details';
 
@@ -15,9 +15,11 @@ export const FacilityArea = ({ history }) => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
+    const [content, setContent] = useState({description: ''});
     const [data, setData] = useState([]);
     const [loading, setLeading] = useState(true);
     const [form] = Form.useForm();
+    const [formContent] = Form.useForm();
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -26,6 +28,7 @@ export const FacilityArea = ({ history }) => {
 
 
     useEffect(() => {
+        ajax.get('/facility_overview').then(res => res && setContent(res));
         ajax.get('/facility-overview/area').then(res => {
             res && setData(res.data);
             setLeading(false);
@@ -40,7 +43,6 @@ export const FacilityArea = ({ history }) => {
         setIsModalVisible(false);
     };
     const props = {
-        // showUploadList: false,
         beforeUpload: () => false,
     };
 
@@ -50,11 +52,12 @@ export const FacilityArea = ({ history }) => {
             res && history.push('/facility-overview/area/' + res.id);
         });
     }
-
-
-    const { Meta } = Card;
-
-    const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+    function saveAreaDesc(){
+        ajax.post('/facility_overview', formContent.getFieldsValue()).then(res =>{ 
+            res && setContent(res);
+            setEditMode(false);
+        });
+    }
 
     return (
         <div className='facility--wrapper'>
@@ -67,7 +70,6 @@ export const FacilityArea = ({ history }) => {
                             </div>
                         </Col>
                         <Col span={22}>
-
                             <div className='area--header' >
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <div>
@@ -76,24 +78,19 @@ export const FacilityArea = ({ history }) => {
                                     </div>
 
                                     <div>
-                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
-                                            <Space>
-                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
-                                                <Button type="primary" size="small" success onClick={() => setEditMode(!editMode)}>Save</Button>
-                                            </Space>}
+                                     <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={saveAreaDesc} /></div>
                                     </div>
                                 </div>
                             </div>
-
                         </Col>
                     </Row>
 
                     <Row>
                         <Col span={23}>
                             <div className='box--facility area--box--facility'>
-                                <p>
-                                    {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>}
-                                </p>
+                                <Form form={formContent}>
+                                    <DescField editMode={editMode} value={content.area_desc} name="area_desc" />
+                                </Form>
                             </div>
                             {editMode &&
                                 <Row>

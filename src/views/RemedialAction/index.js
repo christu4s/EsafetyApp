@@ -1,36 +1,18 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input, Space, Form, Popconfirm } from 'antd';
+import { Row, Col, Card, Button,  Upload, Input, Space, Form, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
 
-import trimage from '../../assets/ft-cb-crs-img@3x.png';
-
 import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
-import computing from '../../assets/cloud-computing@3x.png';
 import "./index.css";
 import ajax from '../../ajax';
 
 export const RemedialAction = () => {
-    const { Dragger } = Upload;
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({ remedial_desc: '' });
     const [form] = Form.useForm();
     const [remedial_table_data, setTableData] = useState([]);
     useEffect(() => { ajax.get('/remedial_action').then(res => res && setData(res)); }, []);
-    //const content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
 
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-    const props = { beforeUpload: () => false, };
 
     function setData(res) {
         setContent(res);
@@ -46,7 +28,7 @@ export const RemedialAction = () => {
             remedial_table_data: JSON.stringify(remedial_table_data)
         }).then(res => res && setData(res));
         setEditMode(!editMode);
-        setIsModalVisible(false);
+        // setIsModalVisible(false);
     }
     const { Meta } = Card;
 

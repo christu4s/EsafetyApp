@@ -1,9 +1,10 @@
-import { Card, Button, Table, Modal, Upload, Form } from "antd";
+import { Card, Button, Table, Modal, Upload, Form, Input, Space } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CloudUploadOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import ajax from "./ajax";
 import computing from './assets/cloud-computing@3x.png';
+import pdf from './assets/pdf-1@3x.png';
 
 export function MainTable({columns = [], api = '', params, form, numbered=true, pageSize=10,  ...props}){
   const [data, setData] = useState([]);
@@ -52,7 +53,7 @@ export const CardHolder = ({url, image, title}) => <Link to={url}>
 </Link>
 
 
-export function ButtonUpload({children, name, onSubmit}){
+export function ButtonUpload({children, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props}){
   const [isModalVisible, setIsModalVisible] = useState(false);
   const toggleModal = () =>  setIsModalVisible(!isModalVisible); 
 
@@ -61,12 +62,13 @@ export function ButtonUpload({children, name, onSubmit}){
     toggleModal();
   }
   
-  return <div><Button type="primary" icon={<CloudUploadOutlined />} onClick={toggleModal}>Upload Image</Button>
+  return <div className={addMore ? 'addmore--button' : null}>
+    <Button type={addMore? 'default' : "primary"} icon={addMore ? <PlusCircleOutlined /> : <CloudUploadOutlined />} onClick={toggleModal}>{buttonText}</Button>
       <Modal title="" className='upload--modal' visible={isModalVisible} onOk={toggleModal} onCancel={toggleModal}>
         <h3 className='modal--title text-center'>Upload Files</h3>
         <p className=' text-center'>File size not more than 2 MB</p>
         <Form.Item name={name}>
-          <Upload.Dragger beforeUpload={() => false}>
+          <Upload.Dragger beforeUpload={() => false} {...props}>
               <p className="ant-upload-drag-icon">
                   <img width='50' src={computing} />
               </p>
@@ -76,9 +78,29 @@ export function ButtonUpload({children, name, onSubmit}){
           </Upload.Dragger>
         </Form.Item>
         {children}
-        <Button type="primary" onClick={onSave} icon={<CloudUploadOutlined />}>
-            Upload Image
-        </Button>
+        <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
       </Modal>
     </div>
+}
+
+export function FileViewer({images = [], index = 0}){
+  if(!images[index]) return null;
+
+  const {type = '', name, src} = images[index];
+
+  return type.includes('image') ? <img width='100%' src={src} /> : <div className='box--facility pdf-view-section area--box--facility'>
+    <h2 style={{ marginTop: 15 }}><img width='30' src={pdf} /> <span> Pdf File Name</span></h2>
+    <iframe src={src} width="100%" height="700" frameBorder="0" />
+  </div> 
+}
+export function DescField({name = '', value='', editMode=false}){
+  return editMode ? <Form.Item name={name} initialValue={value}><Input.TextArea /></Form.Item> : <p>{value}</p>;
+}
+
+export function EditButtons({editMode, toggle, save}){
+  return !editMode ? <Button type="primary" size="small" onClick={toggle}>Edit</Button> : 
+  <Space>
+      <Button type="primary" size="small" danger onClick={toggle}>Cancel</Button>
+      <Button type="primary" size="small" success onClick={save}>Save</Button>
+  </Space>
 }

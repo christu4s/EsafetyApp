@@ -2,12 +2,15 @@ import { Row, Col, Card, Button, Modal, Upload, message, Input, Space, Form } fr
 import React, { useState, useEffect } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
 
-import trimage from '../../assets/ft-cb-crs-img@3x.png';
-
-import { PlusCircleOutlined, DownloadOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
 import './index.css';
 import ajax from '../../ajax';
+import { DescField, EditButtons } from '../../utils';
+import { Link } from 'react-router-dom';
+
+export * from './details';
+
 export const SafetyManagement = () => {
     const { Dragger } = Upload;
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -65,14 +68,7 @@ export const SafetyManagement = () => {
                                     <div>
                                         <h2>Safety Management System</h2>
                                     </div>
-
-                                    <div>
-                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
-                                            <Space>
-                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
-                                                <Button type="primary" size="small" onClick={saveData}>Save</Button>
-                                            </Space>}
-                                    </div>
+                                    <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={saveData} /></div>
                                 </div>
                             </div>
                         </Col>
@@ -83,9 +79,8 @@ export const SafetyManagement = () => {
                             <div className='box--facility area--box--facility'>
                                 <p>
                                     <Form form={form}>
-                                        {editMode ? <Form.Item name="safety_management_desc"><Input.TextArea defaultValue={content.safety_management_desc} /></Form.Item> : <p>{content.safety_management_desc}</p>}
+                                        <DescField editMode={editMode} value={content.safety_management_desc} name="safety_management_desc" />
                                     </Form>
-                                    {/* {editMode ? <Input.TextArea defaultValue={content} /> : <p>{content}</p>} */}
                                 </p>
                             </div>
                         </Col>
@@ -124,7 +119,7 @@ export const SafetyManagement = () => {
                                             </Form.Item>
                                             <label>Add Description</label>
                                             <Form.Item name="desc">
-                                                <Input />
+                                                <Input.TextArea />
                                             </Form.Item>
                                         </div>
                                     </Form>
@@ -133,7 +128,6 @@ export const SafetyManagement = () => {
                                 </Modal>
                             </Col>
                         </Row>
-
                     }
 
                     <Row>
@@ -143,29 +137,16 @@ export const SafetyManagement = () => {
 
                     <Row gutter={24}>
                         {data.map((v, i) => <Col key={i} span={12}>
-                            <div className="blue--box">
-                                <h3>
-                                    {/* Safety Policy */}
-                                    <Meta title={v.title} />
-                                </h3>
-                                <p>
-                                    {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. */}
-                                    <Meta title={v.desc} />
-                                </p>
-
-                                <Button type='default' icon={<DownloadOutlined />}>Download Button</Button>
-
-                            </div>
+                            <Link to={'/safety-management/' + v.id}>
+                                <div className="blue--box">
+                                    <h3>{v.title}</h3>
+                                    <p>{v.desc}</p>
+                                </div>
+                            </Link>
                         </Col>)}
-
-
-
                     </Row>
                 </Col>
-
             </Row>
-
-
         </div>
     );
 }

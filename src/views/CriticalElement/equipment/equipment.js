@@ -9,6 +9,7 @@ import warning from '../../../assets/triangular-warning-sign@3x.png';
 import { Timeline } from 'antd';
 import { Link } from 'react-router-dom';
 import ajax from '../../../ajax';
+import { DescField, EditButtons } from '../../../utils';
 
 export const CriticalEquipment = () => {
     const { Dragger } = Upload;
@@ -81,13 +82,7 @@ export const CriticalEquipment = () => {
                                         <p>Safety Critical Element</p>
                                         <h2 >Safety Critical Equipment</h2>
                                     </div>
-                                    <div>
-                                        {!editMode ? <Button type="primary" size="small" onClick={() => setEditMode(!editMode)}>Edit</Button> :
-                                            <Space>
-                                                <Button type="primary" size="small" danger onClick={() => setEditMode(!editMode)}>Cancel</Button>
-                                                <Button type="primary" size="small" success onClick={saveData}>Save</Button>
-                                            </Space>}
-                                    </div>
+                                    <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={saveData} /></div>
                                 </div>
                             </div>
                         </Col>
@@ -95,37 +90,34 @@ export const CriticalEquipment = () => {
 
                     <Row>
                         <Col span={23}>
-                            <div className='box--facility area--box--facility'>
+                            <div className='box--facility area--box--facility' style={{marginBottom: 20}}>
                                 <p>
                                     <Form form={form}>
-                                        {editMode ? <Form.Item name="equipment_desc"><Input.TextArea defaultValue={content.equipment_desc} /></Form.Item> : <p>{content.equipment_desc}</p>}
+                                        <DescField editMode={editMode} value={content.equipment_desc} name="equipment_desc" />
                                     </Form>
                                 </p>
                             </div>
+                            <Timeline>
+                                <Timeline.Item>
+                                    <div className='timeline--box timeline--box--withimage'>
+                                        <p> <img width="25" src={warning} /> Hazards</p>
+                                    </div>
+                                </Timeline.Item>
+                                {innerPages.map((page, i) => <Timeline.Item>
+                                    <div className='timeline--box timeline-bg-blue'>
+                                        <Link to={page.url}>
+                                            <p style={{color:'#fff'}}> {page.title}</p>
+                                        </Link>
+                                    </div>
+                                </Timeline.Item>)}
+                                <Timeline.Item>
+                                    <div className='timeline--box timeline--box--withimage'>
+                                        <p> <img width="25" src={fire} /> Hazards</p>
+                                    </div>
+                                </Timeline.Item>
+                            </Timeline>
                         </Col>
                     </Row>
-
-                    <Row style={{ marginTop: 30 }}>
-                        <Timeline>
-                            <Timeline.Item>
-                                <div className='timeline--box timeline--box--withimage'>
-                                    <p> <img width="37" src={warning} /> Hazards</p>
-                                </div>
-                            </Timeline.Item>
-                            {innerPages.map((page, i) => <Timeline.Item>
-
-                                <div className='timeline--box timeline-bg-blue'>
-                                    <Link to={page.url}>
-                                        <p style={{color:'#fff'}}> {page.title}</p>
-                                    </Link>
-                                </div>
-                            </Timeline.Item>)}
-                            <Timeline.Item>
-                                <div className='timeline--box timeline--box--withimage'>
-                                    <p> <img width="37" src={fire} /> Hazards</p>
-                                </div>
-                            </Timeline.Item>
-                        </Timeline></Row>
                 </Col>
 
             </Row>

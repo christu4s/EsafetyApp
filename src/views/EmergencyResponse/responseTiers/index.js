@@ -178,7 +178,7 @@ export const ResponseTiers = () => {
                                 {levels.map((level, index) => <>
                                     <Row gutter={16}>
                                         <Col span={6}>
-                                            <h5>Level {index + 1}</h5>
+                                            <Input placeholder="1" readOnly={!editMode} value={level.level} onChange={e => onLevelChange(index, 'level', e.target.value)} />
                                         </Col>
                                         <Col span={8}>
                                             <Input placeholder="1" readOnly={!editMode} value={level.definition} onChange={e => onLevelChange(index, 'definition', e.target.value)} />

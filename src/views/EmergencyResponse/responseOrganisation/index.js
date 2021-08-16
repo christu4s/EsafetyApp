@@ -79,8 +79,6 @@ export const ResponseOrganisation = () => {
                         </div>
                     </Col>
                 </Row>
-
-
             </Link>
             <Row>
                 <Col span={16}>
@@ -176,7 +174,7 @@ export const ResponseOrganisation = () => {
                                             <Input placeholder="1" readOnly={!editMode} value={team.teamMembers} onChange={e => onLevelChange(index, 'teamMembers', e.target.value)} />
                                         </Col>
                                         <Col span={10}>
-                                            <Input placeholder="10" readOnly={!editMode} value={team.roles} onChange={e => onLevelChange(index, 'roles', e.target.value)} />
+                                            <Input.TextArea placeholder="10" readOnly={!editMode} value={team.roles} onChange={e => onLevelChange(index, 'roles', e.target.value)} />
                                         </Col>
                                         <Col span={2}>
                                             {editMode &&
