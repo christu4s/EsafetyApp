@@ -84,6 +84,7 @@ export const PageTemplate = ({
 
 export function ImageViewer({images = []}){
     if(!images || !images.length) return null;
+    console.log(images);
   
     return <Carousel>
         {images.map((v,i)=> v.type.includes('image') && <div key={i}><img width="100%" src={v.src} alt="" /></div>)}
@@ -91,7 +92,7 @@ export function ImageViewer({images = []}){
 }
 
 export function PdfViewer({files = [], index = 0}){
-    if(!files[index]) return null;
+    if(!files || !files[index]) return null;
   
     const {type = '', name, src} = files[index];
   
@@ -101,7 +102,7 @@ export function PdfViewer({files = [], index = 0}){
     </div> 
 }
 
-export function ListItems({api,editMode, list = [], imageKey = 'image', popupExtra}){
+export function ListItems({api,editMode, list = [], countInRow=3, imageKey = 'image', popupExtra}){
     const [data, setData] = useState(list);
     const [form] = Form.useForm();
     const history = useHistory();
@@ -112,7 +113,7 @@ export function ListItems({api,editMode, list = [], imageKey = 'image', popupExt
         await ajax.post(api,getFormFields(form)).then(res=> res && history.push(`${pathname}/${res.id}`))
     }
 
-    return <div><Row>
+    return <div><Row gutter={[16,16]}>
             {data && data.map((v, i) =>{ 
                 var src, url;
                 if(api){
@@ -122,7 +123,7 @@ export function ListItems({api,editMode, list = [], imageKey = 'image', popupExt
                     src = v.image;
                     url = v.url;
                 }
-                return <Col key={i} span={8}>
+                return <Col key={i} span={24/countInRow}>
                 <CardHolder image={src} title={v.title} url={url} />
             </Col>
         })}

@@ -21,7 +21,7 @@ export const BoxHolder = ({title, img , active, url })=>{
 }
 
 export const CardHolder = ({url, image, title}) => <Link to={url}>
-  <Card className='custom--card' hoverable style={{ width: 200 }} cover={<img alt="example" src={image} />}>
+  <Card className='custom--card' hoverable cover={<img alt="example" src={image} />}>
       <Card.Meta title={title} />
   </Card>
 </Link>
@@ -58,7 +58,7 @@ export function ButtonUpload({children, name, onSubmit, addMore = false, buttonT
 }
 
 export function FileViewer({images = [], index = 0}){
-  if(!images[index]) return null;
+  if(!images || !images[index]) return null;
 
   const {type = '', name, src} = images[index];
 

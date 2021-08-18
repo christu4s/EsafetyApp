@@ -32,6 +32,6 @@ export const RiskAssessment = () => {
         api="/risk_assessment" 
         descName="area_desc"
         >
-        <ListItems list={subpages} />
+        <ListItems list={subpages} countInRow={4} />
     </PageTemplate>
 }
