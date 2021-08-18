@@ -14,7 +14,8 @@ export const CriticalProcedure = () => {
         subtitle="Safty Critical Procedure"
         api="/critical_procedure" 
         descName="procedure_desc"
-        // imageName="individual_image"
+        imageName="procedure_image"
+        pdfName="procedure_pdf"
         >{(content,editMode)=> <ProcedureTable editMode={editMode} />}
     </PageTemplate>
 }

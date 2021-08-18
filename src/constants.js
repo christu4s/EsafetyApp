@@ -15,10 +15,10 @@ export const isAdmin = canEdit; // eslint-disable-line
 export const userName = name; // eslint-disable-line
 
 export const criticalEquipments = [
-    { title: "Prevention", type: "prevention", api: '/criticalEquipmentPrevention', itemApi: '/procedure_addSCE', imageKey:'add_sce'},
-    { title: "Detection", type: "detection", api: '/detection', itemApi: '/detection_add_sce', imageKey:'add_sce' },
-    { title: "Control", type: "control", api: '/control', itemApi: '/control_add_sce', imageKey:'add_sce' },
-    { title: "Mitigation", type: "mitigation", api: '/mitigation', itemApi: '/mitigation_add_sce', imageKey:'add_sce' },
-    { title: "Emergency Response", type: "emergencyResponse", api: '/equipment_emergency_response', itemApi: '/response_add_sce', imageKey:'add_sce'},
-    { title: "Incident", type: "incident", api: '/incident', itemApi: '/incident_add_sce', imageKey:'add_sce'},
+    { title: "Prevention", type: "prevention", api: '/criticalEquipmentPrevention', itemApi: '/procedure_addSCE', imageKey:'prevention_image', pdfKey:"prevention_pdf"},
+    { title: "Detection", type: "detection", api: '/detection', itemApi: '/detection_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf" },
+    { title: "Control", type: "control", api: '/control', itemApi: '/control_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf" },
+    { title: "Mitigation", type: "mitigation", api: '/mitigation', itemApi: '/mitigation_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf" },
+    { title: "Emergency Response", type: "emergencyResponse", api: '/equipment_emergency_response', itemApi: '/response_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf"},
+    { title: "Incident", type: "incident", api: '/incident', itemApi: '/incident_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf"},
 ];

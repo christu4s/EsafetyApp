@@ -19,6 +19,8 @@ export const CriticalElementType = ({match}) => {
         subtitle={equipment.title}
         api={equipment.api} 
         descName={type + "_desc"}
+        imageName={equipment.imageKey}
+        pdfName={equipment.pdfKey}
         >{(content,editMode)=> <ListItems 
             api={equipment.itemApi} 
             editMode={editMode} 
@@ -44,6 +46,7 @@ export const CriticalEquipmentItem = ({match}) => {
         api={equipment.itemApi + '/' + id} 
         descName="desc"
         imageName={equipment.imageKey}
+        pdfName={equipment.pdfKey}
     />
 }
 

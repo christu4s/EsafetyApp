@@ -19,7 +19,8 @@ export const ResponsePlan = () => {
         subtitle="Emergency Response Plan"
         api="/response_plan"
         descName="reponse_plan_desc"
-    // imageName="organisation_image"
+        imageName="reponse_plan_image"
+        pdfName="reponse_plan_pdf"
     >{(content, editMode, form) => <TablePlan content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

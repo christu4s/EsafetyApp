@@ -13,7 +13,8 @@ export const RemedialAction = () => {
         subtitle="Remedial Action Plan"
         api="/remedial_action"
         descName="remedial_desc"
-    // imageName="tiers_image"
+        imageName="remedial_image"
+        pdfName="remedial_pdf"
     >{(content,editMode,form)=> <TableRemedial content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

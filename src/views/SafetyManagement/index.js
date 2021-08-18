@@ -18,7 +18,8 @@ export const SafetyManagement = ({history}) => {
         subtitle="Safety Management System"
         api="/safety_management"
         descName="safety_management_desc"
-    // imageName="tiers_image"
+        imageName="safety_management_image"
+        pdfName="safety_management_pdf"
     >{(content, editMode) => <SafetyBox editMode={editMode} history={history} />}
     </PageTemplate>
 }

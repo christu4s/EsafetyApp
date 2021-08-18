@@ -19,6 +19,7 @@ export const IndividualRisk = () => {
         api="/individual_risk"
         descName="individual_desc"
         imageName="individual_image"
+        pdfName="individual_pdf"
     >{(content, editMode, form) => <IndividualGraph content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

@@ -14,7 +14,8 @@ export const SafetyManagementItem = ({match}) => {
         subtitle={(content) => content.title } 
         api={"/safety_manage_commit/"+id} 
         descName="desc"
-        imageName="commitment_file"
+        imageName="commitment_file_image"
+        pdfName="commitment_file_pdf"
         >
     </PageTemplate>
 }

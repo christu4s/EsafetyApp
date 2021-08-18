@@ -17,6 +17,7 @@ export const ResponseOrganisation = () => {
         api="/emergency_response_organisation"
         descName="organisation_desc"
         imageName="organisation_image"
+        pdfName="organisation_pdf"
     >{(content,editMode,form)=> <TableOrg content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

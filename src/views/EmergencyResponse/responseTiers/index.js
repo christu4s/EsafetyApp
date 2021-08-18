@@ -17,6 +17,7 @@ export const ResponseTiers = () => {
         api="/emergency_response_tiers"
         descName="tiers_desc"
         imageName="tiers_image"
+        pdfName="tiers_pdf"
     >{(content, editMode, form) => <TableTiers content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

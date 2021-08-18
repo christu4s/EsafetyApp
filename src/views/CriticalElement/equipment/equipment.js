@@ -15,7 +15,8 @@ export const CriticalEquipment = () => {
       subtitle="Safty Critical Equipment"
       api="/criticalEquipment"
       descName="equipment_desc"
-      // imageName="individual_image"
+      imageName="equipment_image"
+      pdfName="equipment_pdf"
     >
       <div style={{ marginTop: 30 }}>
         <Timeline>

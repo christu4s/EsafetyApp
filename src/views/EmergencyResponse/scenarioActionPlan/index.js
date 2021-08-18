@@ -18,6 +18,8 @@ export const ScenarioActionPlan = () => {
         subtitle="Scenario Specific Action Plan"
         api="/scenario_action"
         descName="scenario_desc"
+        imageName="scenario_image"
+        pdfName="scenario_pdf"
     >{(content, editMode, form) => <TableScenario content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

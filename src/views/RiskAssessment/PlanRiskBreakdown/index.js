@@ -17,6 +17,8 @@ export const PlanRiskBreakDown = () => {
         subtitle="Plant Risk Breakdown"
         api="/plant_risk"
         descName="plant_desc"
+        imageName="plant_image"
+        pdfName="plant_pdf"
         outside={(content, editMode, form) => <PlantGraph content={content} editMode={editMode} form={form} />}
     >
     </PageTemplate>

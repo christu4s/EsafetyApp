@@ -19,6 +19,7 @@ export const LocationRisk = () => {
         api="/location_risk" 
         descName="location_desc"
         imageName="location_image"
+        pdfName="location_pdf"
         outside={(content,editMode,form)=> <LocationGraph content={content} editMode={editMode} form={form}/>}
         />
 }

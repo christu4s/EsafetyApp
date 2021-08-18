@@ -15,7 +15,8 @@ export const CriticalPersonnel = () => {
         subtitle="Safty Critical Personnel"
         api="/critical_personnel"
         descName="personnel_desc"
-    // imageName="individual_image"
+        imageName="personnel_image"
+        pdfName="personnel_pdf"
     >{(content,editMode, form)=> <TablePersonel content={content} editMode={editMode} form={form}/>}
     </PageTemplate>
 }
