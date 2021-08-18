@@ -84,7 +84,6 @@ export const PageTemplate = ({
 
 export function ImageViewer({images = []}){
     if(!images || !images.length) return null;
-    console.log(images);
   
     return <Carousel>
         {images.map((v,i)=> v.type.includes('image') && <div key={i}><img width="100%" src={v.src} alt="" /></div>)}

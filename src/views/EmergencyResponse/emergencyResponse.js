@@ -21,7 +21,7 @@ import { PlusCircleOutlined, CloudUploadOutlined } from "@ant-design/icons";
 import computing from "../../assets/cloud-computing@3x.png";
 import ajax from "../../ajax";
 import { Link } from "react-router-dom";
-import { PageTemplate } from "./../template";
+import { ListItems, PageTemplate } from "./../template";
 
 export const EmergencyResponse = () => {
   const subpages = [
@@ -54,22 +54,7 @@ export const EmergencyResponse = () => {
       api="/emergency_respons"
       descName="response_desc"
       // imageName="individual_image"
-    >
-      <Row>
-        {subpages.map((page, i) => (
-          <Col key={i} span={6}>
-            <Link to={page.url}>
-              <Card
-                className="custom--card"
-                hoverable
-                cover={<img alt="example" src={page.image} />}
-              >
-                <Card.Meta title={page.title} />
-              </Card>
-            </Link>
-          </Col>
-        ))}
-      </Row>
+    > <ListItems list={subpages} countInRow={4} />
     </PageTemplate>
   );
 };
