@@ -2,13 +2,10 @@ import { Row, Col, Card, Button, Modal, Upload, message, Input, Table, Tag, Spac
 import React, { useState, useEffect } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import download from '../../../assets/direct-download@3x.png';
-import cancel from '../../../assets/cancel@3x.png';
-import arrow from '../../../assets/left-arrow@3x.png';
-import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
-import computing from '../../../assets/cloud-computing@3x.png';
-import test from './test.json';
+import { DeleteOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
-import { PageTemplate } from './../../template';
+import { getFormFields, PageTemplate } from './../../template';
+import { ButtonUpload } from '../../../utils';
 
 export const CriticalProcedure = () => {
     return <PageTemplate
@@ -18,8 +15,49 @@ export const CriticalProcedure = () => {
         api="/critical_procedure" 
         descName="procedure_desc"
         // imageName="individual_image"
-        >
+        >{(content,editMode)=> <ProcedureTable editMode={editMode} />}
     </PageTemplate>
+}
+
+function ProcedureTable({ editMode }) {
+    const [data, setData] = useState([]);
+    const [form] = Form.useForm();
+    const [now, setNow] = useState();
+    const refresh = () => setNow(new Date());
+    useEffect(() => { ajax.get('/safety_critical_procedure').then(res => res && setData(res.data)); }, [now]);
+
+    function submit() { 
+        ajax.post('/safety_critical_procedure',getFormFields(form)).then(refresh);
+    }
+    function deleteRow(id) {
+        ajax.delete('/safety_critical_procedure/' + id).then(refresh);
+    }
+
+    const columns = [
+        { title: 'Safety Critical Procedure', dataIndex: 'title' },
+        { title: 'Document Number', dataIndex: 'desc' },
+        {
+            title: '', dataIndex: 'procedure_file',
+            render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
+        },
+        {
+            title: '', dataIndex: '',
+            render: (value, row, index) => editMode && <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
+        },
+    ];
+
+    return <div className="management--wrapper">
+        <div className='divider' style={{ marginBottom: 20 }}></div>
+        <Table dataSource={data} columns={columns} />
+        {editMode && <Form form={form}><ButtonUpload name="procedure_file" onSubmit={submit}>
+            <div className='area--form'>
+                <label>Name of File</label>
+                <Form.Item name="title"><Input /></Form.Item>
+                <label>Add Description</label>
+                <Form.Item name="desc"><Input.TextArea /></Form.Item>
+            </div>
+        </ButtonUpload></Form>}
+    </div>
 }
 
 // export const CriticalProcedure = () => {

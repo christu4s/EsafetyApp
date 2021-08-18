@@ -2,22 +2,93 @@ import { Row, Col, Card, Button, Input, Space, Form, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 import alert from '../../../assets/alert@3x.png';
 
-import { PlusCircleOutlined,  ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 
 import './index.css';
 import { PageTemplate } from './../../template';
 
 export const CriticalPersonnel = () => {
-    return <PageTemplate 
-        iconUrl={alert} 
-        title="Safty Critical Element" 
+    return <PageTemplate
+        iconUrl={alert}
+        title="Safty Critical Element"
         subtitle="Safty Critical Personnel"
-        api="/critical_personnel" 
+        api="/critical_personnel"
         descName="personnel_desc"
-        // imageName="individual_image"
-        >
+    // imageName="individual_image"
+    >{(content,editMode, form)=> <TablePersonel content={content} editMode={editMode} form={form}/>}
     </PageTemplate>
+}
+
+function TablePersonel({ content, editMode, form }) {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        try {
+            var res = JSON.parse(content.personnel_data.replace(/\\/g, ''));
+            setData(res);
+        } catch (e) { }
+    }, [content.personnel_data]);
+
+    useEffect(() => { form.setFieldsValue({ personnel_data: JSON.stringify(data) }) }, [data]);
+
+
+    function removeLevel(index) {
+        data.splice(index, 1);
+        setData([...data]);
+    }
+
+    function onLevelChange(index, key, value) {
+        data[index][key] = value;
+        setData([...data]);
+    }
+    function addmore() { setData([...data, {}]); }
+
+    return <div>
+        <Form.Item hidden name="personnel_data"><Input /></Form.Item>
+        <div className="divider" style={{ marginBottom: 10 }}></div>
+        {data.map((level, index) => <div className='box--facility area--box--facility el-personnel'>
+            <Row>
+                <Col span={12}>
+                    <div className=''>
+                        {/* <img width='80' src={ellipse} /> */}
+                        <Form.Item label='Name :'>
+                            <Input placeholder='Enter Name' readOnly={!editMode} value={level.name} onChange={e => onLevelChange(index, 'name', e.target.value)} />
+                        </Form.Item>
+                        <Form.Item label='Position:'>
+                            <Input placeholder='Enter Position' readOnly={!editMode} value={level.position} onChange={e => onLevelChange(index, 'position', e.target.value)} />
+                        </Form.Item>
+                    </div>
+                </Col>
+                <Col offset={1} span={11}>
+                    <div className=''>
+
+                        <Form.Item label='Contact :' >
+                            <Input placeholder='Enter Contact' readOnly={!editMode} value={level.contact} onChange={e => onLevelChange(index, 'contact', e.target.value)} />
+                        </Form.Item>
+
+
+                        <Form.Item label='Email :' >
+                            <Input placeholder='Enter Vaild Email' readOnly={!editMode} value={level.email} onChange={e => onLevelChange(index, 'email', e.target.value)} />
+                        </Form.Item>
+                    </div>
+
+                </Col>
+            </Row>
+            <Form.Item label='Remark :' >
+                <Input.TextArea readOnly={!editMode} value={level.remark} onChange={e => onLevelChange(index, 'remark', e.target.value)} />
+            </Form.Item>
+            {editMode && <Popconfirm title="Are you sure to delete this?" onConfirm={() => removeLevel(index)}>
+                <Button danger>Delete</Button>
+            </Popconfirm>
+            }
+        </div>)}
+        {editMode && <div className='addmore--button'>
+            <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                Add More
+            </Button>
+        </div>}
+    </div>
 }
 
 // export const CriticalPersonnel = () => {

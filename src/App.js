@@ -1,9 +1,10 @@
 import React from 'react';
-import { Layout, Menu, Avatar, Dropdown, Space, Input } from 'antd';
+import { Layout, Menu, Avatar, Dropdown, Space, Input, Alert } from 'antd';
 import './App.css';
 import { getSelectedMenuItem, menus, routes } from './config';
 import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import { UserOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
+import { userName } from './constants';
 
 const { Content, Footer, Sider, Header } = Layout;
 
@@ -42,7 +43,7 @@ class App extends React.Component {
               <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
             </div>
             <Dropdown overlay={userMenu}>
-                <Space><Avatar size="large" icon={<UserOutlined />} /> Admin <DownOutlined /></Space>
+                <Space><Avatar size="large" icon={<UserOutlined />} /> {userName} <DownOutlined /></Space>
             </Dropdown>
           </div>
         </Header>
@@ -54,6 +55,7 @@ class App extends React.Component {
         </Sider>
         <Layout className="site-layout">
           <Content style={{ margin: '0 16px', padding: 20 }}>
+            <Alert message="Notice: This is a test enviroment" type="warning"/>
             <Switch>
               {routes.map((v, i) => <Route key={i} {...v} />)}
             </Switch>

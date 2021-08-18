@@ -1,6 +1,7 @@
-// import { Row, Col, Button , Popconfirm, Input, Space, Form } from 'antd';
+import { Form, Input } from 'antd';
 import React from 'react';
 import area from '../../../../assets/area.png';
+import { TitleEdit } from '../../../../utils';
 import { PageTemplate } from '../../../template';
 import {  FacilitiesButtons } from '../../components';
 
@@ -9,10 +10,11 @@ export const FacilityAreaDetails = ({match}) => {
     return <PageTemplate 
         iconUrl={area} 
         title="Facilities Overview" 
-        subtitle={content => content.title} 
+        subtitle={TitleEdit} 
         api={'/facility-overview/area/'+ id} 
         descName="desc"
         imageName="image"
+        pdfName="pdf"
         right={<FacilitiesButtons />}>
     </PageTemplate>
 }

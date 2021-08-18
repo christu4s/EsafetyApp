@@ -19,8 +19,12 @@ export const LocationRisk = () => {
         api="/location_risk" 
         descName="location_desc"
         imageName="location_image"
-        >
-    </PageTemplate>
+        outside={(content,editMode,form)=> <LocationGraph content={content} editMode={editMode} form={form}/>}
+        />
+}
+
+function LocationGraph({content,editMode,form}){
+    return null;
 }
 
 // export const LocationRisk = () => {

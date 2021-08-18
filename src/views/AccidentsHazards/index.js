@@ -14,6 +14,7 @@ export const AccidentsHazard = () => {
         api="/major_accident_hazards" 
         descName="mah_desc"
         imageName="mah_image"
+        pdfName="mah_pdf"
         >{(content,editMode)=> <ListItems 
             api="/major_accident_hazards_item" 
             editMode={editMode} 

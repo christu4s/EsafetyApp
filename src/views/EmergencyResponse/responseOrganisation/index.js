@@ -11,14 +11,80 @@ import { PageTemplate } from './../../template';
 
 export const ResponseOrganisation = () => {
     return <PageTemplate
-        iconUrl={extinguisher} 
-        title="Emergency Response" 
+        iconUrl={extinguisher}
+        title="Emergency Response"
         subtitle="Emergency Response Organisation"
-        api="/emergency_response_organisation" 
+        api="/emergency_response_organisation"
         descName="organisation_desc"
         imageName="organisation_image"
-        >
+    >{(content,editMode,form)=> <TableOrg content={content} editMode={editMode} form={form} />}
     </PageTemplate>
+}
+
+function TableOrg({ content, editMode, form }) {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        try {
+            var res = JSON.parse(content.team_members.replace(/\\/g, ''));
+            setData(res);
+        } catch (e) { }
+    }, [content.team_members]);
+
+    useEffect(() => { form.setFieldsValue({ team_members: JSON.stringify(data) }) }, [data]);
+
+
+    function removeLevel(index) {
+        data.splice(index, 1);
+        setData([...data]);
+    }
+
+    function onLevelChange(index, key, value) {
+        data[index][key] = value;
+        setData([...data]);
+    }
+    function addmore() { setData([...data, {}]); }
+
+
+    return <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+        <Form.Item hidden name="team_members"><Input /></Form.Item>
+        <Row gutter={20}>
+            <Col span={12} >
+                <h3>Team Member</h3>
+            </Col>
+            <Col span={12}>
+                <h3>Roles and Responbilities</h3>
+            </Col>
+        </Row>
+        <hr />
+        {data.map((team, index) => <>
+            <Row gutter={16}>
+                <Col span={10}>
+                    <Input placeholder="1" readOnly={!editMode} value={team.teamMembers} onChange={e => onLevelChange(index, 'teamMembers', e.target.value)} />
+                </Col>
+                <Col span={10}>
+                    <Input.TextArea placeholder="10" readOnly={!editMode} value={team.roles} onChange={e => onLevelChange(index, 'roles', e.target.value)} />
+                </Col>
+                <Col span={2}>
+                    {editMode &&
+                        <Popconfirm title="Are you sure to delete this level?" onConfirm={() => removeLevel(index)}>
+                            <Button type="link" icon={<DeleteOutlined danger />} />
+                        </Popconfirm>
+                    }
+                </Col>
+            </Row>
+            <hr />
+        </>)}
+        {editMode &&
+            <Row className='addmore--button'>
+                <Col>
+                    <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                        Add More
+                    </Button>
+                </Col>
+            </Row>
+        }
+    </div>
 }
 
 
