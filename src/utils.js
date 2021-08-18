@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
+import { isAdmin } from "./constants";
 
 
 
@@ -71,9 +72,16 @@ export function DescField({name = '', value='', editMode=false}){
 }
 
 export function EditButtons({editMode, toggle, save}){
+  if(!isAdmin) return null;
+
   return !editMode ? <Button type="primary" size="small" onClick={toggle}>Edit</Button> : 
   <Space>
       <Button type="primary" size="small" danger onClick={toggle}>Cancel</Button>
       <Button type="primary" size="small" success onClick={save}>Save</Button>
   </Space>
+}
+
+
+export function TitleEdit(content, editMode){
+  return editMode ? <Form.Item name="title" initialValue={content.title}><Input /></Form.Item> : content.title;
 }

@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button,  Upload, Input, Space, Form, Popconfirm } from 'antd';
+import { Row, Col, Card, Button, Upload, Input, Space, Form, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
 
@@ -9,13 +9,101 @@ import { PageTemplate } from './../template';
 
 export const RemedialAction = () => {
     return <PageTemplate
-        iconUrl={extinguisher} 
+        iconUrl={extinguisher}
         subtitle="Remedial Action Plan"
-        api="/remedial_action" 
+        api="/remedial_action"
         descName="remedial_desc"
-        // imageName="tiers_image"
-        >
+        imageName="remedial_image"
+        pdfName="remedial_pdf"
+    >{(content,editMode,form)=> <TableRemedial content={content} editMode={editMode} form={form} />}
     </PageTemplate>
+}
+
+function TableRemedial({ content, editMode, form }) {
+    const [data, setData] = useState([]);
+
+    useEffect(()=> {
+        try { 
+            var res = JSON.parse(content.remedial_table_data.replace(/\\/g, '')); 
+            setData(res);
+        } catch (e) { }
+    }, [content.remedial_table_data]);
+    
+    useEffect(()=> { form.setFieldsValue({remedial_table_data: JSON.stringify(data)}) }, [data]);
+
+
+    function removeLevel(index) {
+        data.splice(index, 1);
+        setData([...data]);
+    }
+
+    function onLevelChange(index, key, value) {
+        data[index][key] = value;
+        setData([...data]);
+    }
+    function addmore() { setData([...data, {}]); }
+
+    // const input = <Form.Item hidden name="remedial_table_data"><Input value={JSON.stringify(data)} /></Form.Item>
+    // console.log(input.type);
+    return <div>
+        <Form.Item hidden name="remedial_table_data"><Input /></Form.Item>
+        <div className="divider" style={{ marginBottom: 10 }}></div>
+        <h2>Table</h2>
+        <div style={{ marginTop: 5 }} className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+            <Row>
+                <Col span={1}>
+                </Col>
+                <Col span={4} push={1}>
+                    <h5>Source</h5>
+                </Col>
+                <Col span={4} push={1}>
+                    <h5>Action</h5>
+                </Col>
+                <Col span={4} push={5}>
+                    <h5>Actionee</h5>
+                </Col>
+                <Col span={4} push={6}>
+                    <h5>
+                        Status
+                        <span> (as of date of E-SC development)</span>
+                    </h5>
+                </Col>
+            </Row>
+            <hr />
+            {data.map((tableData, index) => <>
+                <Row key={index} gutter={40}>
+                    <Col span={1}>
+                        <h5>1</h5>
+                    </Col>
+                    <Col span={4}>
+                        <Input  readOnly={!editMode} value={tableData.source} onChange={e => onLevelChange(index, 'source', e.target.value)} />
+                    </Col>
+                    <Col span={8}>
+                        <Input readOnly={!editMode} value={tableData.action} onChange={e => onLevelChange(index, 'action', e.target.value)} />
+                    </Col>
+                    <Col span={4}>
+                        <Input readOnly={!editMode} value={tableData.actionee} onChange={e => onLevelChange(index, 'actionee', e.target.value)} />
+                    </Col>
+                    <Col span={4}>
+                        <Input readOnly={!editMode} value={tableData.status} onChange={e => onLevelChange(index, 'status', e.target.value)} />
+                    </Col>
+                    <Col span={2}>
+                        {editMode &&
+                            <Popconfirm title="Are you sure to delete this level?" onConfirm={() => removeLevel(index)}>
+                                <Button type="link" icon={<DeleteOutlined danger="true" />} />
+                            </Popconfirm>
+                        }
+                    </Col>
+                </Row>
+                <hr />
+            </>)}
+            </div>
+            {editMode && <div className='addmore--button'>
+                        <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                            Add More
+                        </Button>
+                    </div>}
+        </div>
 }
 
 // export const RemedialAction = () => {

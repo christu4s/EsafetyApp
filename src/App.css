@@ -25319,6 +25319,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-menu-item.ant-menu-item-selected .ant-menu-item-icon a {
   color: #fff;
 }
+.ant-menu-item.ant-menu-item-selected img {
+  filter: invert(1) brightness(2);
+}
 .ant-menu-submenu.ant-menu-submenu-inline .ant-menu-title-content a {
   color: #000;
 }
@@ -25330,6 +25333,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-selected .ant-menu-submenu-title {
   background-image: linear-gradient(to top, #387bf7, #61c5ff);
+}
+.ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-selected .ant-menu-submenu-title img {
+  filter: invert(1) brightness(2);
 }
 .ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-selected .ant-menu-submenu-title a {
   color: #fff;

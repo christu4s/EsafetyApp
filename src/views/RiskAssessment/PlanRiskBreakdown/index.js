@@ -1,9 +1,9 @@
-import { Row, Col, Card , Button , Modal , Upload, message , Input , Form, Checkbox, Space } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Form, Checkbox, Space } from 'antd';
 import React, { useState, useEffect } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
 import danger from '../../../assets/danger-sing@3x.png';
-import { PlusCircleOutlined,  CloudUploadOutlined , ArrowLeftOutlined   } from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../../facilities/components';
 import { useHistory } from "react-router-dom";
@@ -11,14 +11,76 @@ import ajax from '../../../ajax';
 import { PageTemplate } from '../../template';
 
 export const PlanRiskBreakDown = () => {
-    return <PageTemplate 
-        iconUrl={danger} 
-        title="Risk Assessment" 
-        subtitle="Plant Risk Breakdown" 
-        api="/plant_risk" 
+    return <PageTemplate
+        iconUrl={danger}
+        title="Risk Assessment"
+        subtitle="Plant Risk Breakdown"
+        api="/plant_risk"
         descName="plant_desc"
-        >
+        imageName="plant_image"
+        pdfName="plant_pdf"
+        outside={(content, editMode, form) => <PlantGraph content={content} editMode={editMode} form={form} />}
+    >
     </PageTemplate>
+}
+
+function PlantGraph({ content, editMode, form }) {
+    const [form2] = Form.useForm();
+    const onFinish = (value) => {
+        console.log(form2.getFieldsValue(), value);
+    };
+
+
+
+    return <Row>
+        <Col span={16}>
+            <h2>Pie Chart</h2>
+            <div className='bg-white-box form-holder-risk'>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                    ut labore et dolore magna aliqua.
+                </p>
+                <Form name="form" form={form2} onFinish={onFinish}>
+                    <Form.List name="users">
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, fieldKey, ...restField }) => {
+                                    console.log(key, name, fieldKey, restField);
+                                    return <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'key']}
+                                            fieldKey={[fieldKey, 'key']}
+                                            rules={[{ required: true, message: 'Missing Risk' }]}
+                                            label="Risk"
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'value']}
+                                            fieldKey={[fieldKey, 'value']}
+                                            rules={[{ required: true, message: 'Missing Value' }]}
+                                            label="Value"
+                                        >
+                                            <Input  />
+                                        </Form.Item>
+                                        <MinusCircleOutlined onClick={() => remove(name)} />
+                                    </Space>
+                                })}
+                                <Row justify="space-between">
+                                    <Col span={12}><Button type="link" onClick={() => add()}  icon={<PlusOutlined />}>Add field</Button></Col>
+                                    <Col span={12}><div style={{textAlign:'right'}}><Button onClick={()=> form2.submit()} size="small" type="primary">Proceed</Button></div></Col>
+                                </Row>
+                            </>
+                        )}
+                    </Form.List>
+                </Form>
+            </div>
+        </Col>
+        <Col span={8} push={1}>
+        </Col>
+    </Row>;
 }
 
 // import './index.css';
@@ -51,13 +113,13 @@ export const PlanRiskBreakDown = () => {
 //           console.log('Success:', values);
 //           history.push('/risk-assessment/edit-plan');
 //         };
-      
+
 //         const onFinishFailed = (errorInfo) => {
 //           console.log('Failed:', errorInfo);
 //         };      
 
 //     const { Meta } = Card;
-    
+
 //     const props = {
 //         beforeUpload: () => false,
 //     };
@@ -67,7 +129,7 @@ export const PlanRiskBreakDown = () => {
 //         await ajax.post('/plant_risk', values).then(res => res && setContent(res));
 //         setEditMode(!editMode);
 //     }
-    
+
 //     return (
 //         <div className='facility--wrapper'>
 //             <Row>
@@ -180,7 +242,7 @@ export const PlanRiskBreakDown = () => {
 //                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
 //                                     ut labore et dolore magna aliqua.
 //                                 </p>
-                                
+
 //                                 <Form
 //                                 name="basic"
 //                                 labelCol={{
@@ -198,8 +260,8 @@ export const PlanRiskBreakDown = () => {
 //                                 <Form.Item
 //                                     label="Risk"
 //                                     name="Risk"
-                                    
-                                 
+
+
 //                                 >
 //                                     <Input  placeholder="Type Risk" />
 //                                 </Form.Item>
@@ -207,7 +269,7 @@ export const PlanRiskBreakDown = () => {
 //                                 <Form.Item
 //                                     label="Value"
 //                                     name="Value"
-                                
+
 //                                 >
 //                                     <Input  placeholder="Type Value" />
 //                                 </Form.Item>
@@ -215,7 +277,7 @@ export const PlanRiskBreakDown = () => {
 //                                 <Form.Item
 //                                     label="Percentage"
 //                                     name="Percentage"
-                                
+
 //                                 >
 //                                     <Input   placeholder="Type Percentage"  />
 //                                 </Form.Item>
@@ -247,7 +309,7 @@ export const PlanRiskBreakDown = () => {
 
 //                             </div>
 //                         </Col>
-                        
+
 //                     </Row>
 
 //                 </Col>

@@ -6,22 +6,57 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
 import './index.css';
 import ajax from '../../ajax';
-import { DescField, EditButtons } from '../../utils';
+import { ButtonUpload, DescField, EditButtons } from '../../utils';
 import { Link } from 'react-router-dom';
-import { PageTemplate } from './../template';
+import { getFormFields, PageTemplate } from './../template';
 
 export * from './details';
 
-export const SafetyManagement = () => {
+export const SafetyManagement = ({history}) => {
     return <PageTemplate
-        iconUrl={computing} 
+        iconUrl={extinguisher}
         subtitle="Safety Management System"
-        api="/safety_management" 
+        api="/safety_management"
         descName="safety_management_desc"
-        // imageName="tiers_image"
-        >
+        imageName="safety_management_image"
+        pdfName="safety_management_pdf"
+    >{(content, editMode) => <SafetyBox editMode={editMode} history={history} />}
     </PageTemplate>
 }
+function SafetyBox({ editMode, history }) {
+    const [data, setData] = useState([]);
+    const [form] = Form.useForm();
+    const [now, setNow] = useState();
+    const refresh = () => setNow(new Date());
+    useEffect(() => { ajax.get('/safety_manage_commit').then(res => res && setData(res.data)); }, [now]);
+
+    function submit() { 
+        ajax.post('/safety_manage_commit',getFormFields(form)).then(res => { res && history.push('/safety-management/' + res.id) });
+    }
+
+    return <div className="management--wrapper">
+        <div className='divider' style={{ marginBottom: 20 }}></div>
+        {editMode && <Form form={form}><ButtonUpload name="commitment_file" onSubmit={submit}>
+            <div className='area--form'>
+                <label>Name of File</label>
+                <Form.Item name="title"><Input /></Form.Item>
+                <label>Add Description</label>
+                <Form.Item name="desc"><Input.TextArea /></Form.Item>
+            </div>
+        </ButtonUpload></Form>}
+        <Row gutter={24}>
+            {data.map((v, i) => <Col key={i} span={12}>
+                <Link to={'/safety-management/' + v.id}>
+                    <div className="blue--box">
+                        <h3>{v.title}</h3>
+                        <p>{v.desc}</p>
+                    </div>
+                </Link>
+            </Col>)}
+        </Row>
+    </div>
+}
+
 
 // export const SafetyManagement = () => {
 //     const { Dragger } = Upload;

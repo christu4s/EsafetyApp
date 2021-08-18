@@ -53,7 +53,8 @@ export const EmergencyResponse = () => {
       subtitle="Emergency Response"
       api="/emergency_respons"
       descName="response_desc"
-      // imageName="individual_image"
+      imageName="response_image"
+      pdfName="response_pdf"
     >
       <Row>
         {subpages.map((page, i) => (

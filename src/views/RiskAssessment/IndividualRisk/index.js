@@ -1,9 +1,9 @@
-import { Row, Col, Card , Button , Modal , Upload, message , Input , Form, Checkbox, Space } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Form, Checkbox, Space } from 'antd';
 import React, { useState, useEffect } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
 import danger from '../../../assets/danger-sing@3x.png';
-import { PlusCircleOutlined,  CloudUploadOutlined , ArrowLeftOutlined   } from '@ant-design/icons';
+import { PlusCircleOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../../facilities/components';
 import { useHistory } from "react-router-dom";
@@ -12,15 +12,63 @@ import './index.css';
 import { PageTemplate } from './../../template';
 
 export const IndividualRisk = () => {
-    return <PageTemplate 
-        iconUrl={danger} 
-        title="Risk Assessment" 
-        subtitle="Individual Risk" 
-        api="/individual_risk" 
+    return <PageTemplate
+        iconUrl={danger}
+        title="Risk Assessment"
+        subtitle="Individual Risk"
+        api="/individual_risk"
         descName="individual_desc"
         imageName="individual_image"
-        >
+        pdfName="individual_pdf"
+    >{(content, editMode, form) => <IndividualGraph content={content} editMode={editMode} form={form} />}
     </PageTemplate>
+}
+
+function IndividualGraph({ content, editMode, form }) {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        try {
+            var res = JSON.parse(content.erp_flow_chat.replace(/\\/g, ''));
+            setData(res);
+        } catch (e) { }
+    }, [content.erp_flow_chat]);
+
+    useEffect(() => { form.setFieldsValue({ erp_flow_chat: JSON.stringify(data) }) }, [data]);
+
+
+    function removeLevel(index) {
+        data.splice(index, 1);
+        setData([...data]);
+    }
+
+    function addmore() { setData([...data, '']); }
+    function editPlan(index, value) {
+        data[index] = value;
+        setData([...data]);
+    }
+
+    return <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+        <h2>Graph</h2>
+        <div className='bg-white-box form-holder-risk'>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>            
+            <Form>
+                <Form.Item label="User" name="User" wrapperCol={{span:24}}><Input placeholder="Type User" /></Form.Item>
+                <Row gutter={[16,0]}>
+                    <Col span={12}><Form.Item label="Risk" name="Risk" ><Input placeholder="Type Risk" /></Form.Item></Col>
+                    <Col span={12}><Form.Item label="Value" name="Value"><Input type="number" placeholder="Type Value" /></Form.Item></Col>
+                </Row>
+            </Form>
+            <Row>
+                <Col span={12}>
+                    <Button type="default" block icon={<PlusCircleOutlined />}>Add more user</Button>
+                </Col>
+                <Col span={12} style={{textAlign:'right'}}>
+                    <Button type="primary" htmlType="submit">Proceed</Button>
+                </Col>
+            </Row>
+        </div>
+    </div>
 }
 
 // export const IndividualRisk = () => {
@@ -59,7 +107,7 @@ export const IndividualRisk = () => {
 //           console.log('Failed:', errorInfo);
 //         };
 
-      
+
 //         const props = {
 //             beforeUpload: () => false,
 //         };
@@ -70,7 +118,7 @@ export const IndividualRisk = () => {
 //         }
 
 //     const { Meta } = Card;
-    
+
 //     return (
 //         <div className='facility--wrapper'>
 //             <Row>
@@ -103,7 +151,7 @@ export const IndividualRisk = () => {
 //                                 <p>Risk Assessment</p>
 //                                 <h2>Individual Risk</h2>
 //                                 </div>
-                                
+
 //                                 <div>
 //                             {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
 //                             <Space>
@@ -183,7 +231,7 @@ export const IndividualRisk = () => {
 //                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
 //                                     ut labore et dolore magna aliqua.
 //                                 </p>
-                                
+
 //                                 <Form
 //                                 name="basic"
 //                                 labelCol={{
@@ -201,8 +249,8 @@ export const IndividualRisk = () => {
 //                                 <Form.Item
 //                                     label="User"
 //                                     name="User"
-                                    
-                                 
+
+
 //                                 >
 //                                     <Input  placeholder="Type User" />
 //                                 </Form.Item>
@@ -210,7 +258,7 @@ export const IndividualRisk = () => {
 //                                 <Form.Item
 //                                     label="Risk"
 //                                     name="Risk"
-                                
+
 //                                 >
 //                                     <Input  placeholder="Type Risk" />
 //                                 </Form.Item>
@@ -218,7 +266,7 @@ export const IndividualRisk = () => {
 //                                 <Form.Item
 //                                     label="Value"
 //                                     name="Value"
-                                
+
 //                                 >
 //                                     <Input   placeholder="Type Value"  />
 //                                 </Form.Item>
@@ -250,7 +298,7 @@ export const IndividualRisk = () => {
 
 //                             </div>
 //                         </Col>
-                        
+
 //                     </Row>
 
 //                 </Col>

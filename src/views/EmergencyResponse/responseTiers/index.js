@@ -11,15 +11,88 @@ import { PageTemplate } from './../../template';
 
 export const ResponseTiers = () => {
     return <PageTemplate
-        iconUrl={extinguisher} 
-        title="Emergency Response" 
+        iconUrl={extinguisher}
+        title="Emergency Response"
         subtitle="Emergency Response Tiers"
-        api="/emergency_response_tiers" 
+        api="/emergency_response_tiers"
         descName="tiers_desc"
         imageName="tiers_image"
-        >
+        pdfName="tiers_pdf"
+    >{(content, editMode, form) => <TableTiers content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }
+
+function TableTiers({ content, editMode, form }) {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        try {
+            var res = JSON.parse(content.levels.replace(/\\/g, ''));
+            setData(res);
+        } catch (e) { }
+    }, [content.levels]);
+
+    useEffect(() => { form.setFieldsValue({ levels: JSON.stringify(data) }) }, [data]);
+
+
+    function removeLevel(index) {
+        data.splice(index, 1);
+        setData([...data]);
+    }
+
+    function onLevelChange(index, key, value) {
+        data[index][key] = value;
+        setData([...data]);
+    }
+    function addmore() { setData([...data, {}]); }
+
+    return <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+        <Form.Item hidden name="levels"><Input /></Form.Item>
+        <Row gutter={20}>
+            <Col span={5}>
+                <h3>Emergency Response Tier</h3>
+            </Col>
+            <Col span={8} push={3}>
+                <h3>Definition</h3>
+            </Col>
+            <Col span={8} push={2}>
+                <h3>Team Activation</h3>
+            </Col>
+        </Row>
+        <hr />
+        {data.map((level, index) => <>
+            <Row gutter={16}>
+                <Col span={6}>
+                    <Input placeholder="1" readOnly={!editMode} value={level.level} onChange={e => onLevelChange(index, 'level', e.target.value)} />
+                </Col>
+                <Col span={8}>
+                    <Input placeholder="1" readOnly={!editMode} value={level.definition} onChange={e => onLevelChange(index, 'definition', e.target.value)} />
+                </Col>
+                <Col span={8}>
+                    <Input placeholder="10" readOnly={!editMode} value={level.team_activation} onChange={e => onLevelChange(index, 'team_activation', e.target.value)} />
+                </Col>
+                <Col span={2}>
+                    {editMode &&
+                        <Popconfirm title="Are you sure to delete this level?" onConfirm={() => removeLevel(index)}>
+                            <Button type="link" icon={<DeleteOutlined danger />} />
+                        </Popconfirm>
+                    }
+                </Col>
+            </Row>
+            <hr />
+        </>)}
+        {editMode &&
+            <Row className='addmore--button'>
+                <Col>
+                    <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                        Add More
+                    </Button>
+                </Col>
+            </Row>
+        }
+    </div>
+}
+
 
 // export const ResponseTiers = () => {
 //     const { Dragger } = Upload;

@@ -5,6 +5,7 @@ import { ButtonUpload, CardHolder, DescField, EditButtons } from '../utils';
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 export const PageTemplate = ({
     title, 
@@ -14,11 +15,14 @@ export const PageTemplate = ({
     pdfName, 
     imageName, 
     iconUrl,
+    backButton,
     children, 
-    right}) => {
+    right,
+    outside}) => {
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({});
     const [form] = Form.useForm();
+    const history = useHistory();
     const desc = content[descName], image = content[imageName], pdf = content[pdfName]; 
 
     async function saveData() {
@@ -32,6 +36,9 @@ export const PageTemplate = ({
     
     return (
         <div className='facility--wrapper'>
+            {backButton && <a href="#" onClick={()=> history.goBack()} style={{ color: '#282828' }}>
+                <Space><ArrowLeftOutlined />Back</Space>
+            </a>}
             <Form form={form}>
             <Row>
                 <Col span={16}>
@@ -57,18 +64,19 @@ export const PageTemplate = ({
                         <DescField editMode={editMode} value={desc} name={descName} />
                     </div>}
                     {editMode && <Space>
-                        {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" accept="image/*" />}
+                        {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                     </Space>}
                     {(imageName || pdfName) && <h2>File uploaded</h2>}
                     {imageName && <ImageViewer images={image} />}
                     {pdfName && <PdfViewer files={pdf} />}
-                    {typeof children=='function' ? children(content, editMode) : children}
+                    {typeof children=='function' ? children(content, editMode, form) : children}
                 </Col>
                 <Col span={8} push={1} style={{ marginTop: 35 }}>
                     {right}
                 </Col>
             </Row>
+            {typeof outside=='function' ? outside(content, editMode, form) : outside}
             </Form>
         </div>
     );
@@ -83,7 +91,7 @@ export function ImageViewer({images = []}){
 }
 
 export function PdfViewer({files = [], index = 0}){
-    if(!files[index]) return null;
+    if(!files || !files[index]) return null;
   
     const {type = '', name, src} = files[index];
   
@@ -93,8 +101,8 @@ export function PdfViewer({files = [], index = 0}){
     </div> 
 }
 
-export function ListItems({api,editMode, imageKey = 'image', addMore=true, popupExtra}){
-    const [data, setData] = useState([]);
+export function ListItems({api,editMode, list = [], imageKey = 'image', popupExtra}){
+    const [data, setData] = useState(list);
     const [form] = Form.useForm();
     const history = useHistory();
     const {pathname} = history.location;
@@ -105,9 +113,19 @@ export function ListItems({api,editMode, imageKey = 'image', addMore=true, popup
     }
 
     return <div><Row>
-            {data && data.map((v, i) => <Col key={i} span={8}>
-                <CardHolder image={v[imageKey].length ? v[imageKey][0].src : image} title={v.title} url={v.url || `${pathname}/${v.id}`} />
-            </Col>)}
+            {data && data.map((v, i) =>{ 
+                var src, url;
+                if(api){
+                    src = v[imageKey] && v[imageKey].length ? v[imageKey][0].src : image;
+                    url = `${pathname}/${v.id}`;
+                }else{
+                    src = v.image;
+                    url = v.url;
+                }
+                return <Col key={i} span={8}>
+                <CardHolder image={src} title={v.title} url={url} />
+            </Col>
+        })}
         </Row>
         {api && editMode && <Form style={{marginTop:30}} form={form}>
             <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
@@ -117,10 +135,10 @@ export function ListItems({api,editMode, imageKey = 'image', addMore=true, popup
     </div>
 }
 
-function getFormFields(form){
+export function getFormFields(form){
     var values = form.getFieldsValue(), ret = {};
     for(var [key,value] of Object.entries(values)){
-        ret[key] = value.file || value;
+        ret[key] = value ? (value.file || value) : '';
     }
     return ret;
 }

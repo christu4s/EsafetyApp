@@ -18,6 +18,7 @@ export const SocietalRisk = () => {
         api="/societal_risk" 
         descName="societal_desc"
         imageName="societal_image"
+        pdfName="societal_pdf"
         >
     </PageTemplate>
 }

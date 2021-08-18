@@ -1,4 +1,4 @@
-import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Steps, Form, Space } from 'antd';
+import { Row, Col, Radio, Card, Button, Modal, Upload, message, Input, Steps, Form, Space, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 
 import image from '../../../assets/screen-shot@3x.png';
@@ -6,7 +6,7 @@ import image from '../../../assets/screen-shot@3x.png';
 import arrow from '../../../assets/left-arrow@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { PlusCircleOutlined, InboxOutlined, CloudUploadOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
@@ -14,14 +14,63 @@ import { PageTemplate } from './../../template';
 
 export const ResponsePlan = () => {
     return <PageTemplate
-        iconUrl={extinguisher} 
-        title="Emergency Response" 
+        iconUrl={extinguisher}
+        title="Emergency Response"
         subtitle="Emergency Response Plan"
-        api="/response_plan" 
+        api="/response_plan"
         descName="reponse_plan_desc"
-        // imageName="organisation_image"
-        >
+        imageName="reponse_plan_image"
+        pdfName="reponse_plan_pdf"
+    >{(content, editMode, form) => <TablePlan content={content} editMode={editMode} form={form} />}
     </PageTemplate>
+}
+
+function TablePlan({ content, editMode, form }) {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        try {
+            var res = JSON.parse(content.erp_flow_chat.replace(/\\/g, ''));
+            setData(res);
+        } catch (e) { }
+    }, [content.erp_flow_chat]);
+
+    useEffect(() => { form.setFieldsValue({ erp_flow_chat: JSON.stringify(data) }) }, [data]);
+
+
+    function removeLevel(index) {
+        data.splice(index, 1);
+        setData([...data]);
+    }
+
+    function addmore() { setData([...data, '']); }
+    function editPlan(index, value) {
+        data[index] = value;
+        setData([...data]);
+    }
+
+    return <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
+        <Form.Item hidden name="erp_flow_chat"><Input /></Form.Item>
+        <Steps progressDot direction="vertical">
+            {data.map((plan, index) => <Steps.Step
+                title={<Space>{plan}
+                    {editMode && <Popconfirm title="Are you sure to delete this?" onConfirm={() => removeLevel(index)}>
+                        <Button type="link" icon={<DeleteOutlined danger />} />
+                    </Popconfirm>}
+                </Space>}
+                description={editMode && <Input value={plan} onChange={e => editPlan(index, e.target.value)} />} />
+            )}
+        </Steps>
+        {editMode &&
+            <Row className='addmore--button'>
+                <Col>
+                    <Button type="default" icon={<PlusCircleOutlined />} onClick={addmore}>
+                        Add More
+                    </Button>
+                </Col>
+            </Row>
+        }
+    </div>
 }
 
 // export const ResponsePlan = () => {
@@ -122,7 +171,7 @@ export const ResponsePlan = () => {
 //                     </div>
 //                 </Col>
 //             </Row>
-            
+
 
 
 

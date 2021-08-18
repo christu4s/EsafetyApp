@@ -22,7 +22,8 @@ export const CriticalElement = () => {
         subtitle="Safety Critical Element" 
         api="/safetyCriticalElement" 
         descName="critical_element_desc"
-        // imageName="individual_image"
+        imageName="critical_element_image"
+        pdfName="critical_element_pdf"
         >
         <Row>
             {subpages.map((sub, i) => <Col key={i} span={8}><CardHolder {...sub} /></Col>)}              
