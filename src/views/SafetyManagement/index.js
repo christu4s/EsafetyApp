@@ -14,7 +14,7 @@ export * from './details';
 
 export const SafetyManagement = () => {
     return <PageTemplate
-        iconUrl={extinguisher} 
+        iconUrl={computing} 
         subtitle="Safety Management System"
         api="/safety_management" 
         descName="safety_management_desc"
