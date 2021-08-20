@@ -48,18 +48,20 @@ export function setFormData(formData, data, previousKey) {
       Object.keys(data).forEach(key => {
         const value = data[key];
 
-        if (value instanceof Object && !Array.isArray(value) && !(value instanceof File)) { 
+        if (value instanceof Object && !Array.isArray(value) && !(value instanceof File) && !(value instanceof FileList)) { 
           return setFormData(formData, value, key); 
         }
         if (previousKey) { key = `${previousKey}[${key}]`; }
         if (Array.isArray(value)) { 
-          value.forEach((val, i) => {
+          value.forEach((val, i)=>{
             var k = `${key}[${i}]`;
-            if(val instanceof Object && !Array.isArray(value)) setFormData(formData, val, k)
-            else  formData.append(k, val); 
+            if(val instanceof Object && !Array.isArray(val) && !(val instanceof File)) 
+              return setFormData(formData, val, k)
+            formData.append(k, val); 
           }); 
         } 
-        else { formData.append(key, value); }
+        else { 
+          formData.append(key, value); }
       });
     }
     return formData 

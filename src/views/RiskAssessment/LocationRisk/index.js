@@ -1,9 +1,9 @@
-import { Row, Col, Card , Button , Modal , Upload, message , Input , Form, Checkbox, Space } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Form, Checkbox, Space, InputNumber } from 'antd';
 import React, { useState, useEffect } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
 import danger from '../../../assets/danger-sing@3x.png';
-import { PlusCircleOutlined,  CloudUploadOutlined , ArrowLeftOutlined   } from '@ant-design/icons';
+import { PlusCircleOutlined, MinusCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import { FacilitiesButtons } from '../../facilities/components';
 import { useHistory } from "react-router-dom";
@@ -11,21 +11,101 @@ import './index.css';
 import ajax from '../../../ajax';
 import { PageTemplate } from './../../template';
 
+Array.prototype.sum = function (prop) {
+    var total = 0
+    for (var i = 0, _len = this.length; i < _len; i++) {
+        total += parseInt(this[i][prop]) || 0;
+    }
+    return total
+}
+
 export const LocationRisk = () => {
     return <PageTemplate
-        iconUrl={danger} 
-        title="Risk Assessment" 
-        subtitle="Location Risk" 
-        api="/location_risk" 
+        iconUrl={danger}
+        title="Risk Assessment"
+        subtitle="Location Risk"
+        api="/location_risk"
         descName="location_desc"
         imageName="location_image"
         pdfName="location_pdf"
-        outside={(content,editMode,form)=> <LocationGraph content={content} editMode={editMode} form={form}/>}
-        />
+    >{(content, editMode, form) => <LocationGraph content={content} editMode={editMode} form={form} />}</PageTemplate>
 }
 
-function LocationGraph({content,editMode,form}){
-    return null;
+function LocationGraph({ content, editMode, form }) {
+    const [data, setData] = useState([]);
+    const [areas, setAreas] = useState([]);
+    useEffect(() => { ajax.get('/facility-overview/area').then(res => { res && setAreas(res.data); }); }, []);
+    useEffect(()=> {
+        try { 
+            var res = JSON.parse(content.table_data.replace(/\\/g, '')); 
+            setData(res);
+        } catch (e) { }
+    }, [content.table_data, editMode]);
+    
+    useEffect(()=> { form.setFieldsValue({table_data: JSON.stringify(data)}) }, [data]);
+
+    function remove(index) {
+        data.splice(index, 1);
+        setData([...data]);
+    }
+
+    function update(index, key, value) {
+        data[index][key] = value;
+        setData([...data]);
+    }
+    function addmore() { setData([...data, {}]); }
+
+
+    return <div className='box--facility form-holder-risk location-risk-box area--box--facility manning--box--facility'>
+        <Form.Item hidden name="table_data"><Input /></Form.Item>
+        <div className='location-bx-header'>
+            <Row>
+                <Col span={4}>
+                    <h3>Hazard</h3>
+                </Col>
+                <Col span={20} style={{ textAlign: 'center' }}>
+                    <h3>Location Specific Individual Risk (per year)
+                    </h3>
+                </Col>
+            </Row>
+        </div>
+        <div className='location-box-body'>
+            <Row gutter={16}>
+                <Col span={6}>
+                </Col>
+                {areas.map((v, i) => <Col key={i} span={6}>
+                    <h5>{v.title}</h5>
+                </Col>)}
+            </Row>
+            <hr />
+            {data.map((v, i) => <div key={i}>
+                <Row gutter={16}>
+                    <Col span={5} style={{textAlign:'center'}}>
+                        <Input value={v.name} style={{maxWidth:120}} onChange={e => update(i, 'name', e.target.value)} />
+                    </Col>
+                    {areas.map((area, j) => <Col key={j} style={{textAlign:'center'}} span={6}>
+                        <Input type="number" style={{maxWidth:120}} value={v[area.id] || ''} onChange={e => update(i, area.id, e.target.value)} />
+                    </Col>)}
+                    <Col span={1}>{editMode && <MinusCircleOutlined onClick={() => remove(i)} />}</Col>
+                </Row>
+                <hr />
+            </div>)}
+            <div style={{ textAlign: 'right' }}>
+                {editMode && <Button type="default" onClick={addmore} icon={<PlusCircleOutlined />}>
+                    Add more row
+                </Button>}
+            </div>
+            <Row gutter={16}>
+                <Col span={5}>
+                    <h5 className='text-primary'>Total</h5>
+                </Col>
+                {areas.map((area, j) => <Col key={j} style={{ textAlign: 'center' }} span={6}>
+                    <Input readOnly style={{maxWidth:120}} value={data.sum(area.id)} />
+                </Col>)}
+            </Row>
+        </div>
+
+    </div>
 }
 
 // export const LocationRisk = () => {
@@ -61,19 +141,19 @@ function LocationGraph({content,editMode,form}){
 //         setIsModalVisible(false);
 //     };
 
-  
+
 //         const onFinish = (values) => {
 //           console.log('Success:', values);
 //           history.push('/risk-assessment/individual-edit-user');
 //         };
-      
+
 //         const onFinishFailed = (errorInfo) => {
 //           console.log('Failed:', errorInfo);
 //         };
 
-        
+
 //     const { Meta } = Card;
-    
+
 //     return (
 //         <div className='facility--wrapper'>
 //             <Row>
@@ -106,7 +186,7 @@ function LocationGraph({content,editMode,form}){
 //                                 <p>Risk Assessment</p>
 //                                 <h2>Location Risk</h2>
 //                                 </div>
-                                
+
 //                                 <div>
 //                             {!editMode ? <Button type="primary" size="small" onClick={()=> setEditMode(!editMode) }>Edit</Button> : 
 //                             <Space>
@@ -124,7 +204,7 @@ function LocationGraph({content,editMode,form}){
 //                         <Form form={form}>
 //                             <div className='box--facility area--box--facility'>
 //                                 <p>
-                                
+
 //                                     {editMode ? <Form.Item name="locaion_desc"><Input.TextArea defaultValue={content.location_desc} /></Form.Item> : <p>{content.location_desc}</p>}
 //                                 </p>
 //                             </div>
@@ -187,14 +267,14 @@ function LocationGraph({content,editMode,form}){
 //                         </Col>
 //                     </Row>
 
-                 
+
 
 
 
 //                     <Row>
 //                         <Col span={24}>
 //                         <div className='box--facility form-holder-risk location-risk-box area--box--facility manning--box--facility'>
-                           
+
 //                            <div className='location-bx-header'>
 //                            <Row>
 //                                <Col span={4}>
@@ -227,7 +307,7 @@ function LocationGraph({content,editMode,form}){
 //                             <Row gutter={16}>
 //                                 <Col span={6}>
 //                                 </Col>
-                               
+
 //                             </Row>
 
 //                             <hr/>
@@ -239,7 +319,7 @@ function LocationGraph({content,editMode,form}){
 //                                 </Col>
 //                                  <Col span={6}>
 //                                  <Input placeholder="1" />
-                                    
+
 //                                 </Col>
 //                                  <Col span={6}>
 //                                  <Input placeholder="10" />
@@ -256,7 +336,7 @@ function LocationGraph({content,editMode,form}){
 //                                 </Col>
 //                                  <Col span={6}>
 //                                  <Input placeholder="1" />
-                                    
+
 //                                 </Col>
 //                                  <Col span={6}>
 //                                  <Input placeholder="10" />
@@ -274,7 +354,7 @@ function LocationGraph({content,editMode,form}){
 //                                 </Col>
 //                                  <Col span={6}>
 //                                  <Input placeholder="1" />
-                                    
+
 //                                 </Col>
 //                                  <Col span={6}>
 //                                  <Input placeholder="10" />
@@ -283,11 +363,11 @@ function LocationGraph({content,editMode,form}){
 //                                  <Input placeholder="2" />
 //                                 </Col>
 //                             </Row>
-                         
+
 
 //                             <Row gutter={16} style={{textAlign:'right'}}>
-                               
-                                 
+
+
 //                                  <Col span={6} push={18}>
 //                                  <Button type="default" style={{textAlign:'right',paddingRight:0}} block icon={<PlusCircleOutlined />}>
 //                                             Add more row
@@ -301,7 +381,7 @@ function LocationGraph({content,editMode,form}){
 //                                 </Col>
 //                                  <Col span={6}>
 //                                  <Input placeholder="1" />
-                                    
+
 //                                 </Col>
 //                                  <Col span={6}>
 //                                  <Input placeholder="10" />
@@ -314,7 +394,7 @@ function LocationGraph({content,editMode,form}){
 
 //                         </div>
 //                         </Col>
-                        
+
 //                     </Row>
 
 //                 </Col>

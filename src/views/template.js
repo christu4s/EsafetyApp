@@ -86,7 +86,7 @@ export function ImageViewer({images = []}){
     if(!images || !images.length) return null;
   
     return <Carousel>
-        {images.map((v,i)=> v.type.includes('image') && <div key={i}><img width="100%" src={v.src} alt="" /></div>)}
+        {images.map((v,i)=> v.type.includes('image') && <div key={i}><img width="100%" height="300" style={{objectFit:'contain'}} src={v.src} alt="" /></div>)}
     </Carousel>
 }
 
@@ -138,7 +138,8 @@ export function ListItems({api,editMode, list = [], countInRow=3, imageKey = 'im
 export function getFormFields(form){
     var values = form.getFieldsValue(), ret = {};
     for(var [key,value] of Object.entries(values)){
-        ret[key] = value ? (value.file || value) : '';
+        ret[key] = value ? (value.fileList ?  value.fileList.map(f=> f.originFileObj) : value) : '';
+        // ret[key] = value ? (value.file || value) : '';
     }
     return ret;
 }
