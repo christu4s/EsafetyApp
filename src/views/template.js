@@ -73,7 +73,7 @@ export const PageTemplate = ({
                     {typeof children=='function' ? children(content, editMode, form) : children}
                 </Col>
                 <Col span={8} push={1} style={{ marginTop: 35 }}>
-                    {right}
+                    {typeof right=='function' ? right({content, editMode, form, setContent, saveData}) : right}
                 </Col>
             </Row>
             {typeof outside=='function' ? outside(content, editMode, form) : outside}
@@ -85,7 +85,7 @@ export const PageTemplate = ({
 export function ImageViewer({images = []}){
     if(!images || !images.length) return null;
   
-    return <Carousel>
+    return <Carousel autoplay>
         {images.map((v,i)=> v.type.includes('image') && <div key={i}><img width="100%" height="300" style={{objectFit:'contain'}} src={v.src} alt="" /></div>)}
     </Carousel>
 }

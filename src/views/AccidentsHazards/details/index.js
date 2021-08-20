@@ -1,10 +1,12 @@
-import { Row, Col, Input, Space, Form } from 'antd';
+import { Row, Col, Input, Space, Form, Modal, Button, Tabs, Select, List } from 'antd';
 import React, { useState, useEffect } from 'react';
 import fire from '../../../assets/fire@3x.png';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { ButtonUpload, DescField, EditButtons, FileViewer, TitleEdit } from '../../../utils';
 import { PageTemplate } from '../../template';
+import { criticalEquipments } from '../../../constants';
+import { Link, useParams } from 'react-router-dom';
 
 export const AccidentsHazardItem = ({ match }) => {
     const { id } = match.params;
@@ -16,67 +18,67 @@ export const AccidentsHazardItem = ({ match }) => {
         descName="desc"
         imageName="image"
         pdfName="pdf"
-        right={<MajorSCE />}>
+        right={({content, setContent}) => <MajorSCE content={content} setContent={setContent} />}>
     </PageTemplate>
 }
 
-function MajorSCE() {
-    return <div className='accident--box bg--white' style={{marginTop:60}} >
-        <div className='accident--box--content'>
-            <h4>Prevention</h4>
-            <div className='accident--icon--box'>
-                <PlusCircleOutlined /> <span>Add SCE</span>
-            </div>
-            <div className='accident--icon--input'>
-                <div className='form-group'>
-                    <Input type='text' className='form-control' />
+function MajorSCE({content, setContent}) {
+    const {id} = useParams();
+    const [sce, setSCE] = useState();
+    const [options, setOption] = useState([]);
+    const [formExisting] = Form.useForm();
+    const closeModal = ()=> setSCE(null);  
+    const sces = sce ? (content[sce.type] || []) : [];  
+    async function save(){
+        formExisting.validateFields().then(async v=>{
+            // console.log(v);
+            var res = await ajax.post('/major_accident_hazards_item/' + id, v);
+            setContent(res);
+            closeModal();
+        })
+    }
+    useEffect(()=>{
+        sce && formExisting.setFieldsValue({[sce.type]: sces.map(v=> v.ID)});
+    }, [sce]);
+    
+    async function search(search){
+        var res = await ajax.get(sce.itemApi, {search})
+        if(!res || !res.data) return;
+        setOption(res.data.map(v=> ({label: v.title, value: v.id})));
+    }
+    
+
+    return <div className='accident--box bg--white' style={{ marginTop: 60 }} >
+        {criticalEquipments.map((v, i) =>{
+            var data = content[v.type] || [];
+            return <div key={i} className='accident--box--content'>
+                <h4>{v.title}</h4>
+                <div className='accident--icon--box'>
+                    <Button type="text" style={{color:'#fff'}} onClick={()=> setSCE(v)} icon={<PlusCircleOutlined />}>Add SCE</Button>
                 </div>
-            </div>
-        </div>
-        <div className='accident--box--content'>
-            <h4>Detection</h4>
-            <div className='accident--icon--box'>
-                <PlusCircleOutlined /> <span>Add SCE</span>
-            </div>
-            <div className='accident--icon--input'>
-                <div className='form-group'>
-                    <Input type='text' className='form-control' />
-                </div>
-            </div>
-        </div>
-        <div className='accident--box--content'>
-            <h4>Control</h4>
-            <div className='accident--icon--box'>
-                <PlusCircleOutlined /> <span>Add SCE</span>
-            </div>
-            <div className='accident--icon--input'>
-                <div className='form-group'>
-                    <Input type='text' className='form-control' />
-                </div>
-            </div>
-        </div>
-        <div className='accident--box--content'>
-            <h4>Mitigation</h4>
-            <div className='accident--icon--box'>
-                <PlusCircleOutlined /> <span>Add SCE</span>
-            </div>
-            <div className='accident--icon--input'>
-                <div className='form-group'>
-                    <Input type='text' className='form-control' />
-                </div>
-            </div>
-        </div>
-        <div className='accident--box--content'>
-            <h4>Emergency Response</h4>
-            <div className='accident--icon--box'>
-                <PlusCircleOutlined /> <span>Add SCE</span>
-            </div>
-            <div className='accident--icon--input'>
-                <div className='form-group'>
-                    <Input type='text' className='form-control' />
-                </div>
-            </div>
-        </div>
+                <List bordered dataSource={data} size="small" renderItem={item => (<List.Item >
+                    <Link to={'/safety-critical/equipment/'+ v.type + '/' + item.ID}>{item.post_title}</Link>       
+                </List.Item>)}/>
+            </div>})}
+        {sce && <Modal title={sce.title} visible={true} onOk={save} onCancel={closeModal} bodyStyle={{padding:0}}>
+            <Tabs defaultActiveKey="1" type="card">
+                <Tabs.TabPane tab="Existing" key="1" style={{padding:'0 20px'}}>
+                    <Form form={formExisting}>
+                        <Form.List name={sce.type}>
+                            {(fields) =><> 
+                                {sces.map((item, i)=><Form.Item hidden name={i}><Input /></Form.Item>)}
+                                <Form.Item name={sces.length} label="SCE" required>
+                                    <Select showSearch showArrow={false} notFoundContent={null} filterOption={false} onSearch={search} options={options} />
+                                </Form.Item>
+                            </>}
+                        </Form.List>
+                    </Form>
+                </Tabs.TabPane>
+                {/* <Tabs.TabPane tab="New" key="2">
+                    Content of card tab 2
+                </Tabs.TabPane> */}
+            </Tabs>
+        </Modal>}
     </div>
 }
 
