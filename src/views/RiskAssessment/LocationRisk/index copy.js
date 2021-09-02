@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input, Form, Checkbox, Space, InputNumber, Table } from 'antd';
+import { Row, Col, Card, Button, Modal, Upload, message, Input, Form, Checkbox, Space, InputNumber } from 'antd';
 import React, { useState, useEffect } from 'react';
 import area from '../../../assets/area.png';
 import image from '../../../assets/image.png';
@@ -10,7 +10,6 @@ import { useHistory } from "react-router-dom";
 import './index.css';
 import ajax from '../../../ajax';
 import { PageTemplate } from './../../template';
-import { TitleEdit } from '../../../utils';
 
 Array.prototype.sum = function (prop) {
     var total = 0
@@ -24,8 +23,7 @@ export const LocationRisk = () => {
     return <PageTemplate
         iconUrl={danger}
         title="Risk Assessment"
-        updateMenu
-        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Location Risk")}
+        subtitle="Location Risk"
         api="/location_risk"
         descName="location_desc"
         imageName="location_image"
@@ -36,33 +34,15 @@ export const LocationRisk = () => {
 function LocationGraph({ content, editMode, form }) {
     const [data, setData] = useState([]);
     const [areas, setAreas] = useState([]);
-    const [columns, setColumns] = useState([]);
+    const [columns, setAreas] = useState([{title: 'Hazard',dataIndex: 'name'}, {title: 'Hazard'}]);
     
-    useEffect(() => { 
-        ajax.get('/facility-overview/area').then(res => { 
-            if(!res) return;
-            setAreas(res.data); 
-        });  
-    }, []);
+    useEffect(() => { ajax.get('/facility-overview/area').then(res => { res && setAreas(res.data); }); }, []);
     useEffect(()=> {
         try { 
             var res = JSON.parse(content.table_data.replace(/\\/g, '')); 
             setData(res);
         } catch (e) { }
     }, [content.table_data, editMode]);
-
-    useEffect(()=> {
-        var cols = [
-            {title: 'Hazard',dataIndex: 'name',render: (val,r,i)=> <Input readOnly={!editMode} value={val} onChange={e => update(i, 'name', e.target.value)}/>}, 
-            {title: 'Location Specific Individual Risk (per year)', children: areas.map(v=> ({title: v.title, 
-                dataIndex: v.id, 
-                render: (val,r,i)=> <Input type="number" min="0" readOnly={!editMode} value={val} onChange={e => update(i, v.id, e.target.value)}/>,  
-                })) 
-            },
-        ];
-        if(editMode) cols.push({title:'',render: (val,r,i)=> <MinusCircleOutlined onClick={()=>remove(i)} />});
-        setColumns(cols);
-    }, [areas, editMode]);
     
     useEffect(()=> { form.setFieldsValue({table_data: JSON.stringify(data)}) }, [data]);
 
@@ -72,34 +52,80 @@ function LocationGraph({ content, editMode, form }) {
     }
 
     function update(index, key, value) {
-        if(!data[index]) data[index] = {};
         data[index][key] = value;
         setData([...data]);
     }
     function addmore() { setData([...data, {}]); }
 
+    const dataSource = [
+        {
+          key: '1',
+          name: 'Mike',
+          age: 32,
+          address: '10 Downing Street',
+        },
+        {
+          key: '2',
+          name: 'John',
+          age: 42,
+          address: '10 Downing Street',
+        },
+      ];
+      
+      
+      
+      <Table dataSource={dataSource} columns={columns} />;
+
+
     return <div className='box--facility form-holder-risk location-risk-box area--box--facility manning--box--facility'>
         <Form.Item hidden name="table_data"><Input /></Form.Item>
-        <Table 
-            bordered 
-            pagination={{pageSize:100, position: ['none','none']}} 
-            dataSource={data} 
-            columns={columns} 
-            summary={()=><>
-                {editMode &&<Table.Summary.Row>
-                    <Table.Summary.Cell colSpan={columns.length}>
-                         <Button type="default" onClick={addmore} icon={<PlusCircleOutlined />}>
-                            Add more row
-                        </Button>
-                    </Table.Summary.Cell>
-                </Table.Summary.Row>}
-                <Table.Summary.Row>
-                    <Table.Summary.Cell>Total</Table.Summary.Cell>
-                    {areas.map((area, j) => <Table.Summary.Cell key={j}>
-                        <Input readOnly  value={data.sum(area.id)} />
-                    </Table.Summary.Cell>)}
-              </Table.Summary.Row></>}
-        />
+        <div className='location-bx-header'>
+            <Row>
+                <Col span={4}>
+                    <h3>Hazard</h3>
+                </Col>
+                <Col span={20} style={{ textAlign: 'center' }}>
+                    <h3>Location Specific Individual Risk (per year)
+                    </h3>
+                </Col>
+            </Row>
+        </div>
+        <div className='location-box-body'>
+            <Row gutter={16}>
+                <Col span={6}>
+                </Col>
+                {areas.map((v, i) => <Col key={i} span={6}>
+                    <h5>{v.title}</h5>
+                </Col>)}
+            </Row>
+            <hr />
+            {data.map((v, i) => <div key={i}>
+                <Row gutter={16}>
+                    <Col span={5} style={{textAlign:'center'}}>
+                        <Input value={v.name} style={{maxWidth:120}} onChange={e => update(i, 'name', e.target.value)} />
+                    </Col>
+                    {areas.map((area, j) => <Col key={j} style={{textAlign:'center'}} span={6}>
+                        <Input type="number" style={{maxWidth:120}} value={v[area.id] || ''} onChange={e => update(i, area.id, e.target.value)} />
+                    </Col>)}
+                    <Col span={1}>{editMode && <MinusCircleOutlined onClick={() => remove(i)} />}</Col>
+                </Row>
+                <hr />
+            </div>)}
+            <div style={{ textAlign: 'right' }}>
+                {editMode && <Button type="default" onClick={addmore} icon={<PlusCircleOutlined />}>
+                    Add more row
+                </Button>}
+            </div>
+            <Row gutter={16}>
+                <Col span={5}>
+                    <h5 className='text-primary'>Total</h5>
+                </Col>
+                {areas.map((area, j) => <Col key={j} style={{ textAlign: 'center' }} span={6}>
+                    <Input readOnly style={{maxWidth:120}} value={data.sum(area.id)} />
+                </Col>)}
+            </Row>
+        </div>
+
     </div>
 }
 

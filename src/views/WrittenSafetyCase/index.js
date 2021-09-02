@@ -4,13 +4,14 @@ import extinguisher from '../../assets/fire-extinguisher@3x.png';
 import download from '../../assets/direct-download@3x.png';
 import { getFormFields, PageTemplate } from './../template';
 import ajax from '../../ajax';
-import { ButtonUpload } from '../../utils';
+import { ButtonUpload, TitleEdit } from '../../utils';
 import { DeleteOutlined } from '@ant-design/icons';
 
 export const WrittenSafetyCase = () => {
     return <PageTemplate
         iconUrl={extinguisher} 
-        subtitle="Written Safety Case"
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Written Safety Case")}
         api="/written_safety_case" 
         descName="safety_desc"
         imageName="safety_image"

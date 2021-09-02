@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Space, Input, Alert } from 'antd';
 import './App.css';
 import { getSelectedMenuItem, menus, routes } from './config';
 import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import { UserOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { userName } from './constants';
+import { MenuTitle } from './utils';
+
 
 const { Content, Footer, Sider, Header } = Layout;
 
@@ -73,7 +75,7 @@ export default withRouter(App);
 function customMenu(menus, parent = ''){
   return menus.map((v,i)=> {
     var key = parent + '_'  + i; 
-    return v.children ? <Menu.SubMenu key={key} title={<a href={v.url}>{v.title}</a>} icon={v.icon}>{customMenu(v.children, i)}</Menu.SubMenu> 
-    : <Menu.Item key={key} url={v.url} icon={v.icon}>{v.title}</Menu.Item>;
+    return v.children ? <Menu.SubMenu key={key} onTitleClick={()=>{ window.location.href=v.url; }} title={v.title} icon={v.icon}>{customMenu(v.children, i)}</Menu.SubMenu> 
+    : <Menu.Item key={key} url={v.url} icon={v.icon}><MenuTitle {...v} /></Menu.Item>;
   })
 }

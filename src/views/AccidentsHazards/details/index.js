@@ -31,7 +31,6 @@ function MajorSCE({content, setContent}) {
     const sces = sce ? (content[sce.type] || []) : [];  
     async function save(){
         formExisting.validateFields().then(async v=>{
-            // console.log(v);
             var res = await ajax.post('/major_accident_hazards_item/' + id, v);
             setContent(res);
             closeModal();

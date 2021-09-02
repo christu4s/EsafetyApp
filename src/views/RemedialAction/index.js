@@ -6,11 +6,13 @@ import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import "./index.css";
 import ajax from '../../ajax';
 import { PageTemplate } from './../template';
+import { TitleEdit } from '../../utils';
 
 export const RemedialAction = () => {
     return <PageTemplate
         iconUrl={extinguisher}
-        subtitle="Remedial Action Plan"
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Remedial Action Plan")}
         api="/remedial_action"
         descName="remedial_desc"
         imageName="remedial_image"

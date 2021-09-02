@@ -16,7 +16,6 @@ import remedialImg from './assets/menu/remedial.png';
 import { IndividualRisk } from './views/RiskAssessment/IndividualRisk';
 import { IndividualRiskEditUser } from './views/RiskAssessment/IndividualRisk/individualRiskEditUser';
 import { PlanRiskBreakDown } from './views/RiskAssessment/PlanRiskBreakdown';
-import { EditPlanRiskBreakdown } from './views/RiskAssessment/PlanRiskBreakdown/editPlanRiskBreakdown';
 import { LocationRisk } from './views/RiskAssessment/LocationRisk';
 import { SocietalRisk } from './views/RiskAssessment/SocietalRisk';
 
@@ -42,7 +41,6 @@ export const routes = [
     { path: '/risk-assessment/individual', exact: true, component: IndividualRisk },
     { path: '/risk-assessment/plant', exact: true, component: PlanRiskBreakDown },
     { path: '/risk-assessment/individual-edit-user', exact: true, component: IndividualRiskEditUser },
-    { path: '/risk-assessment/edit-plan', exact: true, component: EditPlanRiskBreakdown },
     { path: '/risk-assessment/location', exact: true, component: LocationRisk },
     { path: '/risk-assessment/societal', exact: true, component: SocietalRisk },
     { path: '/safety-critical', exact: true, component: CriticalElement },
@@ -68,32 +66,35 @@ export const menus = [
         title: 'Facilities Overview',
         icon: <img src={facilityImg} alt="facility" />,
         url: '#/facility-overview',
+        api: '/facility_overview',
         children: [
             { title: 'Area', exact: true, url: '#/facility-overview/area' },
             { title: 'Process', exact: true, url: '#/facility-overview/process' },
             { title: 'Manning', exact: true, url: '#/facility-overview/manning' },
         ]
     },
-    { title: 'Major Accident Hazards', icon: <img src={HazardsImg} alt="Major Accident Hazards" />, url: '#/accidents-hazards' },
+    { title: 'Major Accident Hazards', icon: <img src={HazardsImg} alt="Major Accident Hazards" />, url: '#/accidents-hazards', api:'/major_accident_hazards' },
     {
         title: 'Risk Assessment',
         icon: <img src={RiskImg} alt="Major Accident Hazards" height={20} />, 
         url: '#/risk-assessment',
+        api:'/risk_assessment',
         children: [
-            { title: 'Hazard Identification Worksheets', exact: true, url: '#/risk-assessment/identification-worksheet' },
-            { title: 'Hazard and Operability Worksheets', exact: true, url: '#/risk-assessment/operability-worksheet' },
-            { title: 'Escape, Evacuation, Rescue Analysis', exact: true, url: '#/risk-assessment/rescue-analysis' },
-            { title: 'Emergency System Survivability Analysis', exact: true, url: '#/risk-assessment/survivability-analysis' },
-            { title: 'Individual Risk', exact: true, url: '#/risk-assessment/individual' },
-            { title: 'Plant Risk Breakdown', exact: true, url: '#/risk-assessment/plant' },
-            { title: 'Location Risk', exact: true, url: '#/risk-assessment/location' },
-            { title: 'Societal Risk', exact: true, url: '#/risk-assessment/societal' },
+            { title: 'Hazard Identification Worksheets', exact: true, url: '#/risk-assessment/identification-worksheet', api:'/identification_risk', titleKey:'identification_title' },
+            { title: 'Hazard and Operability Worksheets', exact: true, url: '#/risk-assessment/operability-worksheet', api:'/identification_risk', titleKey:'operatability_title' },
+            { title: 'Escape, Evacuation, Rescue Analysis', exact: true, url: '#/risk-assessment/rescue-analysis', api:'/identification_risk', titleKey:'escape_title' },
+            { title: 'Emergency System Survivability Analysis', exact: true, url: '#/risk-assessment/survivability-analysis', api:'/identification_risk', titleKey:'emergency_title' },
+            { title: 'Individual Risk', exact: true, url: '#/risk-assessment/individual', api:'/individual_risk' },
+            { title: 'Plant Risk Breakdown', exact: true, url: '#/risk-assessment/plant', api:'/plant_risk' },
+            { title: 'Location Risk', exact: true, url: '#/risk-assessment/location', api: '/location_risk' },
+            { title: 'Societal Risk', exact: true, url: '#/risk-assessment/societal', api:'/societal_risk' },
         ]
     },
     {
         title: 'Safety Critical Element',
         icon: <img src={safetCriticalImg} alt="Major Accident Hazards" height={20} />, 
         url: '#/safety-critical',
+        api: '/safetyCriticalElement',
         children: [
             { title: 'Safety Critical Equipment', exact: true, url: '#/safety-critical/equipment' },
             { title: 'Safety Critical Personnel', exact: true, url: '#/safety-critical/personnel' },
@@ -104,17 +105,17 @@ export const menus = [
         title: 'Emergency Response',
         icon: <img src={emergencyImg} alt='Emergency Response' height={20} />, 
         url: '#/emergency-response',
+        api: '/emergency_respons',
         children: [
             { title: 'Emergency Response Tiers', exact: true, url: '#/emergency-response/tiers' },
             { title: 'Emergency Response Organisation', exact: true, url: '#/emergency-response/organisation' },
             { title: 'Emergency Response Plan', exact: true, url: '#/emergency-response/plan' },
             { title: 'Scenario Specific Action Plan', exact: true, url: '#/emergency-response/scenario' },
-            // { title: 'Action Plan', exact: true, url: '#/emergency-response/action' },
         ]
     },
-    { title: 'Safety Management System', icon: <img src={managementImg} alt='Safety Management System' height={20} />, url:'#/safety-management' },
-    { title: 'Remedial Action Plan', icon: <img src={remedialImg} alt='Remedial Action Plan' height={20} />, url:'#/remedial-action' },
-    { title: 'Writen Safety Case', icon: <img src={WrittenImg} alt="Writen Safety Case" height={20} />, url: '#/writen-safety' },
+    { title: 'Safety Management System', icon: <img src={managementImg} alt='Safety Management System' height={20} />, url:'#/safety-management', api:"/safety_management" },
+    { title: 'Remedial Action Plan', icon: <img src={remedialImg} alt='Remedial Action Plan' height={20} />, url:'#/remedial-action', api:"/remedial_action" },
+    { title: 'Writen Safety Case', icon: <img src={WrittenImg} alt="Writen Safety Case" height={20} />, url: '#/writen-safety', api:"/written_safety_case" },
     // { title: 'Users', icon: <UserGroupFilled />, url: '#/user' },
 ];
 

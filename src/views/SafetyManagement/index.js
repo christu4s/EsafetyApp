@@ -6,7 +6,7 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import computing from '../../assets/cloud-computing@3x.png';
 import './index.css';
 import ajax from '../../ajax';
-import { ButtonUpload, DescField, EditButtons } from '../../utils';
+import { ButtonUpload, DescField, EditButtons, TitleEdit } from '../../utils';
 import { Link } from 'react-router-dom';
 import { getFormFields, PageTemplate } from './../template';
 
@@ -15,7 +15,8 @@ export * from './details';
 export const SafetyManagement = ({history}) => {
     return <PageTemplate
         iconUrl={extinguisher}
-        subtitle="Safety Management System"
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safety Management System")}
         api="/safety_management"
         descName="safety_management_desc"
         imageName="safety_management_image"
@@ -49,7 +50,7 @@ function SafetyBox({ editMode, history }) {
                 <Link to={'/safety-management/' + v.id}>
                     <div className="blue--box">
                         <h3>{v.title}</h3>
-                        <p>{v.desc}</p>
+                        <p className="box-desc" dangerouslySetInnerHTML={{__html: v.desc}} />
                     </div>
                 </Link>
             </Col>)}

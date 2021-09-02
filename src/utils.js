@@ -1,10 +1,14 @@
 import { Card, Button, Modal, Upload, Form, Input, Space } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
 import { isAdmin } from "./constants";
+import { useMenuContext } from "./provider";
+import ajax from "./ajax";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css'; 
 
 
 
@@ -67,8 +71,9 @@ export function FileViewer({images = [], index = 0}){
     <iframe src={src} width="100%" height="700" frameBorder="0" />
   </div> 
 }
-export function DescField({name = '', value='', editMode=false}){
-  return editMode ? <Form.Item name={name} initialValue={value}><Input.TextArea /></Form.Item> : <p>{value}</p>;
+export function DescField({name = '', value='', editMode=false, form}){
+
+  return editMode ? <Form.Item name={name} initialValue={value}><ReactQuill /></Form.Item> : <p dangerouslySetInnerHTML={{__html: value}} />;
 }
 
 export function EditButtons({editMode, toggle, save}){
@@ -82,6 +87,20 @@ export function EditButtons({editMode, toggle, save}){
 }
 
 
-export function TitleEdit(content, editMode){
-  return editMode ? <Form.Item name="title" initialValue={content.title}><Input /></Form.Item> : content.title;
+export function TitleEdit(content, editMode, title="", key="title"){
+  if(content && content[key]) title=content[key]; 
+  return editMode ? <Form.Item name={key} initialValue={title}><Input /></Form.Item> : title;
+}
+
+export function MenuTitle({api, title, titleKey='title'}){
+  const [menu, setTitle] = useMenuContext();
+  if(menu[api]) title = menu[api];
+  
+  useEffect(()=>{
+    api && !menu[api] && ajax.get(api).then(res =>{ 
+      res && setTitle(api,res[titleKey]);
+    })
+  }, [api]);
+
+  return <span>{title}</span>
 }

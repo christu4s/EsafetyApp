@@ -1,11 +1,12 @@
-import { Row, Col, Form, Space, Carousel } from 'antd';
+import { Row, Col, Form, Space, Carousel, Image, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
 import { ButtonUpload, CardHolder, DescField, EditButtons } from '../utils';
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { useMenuContext } from '../provider';
 
 export const PageTemplate = ({
     title, 
@@ -18,16 +19,27 @@ export const PageTemplate = ({
     backButton,
     children, 
     right,
+    updateMenu=false,
+    canDelete=false,
+    titleKey='title',
     outside}) => {
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({});
+    const [menu, setMenuTitle] = useMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
     const desc = content[descName], image = content[imageName], pdf = content[pdfName]; 
 
     async function saveData() {
-        await ajax.post(api, getFormFields(form)).then(res => res && setContent(res));
+        await ajax.post(api, getFormFields(form)).then(res =>{ 
+            res && setContent(res);
+            updateMenu && res[titleKey] && setMenuTitle(api,res[titleKey]);
+        });
         setEditMode(!editMode);
+    }
+    
+    function deleteItem(){
+        ajax.delete(api).then( ()=> history.goBack() );
     }
 
     useEffect(() => {
@@ -50,14 +62,19 @@ export const PageTemplate = ({
                         </Col>}
                         <Col span={23}>
                             <div className='area--header mt-5' >
-                            <div style={{display:'flex', justifyContent: 'space-between'}}>
-                                <div style={{alignSelf:'center'}}>
-                                    <p className='mb-0 '>{title}</p>
-                                    <h2 style={{ marginTop: 0 }}>{typeof subtitle=='function' ? subtitle(content, editMode) : subtitle}</h2>
+                                <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                    <div style={{alignSelf:'center'}}>
+                                        <p className='mb-0 '>{title}</p>
+                                        <h2 style={{ marginTop: 0 }}>{typeof subtitle=='function' ? subtitle(content, editMode) : subtitle}</h2>
+                                    </div>
+                                    <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={saveData} /></div>
                                 </div>
-                                <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={saveData} /></div>
-                                </div>
+                                {canDelete && editMode && <Popconfirm title="Are you sure to delete this?" onConfirm={deleteItem}>
+                                        <a style={{color:'red', float: 'right'}}>Delete</a>
+                                    </Popconfirm>
+                                }
                             </div>
+
                         </Col>
                     </Row>
                     {descName && <div className='box--facility area--box--facility'>
@@ -67,9 +84,9 @@ export const PageTemplate = ({
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                     </Space>}
-                    {(imageName || pdfName) && <h2>File uploaded</h2>}
-                    {imageName && <ImageViewer images={image} />}
-                    {pdfName && <PdfViewer files={pdf} />}
+                    <div style={{margin: 20}} />
+                    {imageName && <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />}
+                    {pdfName && <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />}
                     {typeof children=='function' ? children(content, editMode, form) : children}
                 </Col>
                 <Col span={8} push={1} style={{ marginTop: 35 }}>
@@ -82,21 +99,43 @@ export const PageTemplate = ({
     );
 }
 
-export function ImageViewer({images = []}){
-    if(!images || !images.length) return null;
-  
-    return <Carousel autoplay>
-        {images.map((v,i)=> v.type.includes('image') && <div key={i}><img width="100%" height="300" style={{objectFit:'contain'}} src={v.src} alt="" /></div>)}
+export function ImageViewer({images = [], imageName='', form, editMode}){
+    const [imgs, setImgs] = useState([]);
+    const name = '_'+imageName;
+    useEffect(()=>{ setImgs([... (images || [])]); }, [images, editMode]);
+    useEffect(()=>{ form.setFieldsValue({[name]: imgs.map(v=>v.id)}) }, [imgs]);
+    if(!imgs || !imgs.length) return null;
+    function removeItem(index){
+        imgs.splice(index, 1);
+        setImgs([...imgs]);
+    }
+    
+
+    return <>
+    <Form.List name={name}>{(fields)=> fields.map(({key,name}) => <Form.Item key={key} hidden name={name} />) }</Form.List>
+    <Carousel autoplay>
+        {imgs.map((v,i)=> v.type.includes('image') && <div className="img-wrap" key={i}>
+            <Image width="100%" height="300" src={v.src}/>
+            {editMode && <div className="img-delete-icon"><span onClick={()=> removeItem(i)}>x</span></div>}
+        </div>)}
     </Carousel>
+    </>
 }
 
-export function PdfViewer({files = [], index = 0}){
-    if(!files || !files[index]) return null;
-  
-    const {type = '', name, src} = files[index];
+export function PdfViewer({files = [],pdfName='', editMode, form}){
+    const [fls, setFls] = useState();
+    useEffect(()=>{ setFls(files[0] || null); }, [files, editMode]);
+    useEffect(()=>{ fls && form.setFieldsValue({[pdfName]: fls.id }) }, [fls]);
+    if(!fls) return null;
+
+    const {type = '', name, src} = fls;
   
     return type.includes('pdf') && <div className='box--facility pdf-view-section area--box--facility'>
-      <h2 style={{ marginTop: 15 }}><img width='30' src={imagePdf} /> <span> {name}</span></h2>
+      <div style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <h2 style={{ marginTop: 15 }}><img width='30' src={imagePdf} /><span> {name}</span> </h2>
+        {editMode && <a style={{color:'red'}} onClick={()=> setFls(null)}>Delete</a>}
+      </div>
+      <Form.Item hidden name={pdfName} />
       <iframe src={src} width="100%" height="700" frameBorder="0" />
     </div> 
 }

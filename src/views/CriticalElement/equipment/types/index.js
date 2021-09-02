@@ -4,6 +4,7 @@ import alert from '../../../../assets/alert@3x.png';
 import './index.css';
 import { ListItems, PageTemplate } from './../../../template';
 import { criticalEquipments } from '../../../../constants';
+import { TitleEdit } from '../../../../utils';
 
 export * from './details';
 
@@ -42,7 +43,7 @@ export const CriticalEquipmentItem = ({match}) => {
         backButton
         iconUrl={alert}
         title={"Safety Critical Equipment (" + equipment.title + ")"} 
-        subtitle={content => content.title}
+        subtitle={TitleEdit}
         api={equipment.itemApi + '/' + id} 
         descName="desc"
         imageName={equipment.imageKey}

@@ -1,7 +1,6 @@
 import { Input, Form } from 'antd';
 import React from 'react';
 import area from '../../../assets/area.png';
-import { FacilitiesButtons } from '../components';
 import { ListItems, PageTemplate } from '../../template';
 
 export * from './details';
@@ -13,7 +12,7 @@ export const FacilityArea = () => {
         subtitle="Area" 
         api="/facility_overview" 
         descName="area_desc"
-        right={<FacilitiesButtons />}>
+        >
         {(content,editMode)=> <ListItems 
             api="/facility-overview/area" 
             editMode={editMode} 

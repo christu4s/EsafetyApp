@@ -13,106 +13,6 @@ Array.prototype.sum = function (prop) {
     return total
 }
 
-// export const FacilityManning = () => {
-//     return <PageTemplate 
-//         iconUrl={area} 
-//         title="Facilities Overview" 
-//         subtitle="Manning"
-//         api='/facility-overview/area' 
-//         descName=""
-//         right={<FacilitiesButtons />}>{(content,editMode)=> {
-//             const {data = []} = content;
-//         return <div className='box--facility area--box--facility manning--box--facility'>
-//             <Row>
-//                 <Col span={4}>
-//                     <h3>Hours Spent Per Day</h3>
-//                 </Col>
-//                 <Col span={8} push={2}>
-//                     <h3>Worker Group</h3>
-//                 </Col>
-//             </Row>
-//             <Row gutter={16}>
-//                 <Col span={6}>
-//                 </Col>
-//                     <Col span={6}>
-//                     <h5 style={{textAlign:'center'}}>Manager</h5>
-//                 </Col>
-//                     <Col span={6}>
-//                     <h5 style={{textAlign:'center'}}>Operator</h5>
-//                 </Col>
-//                     <Col span={6}>
-//                     <h5 style={{textAlign:'center'}}>Admin</h5>
-//                 </Col>
-//             </Row>
-//             {data.map((v,i)=> <>
-//                 <Row key={i} gutter={16}>
-//                     <Col span={6}>
-//                         <h5>{v.title}</h5>
-//                     </Col>
-//                     {fields.map((f,ind)=><Col key={f + ind} span={6}>
-//                         {editMode ? <Input type="number" onChange={e=> updateField(i,f,e.target.value) } value={v[f]||0} /> : <p style={{textAlign:'center'}}>{v[f]||0}</p>}
-//                     </Col>)}
-//                 </Row>
-//             <hr/></>
-//             )}
-//             <Row gutter={16}>
-//                 <Col span={6}>
-//                     <h5>Total</h5>
-//                 </Col>
-//                 {fields.map((f,ind)=><Col key={ind} span={6}><p style={{textAlign:'center'}} >{data.sum(f)}</p></Col>)}
-//             </Row>
-//         </div>
-//     }}</PageTemplate>
-// }
-
-// function ManningContent({data = [], editMode}){
-
-//     function updateField(index, field,value){
-//         data[index][field]=value;
-//         setData([...data]);
-//     }
-//     return <div className='box--facility area--box--facility manning--box--facility'>
-//         <Row>
-//             <Col span={4}>
-//                 <h3>Hours Spent Per Day</h3>
-//             </Col>
-//             <Col span={8} push={2}>
-//                 <h3>Worker Group</h3>
-//             </Col>
-//         </Row>
-//         <Row gutter={16}>
-//             <Col span={6}>
-//             </Col>
-//                 <Col span={6}>
-//                 <h5 style={{textAlign:'center'}}>Manager</h5>
-//             </Col>
-//                 <Col span={6}>
-//                 <h5 style={{textAlign:'center'}}>Operator</h5>
-//             </Col>
-//                 <Col span={6}>
-//                 <h5 style={{textAlign:'center'}}>Admin</h5>
-//             </Col>
-//         </Row>
-//             {data.map((v,i)=> <>
-//                 <Row key={i} gutter={16}>
-//                     <Col span={6}>
-//                         <h5>{v.title}</h5>
-//                     </Col>
-//                     {fields.map((f,ind)=><Col key={f + ind} span={6}>
-//                         {editMode ? <Input type="number" onChange={e=> updateField(i,f,e.target.value) } value={v[f]||0} /> : <p style={{textAlign:'center'}}>{v[f]||0}</p>}
-//                     </Col>)}
-//                 </Row>
-//             <hr/></>
-//             )}
-//         <Row gutter={16}>
-//             <Col span={6}>
-//                 <h5>Total</h5>
-//             </Col>
-//             {fields.map((f,ind)=><Col key={ind} span={6}><p style={{textAlign:'center'}} >{data.sum(f)}</p></Col>)}
-//         </Row>
-// </div>;
-// }
-
 
 export const FacilityManning = () => {
     const [editMode, setEditMode] = useState(false);
@@ -139,69 +39,63 @@ export const FacilityManning = () => {
     return (
         <div className='facility--wrapper'>
             <Row>
-                <Col span={16}>
-
-                    <Row>
-                        <Col span={1}>
-                            <div className='area--img'>
-                                <img width='38' src={group} />
-                            </div>
-                        </Col>
-                        <Col span={23}>
-                            <div className='area--header' >
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <div>
-                                        <p>Facilities Overview</p>
-                                        <h2 >Manning</h2>
-                                    </div>
-                                    <div><EditButtons editMode={editMode} toggle={() => setEditMode(!editMode)} save={save} /></div>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                    <div className='box--facility area--box--facility manning--box--facility'>
-                        <Row>
-                            <Col span={4}>
-                                <h3>Hours Spent Per Day</h3>
-                            </Col>
-                            <Col span={8} push={2}>
-                                <h3>Worker Group</h3>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={6}>
-                            </Col>
-                            <Col span={6}>
-                                <h5 style={{ textAlign: 'center' }}>Manager</h5>
-                            </Col>
-                            <Col span={6}>
-                                <h5 style={{ textAlign: 'center' }}>Operator</h5>
-                            </Col>
-                            <Col span={6}>
-                                <h5 style={{ textAlign: 'center' }}>Admin</h5>
-                            </Col>
-                        </Row>
-                        {data.map((v, i) => <>
-                            <Row key={i} gutter={16}>
-                                <Col span={6}>
-                                    <h5>{v.title}</h5>
-                                </Col>
-                                {fields.map((f, ind) => <Col key={f + ind} span={6}>
-                                    {editMode ? <Input type="number" onChange={e => updateField(i, f, e.target.value)} value={v[f] || 0} /> : <p style={{ textAlign: 'center' }}>{v[f] || 0}</p>}
-                                </Col>)}
-                            </Row>
-                            <hr /></>
-                        )}
-                        <Row gutter={16}>
-                            <Col span={6}>
-                                <h5>Total</h5>
-                            </Col>
-                            {fields.map((f, ind) => <Col key={ind} span={6}><p style={{ textAlign: 'center' }} >{data.sum(f)}</p></Col>)}
-                        </Row>
+                <Col span={1}>
+                    <div className='area--img'>
+                        <img width='38' src={group} />
                     </div>
                 </Col>
-                <Col span={8} style={{ marginTop: 60 }}><FacilitiesButtons /></Col>
+                <Col span={23}>
+                    <div className='area--header' >
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div>
+                                <p>Facilities Overview</p>
+                                <h2 >Manning</h2>
+                            </div>
+                            <div><EditButtons editMode={editMode} toggle={() => setEditMode(!editMode)} save={save} /></div>
+                        </div>
+                    </div>
+                </Col>
             </Row>
+            <div className='box--facility area--box--facility manning--box--facility'>
+                <Row>
+                    <Col span={4}>
+                        <h3>Hours Spent Per Day</h3>
+                    </Col>
+                    <Col span={8} push={2}>
+                        <h3>Worker Group</h3>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={6}>
+                    </Col>
+                    <Col span={6}>
+                        <h5 style={{ textAlign: 'center' }}>Manager</h5>
+                    </Col>
+                    <Col span={6}>
+                        <h5 style={{ textAlign: 'center' }}>Operator</h5>
+                    </Col>
+                    <Col span={6}>
+                        <h5 style={{ textAlign: 'center' }}>Admin</h5>
+                    </Col>
+                </Row>
+                {data.map((v, i) => <>
+                    <Row key={i} gutter={16}>
+                        <Col span={6}>
+                            <h5>{v.title}</h5>
+                        </Col>
+                        {fields.map((f, ind) => <Col key={f + ind} span={6}>
+                            {editMode ? <Input type="number" onChange={e => updateField(i, f, e.target.value)} value={v[f] || 0} /> : <p style={{ textAlign: 'center' }}>{v[f] || 0}</p>}
+                        </Col>)}
+                    </Row>
+                    <hr /></>
+                )}
+                <Row gutter={16}>
+                    <Col span={6}>
+                        <h5>Total</h5>
+                    </Col>
+                    {fields.map((f, ind) => <Col key={ind} span={6}><p style={{ textAlign: 'center' }} >{data.sum(f)}</p></Col>)}
+                </Row>
+            </div>
         </div>
     );
 }

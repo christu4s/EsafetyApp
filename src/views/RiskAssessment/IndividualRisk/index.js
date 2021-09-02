@@ -11,12 +11,14 @@ import ajax from '../../../ajax';
 import './index.css';
 import { PageTemplate } from './../../template';
 import ReactECharts from 'echarts-for-react';
+import { TitleEdit } from '../../../utils';
 
 export const IndividualRisk = () => {
     return <PageTemplate
         iconUrl={danger}
         title="Risk Assessment"
-        subtitle="Individual Risk"
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Individual Risk")}
         api="/individual_risk"
         descName="individual_desc"
         imageName="individual_image"

@@ -10,12 +10,14 @@ import { useHistory } from "react-router-dom";
 import ajax from '../../../ajax';
 import { PageTemplate } from '../../template';
 import ReactECharts from 'echarts-for-react';
+import { TitleEdit } from '../../../utils';
 
 export const PlanRiskBreakDown = () => {
     return <PageTemplate
         iconUrl={danger}
         title="Risk Assessment"
-        subtitle="Plant Risk Breakdown"
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Plant Risk Breakdown")}
         api="/plant_risk"
         descName="plant_desc"
         imageName="plant_image"

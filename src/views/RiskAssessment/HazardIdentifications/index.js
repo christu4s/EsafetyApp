@@ -2,13 +2,16 @@ import React from 'react';
 import { HazardPage } from '../component';
 import danger from '../../../assets/danger-sing@3x.png';
 import { PageTemplate } from '../../template';
+import { TitleEdit } from '../../../utils';
 
 
 const Page = ({title,prefix}) => <PageTemplate 
         api="/identification_risk" 
         iconUrl={danger} 
+        updateMenu
+        titleKey={prefix+'_title'} 
         title="Risk Assessment" 
-        subtitle={title} 
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,title,prefix+'_title')}
         imageName={prefix+'_image'} 
         pdfName={prefix+'_image'} 
         descName={prefix+'_desc'} 

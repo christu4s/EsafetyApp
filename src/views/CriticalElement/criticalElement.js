@@ -6,7 +6,7 @@ import imageEquipment from '../../assets/critical-element-equipment.png';
 import imagePersonnel from '../../assets/critical-element-personnel.png';
 import imageProcedure from '../../assets/critical-element-procedure.png';
 import ajax from '../../ajax';
-import { CardHolder } from '../../utils';
+import { CardHolder, TitleEdit } from '../../utils';
 import { PageTemplate } from './../template';
 
 export const CriticalElement = () => {
@@ -19,7 +19,8 @@ export const CriticalElement = () => {
 
     return <PageTemplate 
         iconUrl={alert}  
-        subtitle="Safety Critical Element" 
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safety Critical Element")} 
         api="/safetyCriticalElement" 
         descName="critical_element_desc"
         imageName="critical_element_image"

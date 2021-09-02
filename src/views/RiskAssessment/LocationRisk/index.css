@@ -6,7 +6,11 @@
 .facility--wrapper .location-risk-box.manning--box--facility h3{
     color: #fff;
 }
-.location-risk-box:after{
+.location-risk-box .ant-table-thead > tr > th{
+    background-color: #123862;
+    color: #fff;
+}
+/* .location-risk-box:after{
     position: absolute;
     left: 24%;
     height: 84%;
@@ -16,7 +20,7 @@
     display: block;
     content: '';
     top: 63px;
-}
+} */
 .location-risk-box.manning--box--facility .ant-input{
     border: 1px solid #000000;
     height: 30px;

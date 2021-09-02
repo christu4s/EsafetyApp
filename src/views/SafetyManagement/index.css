@@ -14,3 +14,7 @@
     border-color: #6e6d6d;
     color: #fff;
 }
+.blue--box .box-desc{
+    height: 130px;
+    overflow: hidden;
+}

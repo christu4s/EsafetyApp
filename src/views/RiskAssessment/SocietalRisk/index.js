@@ -9,12 +9,14 @@ import { FacilitiesButtons } from '../../facilities/components';
 import { useHistory } from "react-router-dom";
 import { EditableTable, SocietalTable } from './components/societalTable';
 import { PageTemplate } from './../../template';
+import { TitleEdit } from '../../../utils';
 
 export const SocietalRisk = () => {
     return <PageTemplate 
         iconUrl={danger} 
         title="Risk Assessment" 
-        subtitle="SocietalRisk" 
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Societal Risk")} 
         api="/societal_risk" 
         descName="societal_desc"
         imageName="societal_image"

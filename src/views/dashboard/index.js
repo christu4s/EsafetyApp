@@ -19,13 +19,13 @@ import { BoxHolder } from '../../utils';
 export const Dashboard = () =>{
     var sectionStyle = {
         backgroundImage: `url(${Background})`
-      };
+    };
 
-       const boxContent = [
+    const boxContent = [
         {title: 'Facilities Overview', img: blueprint, active:true, url: '/facility-overview' },
         {title: 'Major Accident Hazards', img: fire, active:false,url: '/accidents-hazards' },
-        {title: 'Risk Assessment', img: danger,  active:false, url: '/facility-overview' },
-        {title: 'Safety Critical Element ', img: extinguisher,  active:false, url: '/risk-assessment'},
+        {title: 'Risk Assessment', img: danger,  active:false, url: '/risk-assessment' },
+        {title: 'Safety Critical Element ', img: extinguisher,  active:false, url: '/safety-critical'},
         {title: 'Emergency Response ', img: alert,  active:false, url: '/emergency-response'},
         {title: 'Safety Management System ', img: checked,  active:false, url: '/safety-management'},
         {title: 'Remedial Action Plan ', img: planning,  active:false, url: '/remedial-action'},

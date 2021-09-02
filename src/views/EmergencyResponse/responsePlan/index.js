@@ -51,7 +51,7 @@ function TablePlan({ content, editMode, form }) {
 
     return <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
         <Form.Item hidden name="erp_flow_chat"><Input /></Form.Item>
-        <Steps progressDot direction="vertical">
+        <Steps progressDot current={data.length} direction="vertical">
             {data.map((plan, index) => <Steps.Step
                 title={<Space>{plan}
                     {editMode && <Popconfirm title="Are you sure to delete this?" onConfirm={() => removeLevel(index)}>

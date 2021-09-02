@@ -13,6 +13,7 @@ import identificationImage from '../../assets/riskAssessment/identification.png'
 import danger from '../../assets/danger-sing@3x.png';
 
 import { ListItems, PageTemplate } from '../template';
+import { TitleEdit } from '../../utils';
 
 export const RiskAssessment = () => {
     const subpages = [
@@ -27,10 +28,11 @@ export const RiskAssessment = () => {
     ]
     return <PageTemplate 
         iconUrl={danger} 
-        // title="Facilities Overview" 
-        subtitle="Risk Assessment" 
+        subtitle="Risk Assessment"
+        updateMenu 
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Risk Assessment")} 
         api="/risk_assessment" 
-        descName="area_desc"
+        descName="risk_desc"
         >
         <ListItems list={subpages} countInRow={4} />
     </PageTemplate>

@@ -12,6 +12,5 @@ export const FacilityProcess = () => {
         descName="process_desc" 
         imageName="process_image" 
         pdfName="process_pdf"
-        right={<FacilitiesButtons />}
     />
 }

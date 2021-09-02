@@ -1,16 +1,17 @@
 import { Form, Input } from 'antd';
 import React from 'react';
 import fire from '../../assets/fire@3x.png';
+import { TitleEdit } from '../../utils';
 import { ListItems, PageTemplate } from '../template';
-
 
 export * from './details';
 
 export const AccidentsHazard = () => {
     return <PageTemplate 
         iconUrl={fire} 
+        updateMenu
         title=" " 
-        subtitle="Major Accident Hazards" 
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Major Accident Hazards")}
         api="/major_accident_hazards" 
         descName="mah_desc"
         imageName="mah_image"

@@ -26,6 +26,28 @@
     }
 }
 
+.img-wrap{ 
+    position: relative;
+    .img-delete-icon{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        color: red;
+        text-align: right;
+        background-color: rgba(0,0,0,.2);
+        display: none;
+        span{
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    }
+    &:hover .img-delete-icon{
+        display: block;
+    }
+}
+
 .logo {
     width: 150px;
     img{
@@ -350,6 +372,7 @@
     }
 }
 .ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-selected{
+    color: #fff;
     .ant-menu-submenu-title{
         background-image: linear-gradient(to top, #387bf7, #61c5ff);
         img{
