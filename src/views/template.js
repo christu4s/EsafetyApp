@@ -7,6 +7,8 @@ import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
 import { ArrowLeftOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useMenuContext } from '../provider';
+import { Draggable } from "react-drag-reorder";
+import { ReactSortable } from "react-sortablejs";
 
 export const PageTemplate = ({
     title, 
@@ -87,7 +89,7 @@ export const PageTemplate = ({
                     <div style={{margin: 20}} />
                     {imageName && <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />}
                     {pdfName && <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />}
-                    {typeof children=='function' ? children(content, editMode, form) : children}
+                    {typeof children=='function' ? children(content, editMode, form, saveData) : children}
                 </Col>
                 <Col span={8} push={1} style={{ marginTop: 35 }}>
                     {typeof right=='function' ? right({content, editMode, form, setContent, saveData}) : right}
@@ -111,20 +113,21 @@ export function ImageViewer({images = [], imageName='', form, editMode}){
     }
     
 
-    return <>
-    <Form.List name={name}>{(fields)=> fields.map(({key,name}) => <Form.Item key={key} hidden name={name} />) }</Form.List>
+    return <div className="image-viewer">
+    <Draggable>{imgs.map((v,i)=> <div key={i} className="flex-item">image {i}</div> )}</Draggable>
+    <Form.List name={name}>{(fields)=>fields.map(({key,name}) => <Form.Item key={key} hidden name={name} />)}</Form.List>
     <Carousel autoplay>
         {imgs.map((v,i)=> v.type.includes('image') && <div className="img-wrap" key={i}>
             <Image width="100%" height="300" src={v.src}/>
             {editMode && <div className="img-delete-icon"><span onClick={()=> removeItem(i)}>x</span></div>}
         </div>)}
     </Carousel>
-    </>
+    </div>
 }
 
 export function PdfViewer({files = [],pdfName='', editMode, form}){
     const [fls, setFls] = useState();
-    useEffect(()=>{ setFls(files[0] || null); }, [files, editMode]);
+    useEffect(()=>{ setFls((files && files[0]) || null); }, [files, editMode]);
     useEffect(()=>{ fls && form.setFieldsValue({[pdfName]: fls.id }) }, [fls]);
     if(!fls) return null;
 

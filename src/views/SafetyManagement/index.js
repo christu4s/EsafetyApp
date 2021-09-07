@@ -8,7 +8,7 @@ import './index.css';
 import ajax from '../../ajax';
 import { ButtonUpload, DescField, EditButtons, TitleEdit } from '../../utils';
 import { Link } from 'react-router-dom';
-import { getFormFields, PageTemplate } from './../template';
+import { getFormFields, ListItems, PageTemplate } from './../template';
 
 export * from './details';
 
@@ -21,9 +21,19 @@ export const SafetyManagement = ({history}) => {
         descName="safety_management_desc"
         imageName="safety_management_image"
         pdfName="safety_management_pdf"
-    >{(content, editMode) => <SafetyBox editMode={editMode} history={history} />}
+    >{(content, editMode) => <ListItems 
+        api="/safety_manage_commit" 
+        editMode={editMode} 
+        popupExtra={<div className='area--form'>
+            <label>Name of File</label>
+            <Form.Item name="title"><Input /></Form.Item>
+            <label>Add Description</label>
+            <Form.Item name="desc"><Input.TextArea /></Form.Item>
+        </div>} 
+    />}
     </PageTemplate>
 }
+
 function SafetyBox({ editMode, history }) {
     const [data, setData] = useState([]);
     const [form] = Form.useForm();

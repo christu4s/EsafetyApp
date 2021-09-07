@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Space, Input, Alert } from 'antd';
 import './App.css';
 import { getSelectedMenuItem, menus, routes } from './config';
@@ -6,6 +6,7 @@ import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import { UserOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { userName } from './constants';
 import { MenuTitle } from './utils';
+import ajax from './ajax';
 
 
 const { Content, Footer, Sider, Header } = Layout;
@@ -34,6 +35,8 @@ class App extends React.Component {
       </Menu>
     );
 
+    const selected = getSelectedMenuItem();
+    
     return (
       <Layout>
         <Header className="header">
@@ -51,7 +54,7 @@ class App extends React.Component {
         </Header>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider width={300}>
-          <Menu selectedKeys={getSelectedMenuItem()} className='menu--holder' onClick={this.redirect} mode="inline">
+          <Menu selectedKeys={selected} openKeys={selected} className='menu--holder' onClick={this.redirect} mode="inline">
             {customMenu(menus)}
           </Menu>
         </Sider>
@@ -75,7 +78,7 @@ export default withRouter(App);
 function customMenu(menus, parent = ''){
   return menus.map((v,i)=> {
     var key = parent + '_'  + i; 
-    return v.children ? <Menu.SubMenu key={key} onTitleClick={()=>{ window.location.href=v.url; }} title={v.title} icon={v.icon}>{customMenu(v.children, i)}</Menu.SubMenu> 
+    return v.children ? <Menu.SubMenu key={key} onTitleClick={()=>{ window.location.href=v.url; }} title={v.title} icon={v.icon}>{customMenu(v.children,i)}</Menu.SubMenu> 
     : <Menu.Item key={key} url={v.url} icon={v.icon}><MenuTitle {...v} /></Menu.Item>;
   })
 }

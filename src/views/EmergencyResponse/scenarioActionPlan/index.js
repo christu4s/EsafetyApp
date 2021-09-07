@@ -52,9 +52,15 @@ function TableScenario({ editMode }) {
         <div className="divider" style={{ marginBottom: 10 }}></div>
         {editMode && <Form form={form}>
             <ButtonUpload name="scenario_file" onSubmit={submit} >
-                <div>
-                    <label>Name of File</label>
-                    <Form.Item name="title"><Input /></Form.Item>
+                <div className='area--form'>
+                    <label>Name of the Action Plan</label>
+                    <Form.Item name="title">
+                        <Input />
+                    </Form.Item>
+                    <label>Document Number</label>
+                    <Form.Item name="desc">
+                        <Input />
+                    </Form.Item>
                 </div>
             </ButtonUpload>
         </Form>}

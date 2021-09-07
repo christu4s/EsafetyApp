@@ -52,9 +52,9 @@ function ProcedureTable({ editMode }) {
         <Table dataSource={data} columns={columns} />
         {editMode && <Form form={form}><ButtonUpload name="procedure_file" onSubmit={submit}>
             <div className='area--form'>
-                <label>Name of File</label>
+                <label>Safety Critical Procedure</label>
                 <Form.Item name="title"><Input /></Form.Item>
-                <label>Add Description</label>
+                <label>Document Number</label>
                 <Form.Item name="desc"><Input.TextArea /></Form.Item>
             </div>
         </ButtonUpload></Form>}

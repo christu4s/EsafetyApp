@@ -1,7 +1,7 @@
-import { Row, Col, Input, Space, Button } from 'antd';
+import { Row, Col, Input, Space, Button, Table, Form } from 'antd';
 import React, { useEffect, useState } from 'react';
 import group from '../../../assets/group@3x.png';
-import { FacilitiesButtons } from '../components';
+import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { EditButtons } from '../../../utils';
 
@@ -10,31 +10,59 @@ Array.prototype.sum = function (prop) {
     for (var i = 0, _len = this.length; i < _len; i++) {
         total += parseInt(this[i][prop]) || 0;
     }
-    return total
+    return total.toExponential()
 }
-
 
 export const FacilityManning = () => {
     const [editMode, setEditMode] = useState(false);
+    const toggleMode = () => setEditMode(!editMode);
     const [data, setData] = useState([]);
-    const fields = ['manager', 'operator', 'admin'];
-
+    const [cols, setCols] = useState([]);
+    var response = {};
+    
     useEffect(() => {
-        ajax.get('/facility-overview/area').then(res => {
-            res && setData(res.data);
-        });
+        ajax.get('/facility_manning').then(setResponse);
     }, []);
 
-    function updateField(index, field, value) {
-        data[index][field] = value;
+    function setResponse(res){
+        if(!res) return;
+        response = res
+        setState(res.data, setData);
+        setState(res.columns, setCols);
+    }
+
+    function setState(value, fn){
+        try { var res = JSON.parse(value.replace(/\\/g, '')); fn(res); } catch (e) { }
+    }
+
+    function addData(){ setData([...data,{}]) }
+    function addColumn(){ setCols([...cols,{}]); }
+    function editColTitle(i, val){
+        var key = val.replace(/\W+/g,'');
+        cols[i] = {title: val, dataIndex: key, key}
+        setCols([...cols]);
+    }
+    function editField(i, key, val){
+        data[i][key] = val;
         setData([...data]);
     }
 
-    async function save(i = 0) {
-        if (!data[i]) return;
-        const { id, manager = 0, operator = 0, admin = 0 } = data[i];
-        return await ajax.post('/facility-overview/area/' + id, { manager, operator, admin }).then(() => save(i + 1));
+    function renderField(val,key, i){
+        return editMode ? <Input value={val} type={key=='hours' ? 'text' : 'number'} onChange={e=>editField(i,key,e.target.value)} /> : val;
     }
+
+    async function save(){
+        ajax.post('/facility_manning', {data: JSON.stringify(data), columns: JSON.stringify(cols)}).then(res => { 
+            setResponse(res);
+            toggleMode();
+        });
+    }
+    function revertMode(){
+        setResponse(response);
+        toggleMode();
+    }
+
+    const {Column, ColumnGroup} = Table;
 
     return (
         <div className='facility--wrapper'>
@@ -51,50 +79,35 @@ export const FacilityManning = () => {
                                 <p>Facilities Overview</p>
                                 <h2 >Manning</h2>
                             </div>
-                            <div><EditButtons editMode={editMode} toggle={() => setEditMode(!editMode)} save={save} /></div>
+                            <div><EditButtons editMode={editMode} toggle={revertMode} save={save} /></div>
                         </div>
                     </div>
                 </Col>
             </Row>
             <div className='box--facility area--box--facility manning--box--facility'>
-                <Row>
-                    <Col span={4}>
-                        <h3>Hours Spent Per Day</h3>
-                    </Col>
-                    <Col span={8} push={2}>
-                        <h3>Worker Group</h3>
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={6}>
-                    </Col>
-                    <Col span={6}>
-                        <h5 style={{ textAlign: 'center' }}>Manager</h5>
-                    </Col>
-                    <Col span={6}>
-                        <h5 style={{ textAlign: 'center' }}>Operator</h5>
-                    </Col>
-                    <Col span={6}>
-                        <h5 style={{ textAlign: 'center' }}>Admin</h5>
-                    </Col>
-                </Row>
-                {data.map((v, i) => <>
-                    <Row key={i} gutter={16}>
-                        <Col span={6}>
-                            <h5>{v.title}</h5>
-                        </Col>
-                        {fields.map((f, ind) => <Col key={f + ind} span={6}>
-                            {editMode ? <Input type="number" onChange={e => updateField(i, f, e.target.value)} value={v[f] || 0} /> : <p style={{ textAlign: 'center' }}>{v[f] || 0}</p>}
-                        </Col>)}
-                    </Row>
-                    <hr /></>
-                )}
-                <Row gutter={16}>
-                    <Col span={6}>
-                        <h5>Total</h5>
-                    </Col>
-                    {fields.map((f, ind) => <Col key={ind} span={6}><p style={{ textAlign: 'center' }} >{data.sum(f)}</p></Col>)}
-                </Row>
+            {editMode &&<Space>
+                <Button type="default" onClick={addData} icon={<PlusCircleOutlined />}>Add more row</Button>
+                <Button type="ghost" onClick={addColumn} icon={<PlusCircleOutlined />}>Add Work Group</Button>
+            </Space>}
+            <Table 
+                bordered 
+                pagination={{pageSize:100, position: ['none','none']}} 
+                dataSource={data} 
+                summary={()=><>
+                    <Table.Summary.Row>
+                        <Table.Summary.Cell>Total</Table.Summary.Cell>
+                        {cols.map((col, j) => <Table.Summary.Cell key={j}>
+                            <Input readOnly type="number" value={data.sum(col.dataIndex)} />
+                        </Table.Summary.Cell>)}
+                </Table.Summary.Row></>}
+            >
+                <Column title="Hours Spent Per Day" dataIndex="hours" render={(val,r,i)=> renderField(val,'hours',i)}/>
+                <ColumnGroup title="Worker Group">
+                    {cols.map((v,i)=> <Column {...v} key={i}
+                        title={editMode ? <Input value={v.title} onChange={e=>editColTitle(i, e.target.value)} /> : v.title}
+                        render={(val,r,i)=> renderField(val,v.dataIndex, i)} /> )}
+                </ColumnGroup>
+            </Table>
             </div>
         </div>
     );
