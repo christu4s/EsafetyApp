@@ -5,9 +5,8 @@ import { ButtonUpload, CardHolder, DescField, EditButtons } from '../utils';
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
-import { ArrowLeftOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useMenuContext } from '../provider';
-import { Draggable } from "react-drag-reorder";
 import { ReactSortable } from "react-sortablejs";
 
 export const PageTemplate = ({
@@ -113,8 +112,10 @@ export function ImageViewer({images = [], imageName='', form, editMode}){
     }
     
 
-    return <div className="image-viewer">
-    <Draggable>{imgs.map((v,i)=> <div key={i} className="flex-item">image {i}</div> )}</Draggable>
+    return <div>
+    {editMode && <ReactSortable list={imgs} setList={setImgs}>
+        {imgs.map((v,i)=><div key={v.id}>Image {v.title}</div> )}
+    </ReactSortable>}
     <Form.List name={name}>{(fields)=>fields.map(({key,name}) => <Form.Item key={key} hidden name={name} />)}</Form.List>
     <Carousel autoplay>
         {imgs.map((v,i)=> v.type.includes('image') && <div className="img-wrap" key={i}>
