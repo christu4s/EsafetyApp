@@ -1,33 +1,9 @@
-import { Row, Col, Card, Button, Modal, Upload, message, Input, Form, Checkbox, Space, InputNumber } from 'antd';
+import { Row, Col, Card, Button,  Input, Form, Space, InputNumber } from 'antd';
 import React, { useState, useEffect } from 'react';
-import area from '../../../assets/area.png';
-import image from '../../../assets/image.png';
-import danger from '../../../assets/danger-sing@3x.png';
-import { PlusCircleOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import computing from '../../../assets/cloud-computing@3x.png';
-import { FacilitiesButtons } from '../../facilities/components';
-import { useHistory } from "react-router-dom";
-import ajax from '../../../ajax';
-import './index.css';
-import { PageTemplate } from './../../template';
+import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ReactECharts from 'echarts-for-react';
-import { TitleEdit } from '../../../utils';
 
-export const IndividualRisk = () => {
-    return <PageTemplate
-        iconUrl={danger}
-        title="Risk Assessment"
-        updateMenu
-        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Individual Risk")}
-        api="/individual_risk"
-        descName="individual_desc"
-        imageName="individual_image"
-        pdfName="individual_pdf"
-        outside= {(content, editMode, form) => <IndividualGraph content={content} editMode={editMode} form={form} />}
-    />
-}
-
-function IndividualGraph({ content, editMode, form }) {
+export function IndividualGraph({ content, editMode, form }) {
     const [series, setSeries] = useState([]);
     const hasData = series && series.length;
     var chartRef;
@@ -42,12 +18,12 @@ function IndividualGraph({ content, editMode, form }) {
 
     useEffect(() => {
         try {
-            var res = JSON.parse(content.graph_data.replace(/\\/g, ''));
+            var res = JSON.parse(content.data.replace(/\\/g, ''));
             setSeries(res);
         } catch (e) { }
-    }, [content.graph_data]);
+    }, [content.data]);
     useEffect(() => {
-        form.setFieldsValue({ graph_data: JSON.stringify(series) });
+        form.setFieldsValue({ data: JSON.stringify(series) });
         chartRef && chartRef.getEchartsInstance().setOption(option);
     }, [series]);
 
@@ -65,7 +41,7 @@ function IndividualGraph({ content, editMode, form }) {
     function add() { setSeries([...series, {}]); }
 
     return <div>
-        <Form.Item hidden name="graph_data"><Input /></Form.Item>
+        <Form.Item hidden name="data"><Input /></Form.Item>
         <h2>Pie Chart</h2>
         <Row>
             <Col span={16}>

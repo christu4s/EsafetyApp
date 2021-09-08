@@ -10,6 +10,7 @@ import { useMenuContext } from '../provider';
 import { ReactSortable } from "react-sortablejs";
 
 export const PageTemplate = ({
+    updateData,
     title, 
     api,
     subtitle, 
@@ -45,7 +46,7 @@ export const PageTemplate = ({
 
     useEffect(() => {
         ajax.get(api).then(res => res && setContent(res));
-    }, []);
+    }, [updateData]);
     
     return (
         <div className='facility--wrapper'>
