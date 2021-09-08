@@ -24972,8 +24972,26 @@ div.ant-typography-edit-content.ant-typography-rtl {
   width: calc(100vw - 150px);
   align-items: center;
 }
+.image-preview {
+  background-color: #fff;
+  margin: 5px 0;
+  border-radius: 4px;
+}
+.image-preview.active {
+  background-color: #387bf7;
+  color: #fff;
+}
+.image-preview img {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  margin: 4px;
+}
 .img-wrap {
   position: relative;
+}
+.img-wrap img.ant-image-img {
+  height: 300px;
 }
 .img-wrap .img-delete-icon {
   position: absolute;

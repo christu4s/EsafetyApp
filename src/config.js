@@ -2,7 +2,7 @@
 import { ShopOutlined, HomeFilled } from '@ant-design/icons';
 import { UserGroupFilled } from './icons';
 
-import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityAreaDetails, EquipmentPreventionDetails, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EquipmentDetection, EquipmentControl, EquipmentMitigation, EquipmentEmergencyResponse, EquipmentIncident, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase, AccidentsHazardItem, SafetyManagementItem, CriticalElementType, CriticalEquipmentItem } from './views';
+import { AccidentsHazard, Dashboard, Facilities, FacilityArea, FacilityAreaDetails, EquipmentPreventionDetails, FacilityManning, FacilityProcess, RiskAssessment, HazardIdentifications, HazardOperatability, HazardAnalysis, HazardEmergency, CriticalEquipment, CriticalPersonnel, CriticalProcedure, CriticalElement, SelectAccount, EquipmentPrevention, EquipmentDetection, EquipmentControl, EquipmentMitigation, EquipmentEmergencyResponse, EquipmentIncident, EmergencyResponse, ResponseTiers, ResponseOrganisation, ResponsePlan, ScenarioActionPlan, SafetyManagement, RemedialAction, WrittenSafetyCase, AccidentsHazardItem, SafetyManagementItem, CriticalElementType, CriticalEquipmentItem, RiskAssessmentDetail } from './views';
 
 import facilityImg from './assets/menu/blueprint.png';
 import HazardsImg from './assets/menu/fire.png';
@@ -18,6 +18,7 @@ import { IndividualRiskEditUser } from './views/RiskAssessment/IndividualRisk/in
 import { PlanRiskBreakDown } from './views/RiskAssessment/PlanRiskBreakdown';
 import { LocationRisk } from './views/RiskAssessment/LocationRisk';
 import { SocietalRisk } from './views/RiskAssessment/SocietalRisk';
+import ajax from './ajax';
 
 const Empty = () => <div />;
 
@@ -43,6 +44,7 @@ export const routes = [
     { path: '/risk-assessment/individual-edit-user', exact: true, component: IndividualRiskEditUser },
     { path: '/risk-assessment/location', exact: true, component: LocationRisk },
     { path: '/risk-assessment/societal', exact: true, component: SocietalRisk },
+    { path: '/risk-assessment/:id', exact: true, component: RiskAssessmentDetail },
     { path: '/safety-critical', exact: true, component: CriticalElement },
     { path: '/safety-critical/equipment', exact: true, component: CriticalEquipment },
     { path: '/safety-critical/equipment/:type', exact: true, component: CriticalElementType },
@@ -79,16 +81,17 @@ export const menus = [
         icon: <img src={RiskImg} alt="Major Accident Hazards" height={20} />, 
         url: '#/risk-assessment',
         api:'/risk_assessment',
-        children: [
-            { title: 'Hazard Identification Worksheets', exact: true, url: '#/risk-assessment/identification-worksheet', api:'/identification_risk', titleKey:'identification_title' },
-            { title: 'Hazard and Operability Worksheets', exact: true, url: '#/risk-assessment/operability-worksheet', api:'/identification_risk', titleKey:'operatability_title' },
-            { title: 'Escape, Evacuation, Rescue Analysis', exact: true, url: '#/risk-assessment/rescue-analysis', api:'/identification_risk', titleKey:'escape_title' },
-            { title: 'Emergency System Survivability Analysis', exact: true, url: '#/risk-assessment/survivability-analysis', api:'/identification_risk', titleKey:'emergency_title' },
-            { title: 'Individual Risk', exact: true, url: '#/risk-assessment/individual', api:'/individual_risk' },
-            { title: 'Plant Risk Breakdown', exact: true, url: '#/risk-assessment/plant', api:'/plant_risk' },
-            { title: 'Location Risk', exact: true, url: '#/risk-assessment/location', api: '/location_risk' },
-            { title: 'Societal Risk', exact: true, url: '#/risk-assessment/societal', api:'/societal_risk' },
-        ]
+        childApi: '/risk_assessment_item',
+        // children: [
+        //     { title: 'Hazard Identification Worksheets', exact: true, url: '#/risk-assessment/identification-worksheet', api:'/identification_risk', titleKey:'identification_title' },
+        //     { title: 'Hazard and Operability Worksheets', exact: true, url: '#/risk-assessment/operability-worksheet', api:'/identification_risk', titleKey:'operatability_title' },
+        //     { title: 'Escape, Evacuation, Rescue Analysis', exact: true, url: '#/risk-assessment/rescue-analysis', api:'/identification_risk', titleKey:'escape_title' },
+        //     { title: 'Emergency System Survivability Analysis', exact: true, url: '#/risk-assessment/survivability-analysis', api:'/identification_risk', titleKey:'emergency_title' },
+        //     { title: 'Individual Risk', exact: true, url: '#/risk-assessment/individual', api:'/individual_risk' },
+        //     { title: 'Plant Risk Breakdown', exact: true, url: '#/risk-assessment/plant', api:'/plant_risk' },
+        //     { title: 'Location Risk', exact: true, url: '#/risk-assessment/location', api: '/location_risk' },
+        //     { title: 'Societal Risk', exact: true, url: '#/risk-assessment/societal', api:'/societal_risk' },
+        // ]
     },
     {
         title: 'Safety Critical Element',
@@ -118,6 +121,18 @@ export const menus = [
     { title: 'Writen Safety Case', icon: <img src={WrittenImg} alt="Writen Safety Case" height={20} />, url: '#/writen-safety', api:"/written_safety_case" },
     // { title: 'Users', icon: <UserGroupFilled />, url: '#/user' },
 ];
+
+export async function getMenu(){
+    for(var menu of menus){
+        if(menu.childApi){
+            var res = await ajax.get(menu.childApi, {count: -1});
+            // console.log(childrens);
+            var childrens = res.data.map(v => ({title: v.title, exact:true, url:menu.url + '/'+ v.id, api: menu.childApi+'/'+v.id }));
+            menu.children = childrens;
+        } 
+    }
+    return menus;
+}
 
 
 export const getSelectedMenuItem = (m, p = '', ret = []) => {

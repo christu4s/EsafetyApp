@@ -11,6 +11,7 @@ export const FacilityAreaDetails = ({ match }) => {
     const { id } = match.params;
     return <PageTemplate
         canDelete
+        backButton
         iconUrl={area}
         title="Facilities Overview"
         subtitle={TitleEdit}

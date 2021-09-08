@@ -102,6 +102,7 @@ export const PageTemplate = ({
 
 export function ImageViewer({images = [], imageName='', form, editMode}){
     const [imgs, setImgs] = useState([]);
+    const [current, setCurrent] = useState(0);
     const name = '_'+imageName;
     useEffect(()=>{ setImgs([... (images || [])]); }, [images, editMode]);
     useEffect(()=>{ form.setFieldsValue({[name]: imgs.map(v=>v.id)}) }, [imgs]);
@@ -114,10 +115,12 @@ export function ImageViewer({images = [], imageName='', form, editMode}){
 
     return <div>
     {editMode && <ReactSortable list={imgs} setList={setImgs}>
-        {imgs.map((v,i)=><div key={v.id}>Image {v.title}</div> )}
+        {imgs.map((v,i)=><div className={"image-preview "+ (current==i ? 'active': '')} key={v.id}>
+            <img src={v.src} />{v.name}
+        </div> )}
     </ReactSortable>}
     <Form.List name={name}>{(fields)=>fields.map(({key,name}) => <Form.Item key={key} hidden name={name} />)}</Form.List>
-    <Carousel autoplay>
+    <Carousel autoplay afterChange={setCurrent}>
         {imgs.map((v,i)=> v.type.includes('image') && <div className="img-wrap" key={i}>
             <Image width="100%" height="300" src={v.src}/>
             {editMode && <div className="img-delete-icon"><span onClick={()=> removeItem(i)}>x</span></div>}

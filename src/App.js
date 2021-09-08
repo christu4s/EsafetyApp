@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Space, Input, Alert } from 'antd';
 import './App.css';
-import { getSelectedMenuItem, menus, routes } from './config';
+import { getMenu, getSelectedMenuItem, menus, routes } from './config';
 import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import { UserOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { userName } from './constants';
@@ -16,7 +16,12 @@ const logo = 'http://esafety.enkuire.com/wp-content/uploads/2021/06/E-safety-02.
 class App extends React.Component {
   state = {
     collapsed: false,
+    menus: []
   };
+
+  componentDidMount(){
+    getMenu().then(menus=> this.setState({menus}));
+  }
 
   onCollapse = collapsed => this.setState({ collapsed });
   redirect = p =>{ 
@@ -26,7 +31,7 @@ class App extends React.Component {
   }
   
   render() { 
-    const { collapsed } = this.state;
+    const { collapsed, menus } = this.state;
 
     const userMenu = (
       <Menu>
@@ -35,7 +40,9 @@ class App extends React.Component {
       </Menu>
     );
 
-    const selected = getSelectedMenuItem();
+    console.log(menus);
+
+    const selected = getSelectedMenuItem(menus);
     
     return (
       <Layout>

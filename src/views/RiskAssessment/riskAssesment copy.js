@@ -14,9 +14,18 @@ import danger from '../../assets/danger-sing@3x.png';
 
 import { ListItems, PageTemplate } from '../template';
 import { TitleEdit } from '../../utils';
-import { Form, Input } from 'antd';
 
 export const RiskAssessment = () => {
+    const subpages = [
+        { title: 'Hazard Identification Worksheets',  url: '/risk-assessment/identification-worksheet', image: identificationImage },
+        { title: 'Hazard and Operability Worksheets',  url: '/risk-assessment/operability-worksheet', image: operatablityImage },
+        { title: 'Escape, Evacuation, Rescue Analysis',  url: '/risk-assessment/rescue-analysis', image: escapeImage },
+        { title: 'Emergency System Survivability Analysis',  url: '/risk-assessment/survivability-analysis', image: emergencyImage },
+        { title: 'Individual Risk',  url: '/risk-assessment/individual', image: individualImage },
+        { title: 'Plant Risk Breakdown',  url: '/risk-assessment/plant', image: plantImage },
+        { title: 'Location Risk',  url: '/risk-assessment/location', image: locationImage },
+        { title: 'Societal Risk',  url: '/risk-assessment/societal', image: societalImage }
+    ]
     return <PageTemplate 
         iconUrl={danger} 
         subtitle="Risk Assessment"
@@ -25,13 +34,6 @@ export const RiskAssessment = () => {
         api="/risk_assessment" 
         descName="risk_desc"
         >
-        {(content, editMode)=>  <ListItems 
-            api="/risk_assessment_item"  
-            editMode={editMode}
-            popupExtra={<div className='area--form'>
-                <label>Name of Risk Assessment</label>
-                <Form.Item name="title"><Input /></Form.Item>
-            </div>} 
-        />}
+        <ListItems list={subpages} countInRow={4} />
     </PageTemplate>
 }
