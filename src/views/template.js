@@ -1,11 +1,11 @@
-import { Row, Col, Form, Space, Carousel, Image, Popconfirm } from 'antd';
+import { Row, Col, Form, Space, Carousel, Image, Popconfirm, Select, Input, Button } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
 import { ButtonUpload, CardHolder, DescField, EditButtons } from '../utils';
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useMenuContext } from '../provider';
 import { ReactSortable } from "react-sortablejs";
 
@@ -108,27 +108,77 @@ export function ImageViewer({images = [], imageName='', form, editMode}){
     useEffect(()=>{ setImgs([... (images || [])]); }, [images, editMode]);
     useEffect(()=>{ form.setFieldsValue({[name]: imgs.map(v=>v.id)}) }, [imgs]);
     if(!imgs || !imgs.length) return null;
-    function removeItem(index){
-        imgs.splice(index, 1);
+    function removeItem(){
+        imgs.splice(current, 1);
         setImgs([...imgs]);
+        setCurrent(0);
+    }
+    var item = imgs[current];
+    function reorder(position){
+        imgs.splice(position, 0, imgs.splice(current, 1)[0]);
+        setImgs([...imgs]);
+        setCurrent(position);
+    }
+    function onCaptionChange(e){
+        imgs[current].name = e.target.value;
+        setImgs([...imgs]);
+    }
+    function updateCaption(){
+        ajax.post('/media/' + item.id, {name: item.name});
     }
     
 
-    return <div>
-    {editMode && <ReactSortable list={imgs} setList={setImgs}>
-        {imgs.map((v,i)=><div className={"image-preview "+ (current==i ? 'active': '')} key={v.id}>
-            <img src={v.src} />{v.name}
-        </div> )}
-    </ReactSortable>}
-    <Form.List name={name}>{(fields)=>fields.map(({key,name}) => <Form.Item key={key} hidden name={name} />)}</Form.List>
-    <Carousel autoplay afterChange={setCurrent}>
-        {imgs.map((v,i)=> v.type.includes('image') && <div className="img-wrap" key={i}>
-            <Image width="100%" height="300" src={v.src}/>
-            {editMode && <div className="img-delete-icon"><span onClick={()=> removeItem(i)}>x</span></div>}
-        </div>)}
-    </Carousel>
+    return <div style={{border:'1px dashed', borderRadius:4, padding:10}} className="img-wrap">
+        <Form.List name={name}>{(fields)=>fields.map(({key,name}) => <Form.Item key={key} hidden name={name} />)}</Form.List>
+        <Row justify="space-between">
+            <Col span={10} style={{display: 'flex', alignItems:'center'}}>
+                    <Form.Item label="Caption" labelCol={{span:23}} labelAlign="left">
+                        {editMode ? <Input.TextArea style={{width:300}} value={item.name} onChange={onCaptionChange} /> : <p>{item.name}</p>}
+                    </Form.Item>
+                    {editMode && <Button  type="ghost" icon={<SaveOutlined />} onClick={updateCaption} />}
+            </Col>
+            <Col span={8} style={{display: 'flex', alignItems:'center'}}>
+                {editMode && <Form.Item label="Order">
+                    <Select onChange={reorder} value={current} options={imgs.map((v,i)=> ({label: i+1, value: i}))} />
+                </Form.Item>}
+                <Form.Item label="Select image">
+                    <Select style={{width:150}} onChange={setCurrent} value={current} options={imgs.map((v,i)=> ({label: v.name, value: i}))} />
+                </Form.Item>
+                {editMode && <Button title="Save" type="ghost" onClick={removeItem} icon={<DeleteOutlined />} />}
+            </Col>
+        </Row>
+        <Image width="100%" height="300" src={item.src} />
     </div>
 }
+
+// export function ImageViewer({images = [], imageName='', form, editMode}){
+//     const [imgs, setImgs] = useState([]);
+//     const [current, setCurrent] = useState(0);
+//     const name = '_'+imageName;
+//     useEffect(()=>{ setImgs([... (images || [])]); }, [images, editMode]);
+//     useEffect(()=>{ form.setFieldsValue({[name]: imgs.map(v=>v.id)}) }, [imgs]);
+//     if(!imgs || !imgs.length) return null;
+//     function removeItem(index){
+//         imgs.splice(index, 1);
+//         setImgs([...imgs]);
+//     }
+    
+
+//     return <div>
+//     {editMode && <ReactSortable list={imgs} setList={setImgs}>
+//         {imgs.map((v,i)=><div className={"image-preview "+ (current==i ? 'active': '')} key={v.id}>
+//             <img src={v.src} />{v.name}
+//         </div> )}
+//     </ReactSortable>}
+//     <Form.List name={name}>{(fields)=>fields.map(({key,name}) => <Form.Item key={key} hidden name={name} />)}</Form.List>
+//     <Carousel autoplay afterChange={setCurrent}>
+//         {imgs.map((v,i)=> v.type.includes('image') && <div className="img-wrap" key={i}>
+//             <Image width="100%" height="300" src={v.src}/>
+//             {editMode && <div className="img-delete-icon"><span onClick={()=> removeItem(i)}>x</span></div>}
+//         </div>)}
+//     </Carousel>
+//     </div>
+// }
 
 export function PdfViewer({files = [],pdfName='', editMode, form}){
     const [fls, setFls] = useState();
