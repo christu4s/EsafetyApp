@@ -9,3 +9,4 @@ export * from './SafetyManagement';
 export * from './RemedialAction';
 export * from './WrittenSafetyCase';
 export * from './SearchHeader';
+export * from './searchPage';

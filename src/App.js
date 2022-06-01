@@ -5,7 +5,7 @@ import { getMenu, getSelectedMenuItem, menus, routes } from './config';
 import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import { UserOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { userName } from './constants';
-import { MenuTitle } from './utils';
+import { MenuTitle, SearchBar } from './utils';
 import ajax from './ajax';
 
 
@@ -56,7 +56,8 @@ class App extends React.Component {
           </div>
           <div className="header-right">
             <div style={{width: 360, paddingLeft: 30}}>
-              <Input type="search" value={this.state.search} onChange={handleChange} allowClear placeholder="search" prefix={<SearchOutlined />} />
+              {/* <Input type="search" value={this.state.search} onChange={handleChange} allowClear placeholder="search" prefix={<SearchOutlined />} /> */}
+              <SearchBar />
             </div>
             <Dropdown overlay={userMenu}>
                 <Space><Avatar size="large" icon={<UserOutlined />} /> {userName} <DownOutlined /></Space>
