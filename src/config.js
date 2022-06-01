@@ -18,6 +18,7 @@ import { IndividualRiskEditUser } from './views/RiskAssessment/IndividualRisk/in
 import { PlanRiskBreakDown } from './views/RiskAssessment/PlanRiskBreakdown';
 import { LocationRisk } from './views/RiskAssessment/LocationRisk';
 import { SocietalRisk } from './views/RiskAssessment/SocietalRisk';
+import { SearchHeader } from './views/SearchHeader';
 import ajax from './ajax';
 
 const Empty = () => <div />;
@@ -60,6 +61,7 @@ export const routes = [
     { path: '/safety-management/:id', exact: true, component: SafetyManagementItem },
     { path: '/remedial-action', exact: true, component: RemedialAction },
     { path: '/writen-safety', exact: true, component: WrittenSafetyCase },
+    { path: '/search', exact: true, component: SearchHeader },
 ];
 
 export const menus = [
