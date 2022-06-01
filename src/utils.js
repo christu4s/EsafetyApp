@@ -106,7 +106,7 @@ export function MenuTitle({api, title, titleKey='title'}){
 }
 
 
-export function SearchBar(){
+export function SearchBar() {
   const history = useHistory();
  
   function submit({input}){
