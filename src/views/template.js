@@ -1,7 +1,7 @@
 import { Row, Col, Form, Space, Carousel, Image, Popconfirm, Select, Input, Button } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
-import { ButtonUpload, CardHolder, DescField, EditButtons } from '../utils';
+import { ButtonUpload, CardHolder, DescField, EditButtons,VideoInput } from '../utils';
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +17,7 @@ export const PageTemplate = ({
     descName ='desc', 
     pdfName, 
     imageName, 
+    videoName,
     iconUrl,
     backButton,
     children, 
@@ -85,6 +86,8 @@ export const PageTemplate = ({
                     {editMode && <Space>
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
+                        {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
+                        {videoName && <VideoInput width={400} height={300} />}
                     </Space>}
                     <div style={{margin: 20}} />
                     {imageName && <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />}

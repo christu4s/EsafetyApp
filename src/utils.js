@@ -1,5 +1,6 @@
 import { Card, Button, Modal, Upload, Form, Input, Space } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import computing from './assets/cloud-computing@3x.png';
@@ -102,4 +103,44 @@ export function MenuTitle({api, title, titleKey='title'}){
   }, [api]);
 
   return <span>{title}</span>
+}
+
+export function VideoInput(props) {
+  const { width, height } = props;
+
+  const inputRef = useRef();
+
+  const [source, setSource] = useState();
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    setSource(url);
+  };
+
+  const handleChoose = (event) => {
+    inputRef.current.click();
+  };
+
+  return (
+    <div className="VideoInput">
+      <input
+        ref={inputRef}
+        className="VideoInput_input"
+        type="file"
+        onChange={handleFileChange}
+        accept=".mov,.mp4"
+      />
+      {source && (
+        <video
+          className="VideoInput_video"
+          width="100%"
+          height={height}
+          controls
+          src={source}
+        />
+      )}
+      <div className="VideoInput_footer">{source}</div>
+    </div>
+  );
 }
