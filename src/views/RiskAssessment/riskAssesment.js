@@ -19,7 +19,6 @@ import { Form, Input } from 'antd';
 export const RiskAssessment = () => {
     return <PageTemplate 
         iconUrl={danger} 
-        subtitle="Risk Assessment"
         updateMenu 
         subtitle={(content,editMode)=> TitleEdit(content,editMode,"Risk Assessment")} 
         api="/risk_assessment" 

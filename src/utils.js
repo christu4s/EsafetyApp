@@ -45,6 +45,7 @@ export function ButtonUpload({children, name, onSubmit, addMore = false, buttonT
     <Button type={addMore? 'default' : "primary"} icon={addMore ? <PlusCircleOutlined /> : <CloudUploadOutlined />} onClick={toggleModal}>{buttonText}</Button>
       <Modal title="" className='upload--modal' visible={isModalVisible} onOk={toggleModal} onCancel={toggleModal}>
         <h3 className='modal--title text-center'>Upload Files</h3>
+        <Form.Item hidden name={'update_file_' + name} initialValue={1} />
         <Form.Item name={name}>
           <Upload.Dragger beforeUpload={() => false} {...props}>
               <p className="ant-upload-drag-icon">
