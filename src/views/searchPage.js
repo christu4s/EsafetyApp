@@ -16,7 +16,11 @@ export function SearchPage({match}){
           },
     ];
     useEffect(()=>{
-        axios.get(base_url + '/wp-json/wp/v2/search').then(res=>{   
+        axios.get(base_url + '/wp-json/wp/v2/search', {
+            params:{
+                search: key
+            }
+        }).then(res=>{   
             setData(res.data);
             console.log(data);
         });

@@ -1,4 +1,4 @@
-import { Card, Button, Modal, Upload, Form, Input, Space } from "antd";
+import { Card, Button, Modal, Upload, Form, Input, Space, Select } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CloudUploadOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
@@ -10,8 +10,8 @@ import ajax from "./ajax";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'; 
 import { useHistory } from "react-router-dom";
-
-
+import { base_url } from "./ajax";
+import axios from "axios";
 
 export const BoxHolder = ({title, img , active, url })=>{
   return (<Link to={url}>
@@ -108,14 +108,50 @@ export function MenuTitle({api, title, titleKey='title'}){
 
 export function SearchBar() {
   const history = useHistory();
- 
+  const [data, setData] = useState([]);
+  //const { key } = match.params;
   function submit({input}){
     history.push('/search/' + input); 
   }
 
+  const { Option } = Select;
+
+  const onChange = (value) => {
+    console.log(`selected ${value}`);
+    history.push(value); 
+  };
+
+  const onSearch = (value) => {
+    console.log('search:', value);
+  };
+
+  useEffect(()=>{
+    axios.get(base_url + '/wp-json/wp/v2/search', {
+        // params:{
+        //     search: key
+        // }
+    }).then(res=>{   
+        setData(res.data);
+        console.log(data);
+    });
+}, []);
+
   return <Form onFinish={submit}>
     <Form.Item name="input" rules={[{ required: true, message: 'Please type what you looking for!' }]}>
-      <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
+      {/* <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} /> */}
+      <Select 
+        showSearch
+        placeholder="Select a person"
+        optionFilterProp="children"
+        onChange={onChange}
+        onSearch={onSearch}
+        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+      >
+        {
+          data.map( (item,index) => 
+            <option key={item.url}>{item.title}</option> )
+        }
+      </Select>
     </Form.Item>
   </Form>
 }
