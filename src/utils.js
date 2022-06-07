@@ -110,48 +110,58 @@ export function SearchBar() {
   const history = useHistory();
   const [data, setData] = useState([]);
   //const { key } = match.params;
-  function submit({input}){
-    history.push('/search/' + input); 
+  // function submit({input}){
+  //   history.push('/search/' + input); 
+  // }
+
+  const onChange = (value, details) => {
+    // console.log(`selected ${value}`, details);
+    history.push(details.path); 
+  };
+
+  function massageData(json){
+    var ret = {value: json.id}; 
+
+    switch(json.subtype){
+      case 'prevention_add_sce':
+        ret.path = '/prevention/' + json.id;
+        ret.label = json.title + ' (Prevention)';
+        break;
+      // case 'sub':
+
+      //   break; 
+      default: 
+        ret.label = json.title;
+        ret.path = '/';
+    }
+
+    console.log(ret);
+
+    return ret;
   }
 
-  const { Option } = Select;
-
-  const onChange = (value) => {
-    console.log(`selected ${value}`);
-    history.push(value); 
-  };
-
-  const onSearch = (value) => {
-    console.log('search:', value);
-  };
-
-  useEffect(()=>{
-    axios.get(base_url + '/wp-json/wp/v2/search', {
-        // params:{
-        //     search: key
-        // }
-    }).then(res=>{   
-        setData(res.data);
-        console.log(data);
+  const onSearch = (search) => {
+    console.log('search:', search);
+    axios.get(base_url + '/wp-json/wp/v2/search', {params:{search} }).then(res=>{   
+        setData(res.data.map(massageData));
     });
-}, []);
+  };
 
-  return <Form onFinish={submit}>
-    <Form.Item name="input" rules={[{ required: true, message: 'Please type what you looking for!' }]}>
-      {/* <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} /> */}
-      <Select 
-        showSearch
-        placeholder="Select a person"
-        optionFilterProp="children"
-        onChange={onChange}
-        onSearch={onSearch}
-        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-      >
-        {
-          data.map( (item,index) => 
-            <option key={item.url}>{item.title}</option> )
-        }
-      </Select>
-    </Form.Item>
-  </Form>
+  return <Select 
+    showSearch
+    placeholder="Search anything"
+    //optionFilterProp="children"
+    options={data}
+    showArrow={false}
+    filterOption={false}
+    onChange={onChange}
+    onSearch={onSearch}  
+    width={500}
+  />
+
+  // return <Form>
+  //   <Form.Item name="input" rules={[{ required: true, message: 'Please type what you looking for!' }]}>
+  //     <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
+  //   </Form.Item>
+  // </Form>
 }
