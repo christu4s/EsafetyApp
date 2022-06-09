@@ -156,7 +156,8 @@ export function SearchBar() {
     filterOption={false}
     onChange={onChange}
     onSearch={onSearch}  
-    width={500}
+    width={800}
+    style={{width:'400px'}}
   />
 
   // return <Form>
