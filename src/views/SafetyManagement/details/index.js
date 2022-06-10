@@ -38,15 +38,15 @@ function TableOrg({ content, editMode, form }) {
     useEffect(() => { form.setFieldsValue({ team_members: JSON.stringify(data) }) }, [data]);
 
     function removeLevel(index) {
-        newData.splice(index, 1);
-        setNewData([...newData]);
+        data.splice(index, 1);
+        setNewData([...data]);
     }
 
     function onLevelChange(index, key, value) {
-        newData[index][key] = value;
-        setNewData([...newData]);
+      data[index][key] = value;
+        setNewData([...data]);
     }
-    function addmore() { setNewData([...newData, {}]); }
+    function addmore() { setData([...data, {}]); }
     // datatable search fuctionality
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -154,7 +154,7 @@ function TableOrg({ content, editMode, form }) {
     return <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
         <Form.Item hidden name="team_members"><Input /></Form.Item>
         <Table columns={columns} dataSource={data} />
-        {newData.map((team, index) => <>
+        {editMode && data.map((team, index) => <>
              <Row gutter={16}>
                 <Col span={10}>
                      <Input placeholder="1" readOnly={!editMode} value={team.teamMembers} onChange={e => onLevelChange(index, 'teamMembers', e.target.value)} />
@@ -163,11 +163,11 @@ function TableOrg({ content, editMode, form }) {
                      <Input.TextArea placeholder="10" readOnly={!editMode} value={team.roles} onChange={e => onLevelChange(index, 'roles', e.target.value)} />
                  </Col>
                  <Col span={2}>
-                     {editMode &&
+                    
                          <Popconfirm title="Are you sure to delete this level?" onConfirm={() => removeLevel(index)}>
                             <Button type="link" icon={<DeleteOutlined danger />} />
                          </Popconfirm>
-                     }
+                     
                  </Col>
              </Row>
              <hr />
