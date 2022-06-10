@@ -39,12 +39,12 @@ function TableOrg({ content, editMode, form }) {
 
     function removeLevel(index) {
         data.splice(index, 1);
-        setNewData([...data]);
+        setData([...data]);
     }
 
     function onLevelChange(index, key, value) {
       data[index][key] = value;
-        setNewData([...data]);
+      setData([...data]);
     }
     function addmore() { setData([...data, {}]); }
     // datatable search fuctionality
