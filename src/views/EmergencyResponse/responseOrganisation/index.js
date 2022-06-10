@@ -26,8 +26,6 @@ export const ResponseOrganisation = () => {
 
 function TableOrg({ content, editMode, form }) {
     const [data, setData] = useState([]);
-    const [newData, setNewData] = useState([]);
-    const [result, setResult] = useState([]);
     useEffect(() => {
         try {
             var res = JSON.parse(content.team_members.replace(/\\/g, ''));
@@ -36,10 +34,8 @@ function TableOrg({ content, editMode, form }) {
     }, [content.team_members]);
 
     useEffect(() => { 
-       // setResult(data.map((item, i) => Object.assign({}, item, newData)));
         form.setFieldsValue({ team_members: JSON.stringify(data) }) }, [data]);
-    //useEffect(() => { form.setFieldsValue({ team_members: JSON.stringify(newData) }) }, [newData]);
-
+   
     function removeLevel(index) {
         data.splice(index, 1);
         setData([...data]);

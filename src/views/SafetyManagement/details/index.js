@@ -23,8 +23,6 @@ export const SafetyManagementItem = ({match}) => {
 }
 function TableOrg({ content, editMode, form }) {
     const [data, setData] = useState([]);
-    const [newData, setNewData] = useState([]);
-    const [result, setResult] = useState([]);
     useEffect(() => {
         try {
             var res = JSON.parse(content.team_members.replace(/\\/g, ''));
@@ -32,9 +30,6 @@ function TableOrg({ content, editMode, form }) {
         } catch (e) { }
     }, [content.team_members]);
 
-    // useEffect(() => { 
-    //     setResult(Object.assign(data, newData));
-    //     form.setFieldsValue({ team_members: JSON.stringify(result) }) }, [data]);
     useEffect(() => { form.setFieldsValue({ team_members: JSON.stringify(data) }) }, [data]);
 
     function removeLevel(index) {
