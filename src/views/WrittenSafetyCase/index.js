@@ -15,7 +15,9 @@ export const WrittenSafetyCase = () => {
         api="/written_safety_case" 
         descName="safety_desc"
         imageName="safety_image"
-        pdfName="safety_pdf">
+        pdfName="safety_pdf"
+        videoName="safety_video"
+        >
         {(content, editMode) => <TableWritten editMode={editMode} />}    
     </PageTemplate>
 }

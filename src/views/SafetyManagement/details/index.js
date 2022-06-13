@@ -16,6 +16,7 @@ export const SafetyManagementItem = ({match}) => {
         descName="desc"
         imageName="commitment_file_image"
         pdfName="commitment_file_pdf"
+        videoName="commitment_file_video"
         >
     </PageTemplate>
 }

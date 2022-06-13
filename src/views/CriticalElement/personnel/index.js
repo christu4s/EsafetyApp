@@ -17,6 +17,7 @@ export const CriticalPersonnel = () => {
         descName="personnel_desc"
         imageName="personnel_image"
         pdfName="personnel_pdf"
+        videoName="personnel_video"
     >{(content,editMode, form)=> <TablePersonel content={content} editMode={editMode} form={form}/>}
     </PageTemplate>
 }

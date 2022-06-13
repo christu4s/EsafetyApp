@@ -13,5 +13,6 @@ export const Facilities = () => {
         descName="description" 
         imageName="image" 
         pdfName="pdf"
+        videoName="video"
         />
 }

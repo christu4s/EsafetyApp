@@ -17,6 +17,7 @@ export const RemedialAction = () => {
         descName="remedial_desc"
         imageName="remedial_image"
         pdfName="remedial_pdf"
+        videoName="remedial_video"
     >{(content,editMode,form)=> <TableRemedial content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

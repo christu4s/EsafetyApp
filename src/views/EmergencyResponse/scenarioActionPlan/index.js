@@ -20,6 +20,7 @@ export const ScenarioActionPlan = () => {
         descName="scenario_desc"
         imageName="scenario_image"
         pdfName="scenario_pdf"
+        videoName="scenario_video"
     >{(content, editMode, form) => <TableScenario content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }
