@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useMenuContext } from '../provider';
 import { ReactSortable } from "react-sortablejs";
+import { useLocation } from 'react-router-dom';
 
 export const PageTemplate = ({
     updateData,
@@ -26,12 +27,34 @@ export const PageTemplate = ({
     canDelete=false,
     titleKey='title',
     outside}) => {
+    const location = useLocation();
+    const order_storage_key = 'order' + location.pathname;
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({});
+    const [order, setOrder] = useState(getOrder());
     const [menu, setMenuTitle] = useMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
+
+    //get the order
+    function getOrder(){
+        var stored = window.localStorage.getItem(order_storage_key);
+        if(stored) return stored.split(',');
+        return [imageName, pdfName, videoName].filter(Boolean);
+    }
+
+    //save order to localStorage once changed
+    useEffect(()=>{ window.localStorage.setItem(order_storage_key, order.join(',')); },[order])
+
+    
     const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName]; 
+    var viewers = {};
+
+    if(imageName) viewers[imageName]=<ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
+    if(pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
+    if(videoName) viewers[videoName] = <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />;
+
+    const sortView = order.map((item) =>(<div style={{margin: '20px 0', cursor:'move'}} key={item}>{viewers[item]}</div>)); 
 
     async function saveData() {
         console.log(getFormFields(form));
@@ -49,6 +72,8 @@ export const PageTemplate = ({
     useEffect(() => {
         ajax.get(api).then(res => res && setContent(res));
     }, [updateData]);
+
+    
     
     return (
         <div className='facility--wrapper'>
@@ -91,9 +116,12 @@ export const PageTemplate = ({
                         {/* {videoName && <VideoInput width={400} height={300} />} */}
                     </Space>}
                     <div style={{margin: 20}} />
-                    {imageName && <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />}
+                    {/* {imageName && <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />}
                     {pdfName && <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />}
-                    {videoName && <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />}
+                    {videoName && <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />} */}
+                    <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
+                        {sortView}
+                    </ReactSortable>
                     {typeof children=='function' ? children(content, editMode, form, saveData) : children}
                 </Col>
                 <Col span={8} push={1} style={{ marginTop: 35 }}>
