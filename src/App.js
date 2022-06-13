@@ -5,7 +5,7 @@ import { getMenu, getSelectedMenuItem, menus, routes } from './config';
 import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import { UserOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { userName } from './constants';
-import { MenuTitle } from './utils';
+import { MenuTitle, SearchBar } from './utils';
 import ajax from './ajax';
 
 
@@ -16,9 +16,10 @@ const logo = 'http://esafety.enkuire.com/wp-content/uploads/2021/06/E-safety-02.
 class App extends React.Component {
   state = {
     collapsed: false,
-    menus: []
+    menus: [],
+    search:'',
   };
-
+  
   componentDidMount(){
     getMenu().then(menus=> this.setState({menus}));
   }
@@ -32,18 +33,21 @@ class App extends React.Component {
   
   render() { 
     const { collapsed, menus } = this.state;
-
+  
     const userMenu = (
       <Menu>
         {/* <Menu.Item  key="u1"><a href="/#profile">Profile</a></Menu.Item> */}
         <Menu.Item key="u2"><a href="/?logout=1">Logout</a></Menu.Item>
       </Menu>
     );
-
-    console.log(menus);
+    
+    console.log('hello'+this.state.search);
+   // console.log(menus);
 
     const selected = getSelectedMenuItem(menus);
-    
+    const handleChange = (event) => {
+      this.setState({ search: event.target.value });
+   };
     return (
       <Layout>
         <Header className="header">
@@ -52,7 +56,8 @@ class App extends React.Component {
           </div>
           <div className="header-right">
             <div style={{width: 360, paddingLeft: 30}}>
-              <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
+              {/* <Input type="search" value={this.state.search} onChange={handleChange} allowClear placeholder="search" prefix={<SearchOutlined />} /> */}
+              <SearchBar />
             </div>
             <Dropdown overlay={userMenu}>
                 <Space><Avatar size="large" icon={<UserOutlined />} /> {userName} <DownOutlined /></Space>
