@@ -148,7 +148,18 @@ function TableOrg({ content, editMode, form }) {
 
     return <div className='box--facility bg-white-box societal-risk-table remedial-action-plan manning--box--facility'>
         <Form.Item hidden name="team_members"><Input /></Form.Item>
-        <Table columns={columns} dataSource={data} />
+        {!editMode &&<Table columns={columns} dataSource={data} />}
+        {editMode &&
+        <Row gutter={20}>
+            <Col span={12} >
+                <h3>Team Member</h3>
+            </Col>
+            <Col span={12}>
+                <h3>Roles and Responbilities</h3>
+            </Col>
+        </Row>
+        }
+        <hr />
         {editMode && data.map((team, index) => <>
              <Row gutter={16}>
                 <Col span={10}>
