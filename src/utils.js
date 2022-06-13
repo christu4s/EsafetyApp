@@ -126,7 +126,12 @@ export function SearchBar() {
       case 'prevention_add_sce':
         ret.path = '/prevention/' + json.id;
         ret.label = json.title + ' (Prevention)';
-        break;
+      break;
+      case 'risk_assessment_item':
+        ret.path = '/risk-assessment/' + json.id;
+        ret.label = json.title + ' (Risk Assessment)';
+      break;
+        
       // case 'sub':
 
       //   break; 
