@@ -2,7 +2,7 @@ import { Card, Button, Modal, Upload, Form, Input, Space } from "antd";
 import { useEffect, useState, React } from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
 import { isAdmin } from "./constants";
@@ -10,6 +10,7 @@ import { useMenuContext } from "./provider";
 import ajax from "./ajax";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'; 
+import { useHistory } from "react-router-dom";
 
 
 
@@ -106,6 +107,7 @@ export function MenuTitle({api, title, titleKey='title'}){
   return <span>{title}</span>
 }
 
+<<<<<<< HEAD
 export function VideoInput(props) {
   const { width, height } = props;
 
@@ -145,3 +147,19 @@ export function VideoInput(props) {
     </div>
   );
 }
+=======
+
+export function SearchBar(){
+  const history = useHistory();
+ 
+  function submit({input}){
+    history.push('/search/' + input); 
+  }
+
+  return <Form onFinish={submit}>
+    <Form.Item name="input" rules={[{ required: true, message: 'Please type what you looking for!' }]}>
+      <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
+    </Form.Item>
+  </Form>
+}
+>>>>>>> ed22d3440530f895acd9cca1eaeedce3b6e7d7e7
