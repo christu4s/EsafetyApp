@@ -107,7 +107,6 @@ export function MenuTitle({api, title, titleKey='title'}){
   return <span>{title}</span>
 }
 
-<<<<<<< HEAD
 export function VideoInput(props) {
   const { width, height } = props;
 
@@ -147,7 +146,6 @@ export function VideoInput(props) {
     </div>
   );
 }
-=======
 
 export function SearchBar(){
   const history = useHistory();
@@ -162,4 +160,3 @@ export function SearchBar(){
     </Form.Item>
   </Form>
 }
->>>>>>> ed22d3440530f895acd9cca1eaeedce3b6e7d7e7
