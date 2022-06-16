@@ -123,14 +123,22 @@ export function SearchBar() {
     var ret = {value: json.id}; 
 
     switch(json.subtype){
-      case 'prevention_add_sce':
-        ret.path = '/prevention/' + json.id;
-        ret.label = json.title + ' (Prevention)';
-      break;
       case 'risk_assessment_item':
         ret.path = '/risk-assessment/' + json.id;
         ret.label = json.title + ' (Risk Assessment)';
       break;
+      case 'safety_critical_equipment_title':
+        ret.path = '/safety-critical/' + json.id;// this should be changed to name
+        ret.label = json.title + ' (Safety critical)';
+      break;
+
+      case 'emer_response_tiers_title':
+        ret.path = '/emergency-response/' + json.id;// this should be changed to name
+        ret.label = json.title + ' (Emergency response)';
+      break;
+
+      
+
         
       // case 'sub':
 
