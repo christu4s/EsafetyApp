@@ -1,13 +1,14 @@
 import { Row, Col, Form, Space, Carousel, Image, Popconfirm, Select, Input, Button } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
-import { ButtonUpload, CardHolder, DescField, EditButtons } from '../utils';
+import { ButtonUpload, CardHolder, DescField, EditButtons,VideoInput } from '../utils';
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
 import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useMenuContext } from '../provider';
 import { ReactSortable } from "react-sortablejs";
+import { useLocation } from 'react-router-dom';
 
 export const PageTemplate = ({
     updateData,
@@ -17,6 +18,7 @@ export const PageTemplate = ({
     descName ='desc', 
     pdfName, 
     imageName, 
+    videoName,
     iconUrl,
     backButton,
     children, 
@@ -25,14 +27,37 @@ export const PageTemplate = ({
     canDelete=false,
     titleKey='title',
     outside}) => {
+    const location = useLocation();
+    const order_storage_key = 'order' + location.pathname;
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({});
+    const [order, setOrder] = useState(getOrder());
     const [menu, setMenuTitle] = useMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
-    const desc = content[descName], image = content[imageName], pdf = content[pdfName]; 
+
+    //get the order
+    function getOrder(){
+        var stored = window.localStorage.getItem(order_storage_key);
+        if(stored) return stored.split(',');
+        return [imageName, pdfName, videoName].filter(Boolean);
+    }
+
+    //save order to localStorage once changed
+    useEffect(()=>{ window.localStorage.setItem(order_storage_key, order.join(',')); },[order])
+
+    
+    const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName]; 
+    var viewers = {};
+
+    if(imageName) viewers[imageName]=<ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
+    if(pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
+    if(videoName) viewers[videoName] = <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />;
+
+    const sortView = order.map((item) =>(<div style={{margin: '20px 0', cursor:'move'}} key={item}>{viewers[item]}</div>)); 
 
     async function saveData() {
+        console.log(getFormFields(form));
         await ajax.post(api, getFormFields(form)).then(res =>{ 
             res && setContent(res);
             updateMenu && res[titleKey] && setMenuTitle(api,res[titleKey]);
@@ -47,6 +72,8 @@ export const PageTemplate = ({
     useEffect(() => {
         ajax.get(api).then(res => res && setContent(res));
     }, [updateData]);
+
+    
     
     return (
         <div className='facility--wrapper'>
@@ -85,10 +112,16 @@ export const PageTemplate = ({
                     {editMode && <Space>
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
+                        {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
+                        {/* {videoName && <VideoInput width={400} height={300} />} */}
                     </Space>}
                     <div style={{margin: 20}} />
-                    {imageName && <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />}
+                    {/* {imageName && <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />}
                     {pdfName && <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />}
+                    {videoName && <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />} */}
+                    <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
+                        {sortView}
+                    </ReactSortable>
                     {typeof children=='function' ? children(content, editMode, form, saveData) : children}
                 </Col>
                 <Col span={8} push={1} style={{ marginTop: 35 }}>
@@ -101,6 +134,25 @@ export const PageTemplate = ({
     );
 }
 
+export function VideoViewer({videos = [],videoName='', editMode, form}){
+    const [fls, setFls] = useState();
+    useEffect(()=>{ setFls((videos && videos[0]) || null); }, [videos, editMode]);
+    useEffect(()=>{ fls && form.setFieldsValue({[videoName]: fls.id }) }, [fls]);
+    if(!fls) return null;
+
+    const {type = '', name, src} = fls;
+  
+    return <div style={{border:'1px dashed', borderRadius:4, padding:10}} className="img-wrap">
+               {/* {src}  */}
+               <video
+          className="VideoInput_video"
+          width="100%"
+          height="300"
+          controls
+          src={src}
+        />
+    </div>
+}
 export function ImageViewer({images = [], imageName='', form, editMode}){
     const [imgs, setImgs] = useState([]);
     const [current, setCurrent] = useState(0);

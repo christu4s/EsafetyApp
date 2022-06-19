@@ -16,6 +16,7 @@ export const RiskAssessmentDetail = ({match}) => {
         api={"/risk_assessment_item/" + id} 
         descName="desc"
         imageName="image"
+        videoName="video"
         pdfName="pdf"
         outside= {(content, editMode, form) => content.component && riskUtil[content.component] && React.createElement(riskUtil[content.component], {content,editMode,form}, null)}
     />

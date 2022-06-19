@@ -16,6 +16,7 @@ export const CriticalProcedure = () => {
         descName="procedure_desc"
         imageName="procedure_image"
         pdfName="procedure_pdf"
+        videoName="procedure_video"
         >{(content,editMode)=> <ProcedureTable editMode={editMode} />}
     </PageTemplate>
 }

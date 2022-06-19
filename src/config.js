@@ -20,7 +20,7 @@ import { SocietalRisk } from './views/RiskAssessment/SocietalRisk';
 import { SearchHeader } from './views/SearchHeader';
 import ajax from './ajax';
 
-const Empty = () => < div / > ;
+const Empty = () => < div />;
 
 export const routes = [
     { path: '/', exact: true, component: Dashboard },
@@ -65,110 +65,108 @@ export const routes = [
 ];
 
 export const menus = [
-        { title: 'Dashboard', icon: < HomeFilled / > , exact: true, url: '#/' },
-        {
-            title: 'Facilities Overview',
-            icon: < img src = { facilityImg }
-            alt = "facility" / > ,
-            url: '#/facility-overview',
-            api: '/facility_overview',
-            children: [
-                { title: 'Area', exact: true, url: '#/facility-overview/area' },
-                { title: 'Process', exact: true, url: '#/facility-overview/process' },
-                { title: 'Manning', exact: true, url: '#/facility-overview/manning' },
-            ]
-        },
-        { title: 'Major Accident Hazards', icon: < img src = { HazardsImg }
-            alt = "Major Accident Hazards" / > , url: '#/accidents-hazards', api: '/major_accident_hazards' },
-        {
-            title: 'Risk Assessment',
-            icon: < img src = { RiskImg }
-            alt = "Major Accident Hazards"
-            height = { 20 }
-            />, 
-            url: '#/risk-assessment',
-            api: '/risk_assessment',
-            childApi: '/risk_assessment_item',
-            // children: [
-            //     { title: 'Hazard Identification Worksheets', exact: true, url: '#/risk-assessment/identification-worksheet', api:'/identification_risk', titleKey:'identification_title' },
-            //     { title: 'Hazard and Operability Worksheets', exact: true, url: '#/risk-assessment/operability-worksheet', api:'/identification_risk', titleKey:'operatability_title' },
-            //     { title: 'Escape, Evacuation, Rescue Analysis', exact: true, url: '#/risk-assessment/rescue-analysis', api:'/identification_risk', titleKey:'escape_title' },
-            //     { title: 'Emergency System Survivability Analysis', exact: true, url: '#/risk-assessment/survivability-analysis', api:'/identification_risk', titleKey:'emergency_title' },
-            //     { title: 'Individual Risk', exact: true, url: '#/risk-assessment/individual', api:'/individual_risk' },
-            //     { title: 'Plant Risk Breakdown', exact: true, url: '#/risk-assessment/plant', api:'/plant_risk' },
-            //     { title: 'Location Risk', exact: true, url: '#/risk-assessment/location', api: '/location_risk' },
-            //     { title: 'Societal Risk', exact: true, url: '#/risk-assessment/societal', api:'/societal_risk' },
-            // ]
-        },
-        {
-            title: 'Safety Critical Element',
-            icon: < img src = { safetCriticalImg }
-            alt = "Major Accident Hazards"
-            height = { 20 }
-            />, 
-            url: '#/safety-critical',
-            api: '/safetyCriticalElement',
-            children: [
-                { title: 'Safety Critical Equipment', exact: true, url: '#/safety-critical/equipment' },
-                { title: 'Safety Critical Personnel', exact: true, url: '#/safety-critical/personnel' },
-                { title: 'Safety Critical Procedure', exact: true, url: '#/safety-critical/procedure' },
-            ]
-        },
-        {
-            title: 'Emergency Response',
-            icon: < img src = { emergencyImg }
-            alt = 'Emergency Response'
-            height = { 20 }
-            />, 
-            url: '#/emergency-response',
-            api: '/emergency_respons',
-            children: [
-                { title: 'Emergency Response Tiers', exact: true, url: '#/emergency-response/tiers' },
-                { title: 'Emergency Response Organisation', exact: true, url: '#/emergency-response/organisation' },
-                { title: 'Emergency Response Plan', exact: true, url: '#/emergency-response/plan' },
-                { title: 'Scenario Specific Action Plan', exact: true, url: '#/emergency-response/scenario' },
-            ]
-        },
-        {
-            title: 'Safety Management System',
-            icon: < img src = { managementImg }
-            alt = 'Safety Management System'
-            height = { 20 }
-            />, url:'#/safety - management ', api:"/safety_management" }, {
-                title: 'Remedial Action Plan',
-                icon: < img src = { remedialImg }
-                alt = 'Remedial Action Plan'
-                height = { 20 }
-                />, url:'#/remedial - action ', api:"/remedial_action" }, {
-                    title: 'Writen Safety Case',
-                    icon: < img src = { WrittenImg }
-                    alt = "Writen Safety Case"
-                    height = { 20 }
-                    />, url: '#/writen - safety ', api:"/written_safety_case" },
-                    // { title: 'Users', icon: <UserGroupFilled />, url: '#/user' },
-                ];
+    { title: 'Dashboard', icon: < HomeFilled />, exact: true, url: '#/' },
+    {
+        title: 'Facilities Overview',
+        icon: < img src={facilityImg}
+            alt="facility" />,
+        url: '#/facility-overview',
+        api: '/facility_overview',
+        children: [
+            { title: 'Area', exact: true, url: '#/facility-overview/area' },
+            { title: 'Process', exact: true, url: '#/facility-overview/process' },
+            { title: 'Manning', exact: true, url: '#/facility-overview/manning' },
+        ]
+    },
+    {
+        title: 'Major Accident Hazards', icon: < img src={HazardsImg}
+            alt="Major Accident Hazards" />, url: '#/accidents-hazards', api: '/major_accident_hazards'
+    },
+    {
+        title: 'Risk Assessment',
+        icon: < img src={RiskImg}
+            alt="Major Accident Hazards"
+            height={20}
+        />,
+        url: '#/risk-assessment',
+        api: '/risk_assessment',
+        childApi: '/risk_assessment_item',
+        // children: [
+        //     { title: 'Hazard Identification Worksheets', exact: true, url: '#/risk-assessment/identification-worksheet', api:'/identification_risk', titleKey:'identification_title' },
+        //     { title: 'Hazard and Operability Worksheets', exact: true, url: '#/risk-assessment/operability-worksheet', api:'/identification_risk', titleKey:'operatability_title' },
+        //     { title: 'Escape, Evacuation, Rescue Analysis', exact: true, url: '#/risk-assessment/rescue-analysis', api:'/identification_risk', titleKey:'escape_title' },
+        //     { title: 'Emergency System Survivability Analysis', exact: true, url: '#/risk-assessment/survivability-analysis', api:'/identification_risk', titleKey:'emergency_title' },
+        //     { title: 'Individual Risk', exact: true, url: '#/risk-assessment/individual', api:'/individual_risk' },
+        //     { title: 'Plant Risk Breakdown', exact: true, url: '#/risk-assessment/plant', api:'/plant_risk' },
+        //     { title: 'Location Risk', exact: true, url: '#/risk-assessment/location', api: '/location_risk' },
+        //     { title: 'Societal Risk', exact: true, url: '#/risk-assessment/societal', api:'/societal_risk' },
+        // ]
+    },
+    {
+        title: 'Safety Critical Element',
+        icon: < img src={safetCriticalImg} alt="Major Accident Hazards" height={20} />,
+        url: '#/safety-critical',
+        api: '/safetyCriticalElement',
+        children: [
+            { title: 'Safety Critical Equipment', exact: true, url: '#/safety-critical/equipment' },
+            { title: 'Safety Critical Personnel', exact: true, url: '#/safety-critical/personnel' },
+            { title: 'Safety Critical Procedure', exact: true, url: '#/safety-critical/procedure' },
+        ]
+    },
+    {
+        title: 'Emergency Response',
+        icon: <img src={emergencyImg} alt='Emergency Response' height={20} />,
+        url: '#/emergency-response',
+        api: '/emergency_respons',
+        children: [
+            { title: 'Emergency Response Tiers', exact: true, url: '#/emergency-response/tiers' },
+            { title: 'Emergency Response Organisation', exact: true, url: '#/emergency-response/organisation' },
+            { title: 'Emergency Response Plan', exact: true, url: '#/emergency-response/plan' },
+            { title: 'Scenario Specific Action Plan', exact: true, url: '#/emergency-response/scenario' },
+        ]
+    },
+    {
+        title: 'Safety Management System',
+        icon: < img src={managementImg} alt='Safety Management System' height={20} />,
+        url: '#/safety-management',
+        api: "/safety_management"
+    },
+    {
+        title: 'Remedial Action Plan',
+        icon: <img src={remedialImg} alt='Remedial Action Plan' height={20} />,
+        url: '#/remedial-action',
+        api: "/remedial_action"
+    },
+    {
+        title: 'Writen Safety Case',
+        icon: <img src={WrittenImg} alt="Writen Safety Case" height={20} />,
+        url: '#/writen-safety',
+        api: "/written_safety_case"
+    },
+    //{ title: 'Users', icon: <UserGroupFilled />, url: '#/user' },
+];
 
-                export async function getMenu() {
-                    for (var menu of menus) {
-                        if (menu.childApi) {
-                            var res = await ajax.get(menu.childApi, { count: -1 });
-                            // console.log(childrens);
-                            var childrens = res.data.map(v => ({ title: v.title, exact: true, url: menu.url + '/' + v.id, api: menu.childApi + '/' + v.id }));
-                            menu.children = childrens;
-                        }
-                    }
-                    return menus;
-                }
+export async function getMenu() {
+    for (var menu of menus) {
+        if (menu.childApi) {
+            var res = await ajax.get(menu.childApi, { count: -1 });
+            // console.log(childrens);
+            var childrens = res.data.map(v => ({ title: v.title, exact: true, url: menu.url + '/' + v.id, api: menu.childApi + '/' + v.id }));
+            menu.children = childrens;
+        }
+    }
+    return menus;
+}
 
 
-                export const getSelectedMenuItem = (m, p = '', ret = []) => {
-                    if (!m) m = menus;
-                    var selected = m.findIndex(v => RegExp('^' + v.url + (v.exact ? '$' : '')).test(window.location.hash));
-                    if (selected !== -1) {
-                        ret.push(p + '_' + selected);
-                        if (m[selected].children) {
-                            ret = getSelectedMenuItem(m[selected].children, selected, ret);
-                        }
-                    }
-                    return ret;
-                }
+export const getSelectedMenuItem = (m, p = '', ret = []) => {
+    if (!m) m = menus;
+    var selected = m.findIndex(v => RegExp('^' + v.url + (v.exact ? '$' : '')).test(window.location.hash));
+    if (selected !== -1) {
+        ret.push(p + '_' + selected);
+        if (m[selected].children) {
+            ret = getSelectedMenuItem(m[selected].children, selected, ret);
+        }
+    }
+    return ret;
+}
