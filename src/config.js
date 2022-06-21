@@ -129,7 +129,8 @@ export const menus = [
         title: 'Safety Management System',
         icon: < img src={managementImg} alt='Safety Management System' height={20} />,
         url: '#/safety-management',
-        api: "/safety_management"
+        api: "/safety_management",
+        childApi: '/safety_manage_commit',
     },
     {
         title: 'Remedial Action Plan',
