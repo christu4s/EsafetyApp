@@ -113,7 +113,6 @@ export const PageTemplate = ({
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                         {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
-                        {/* {videoName && <VideoInput width={400} height={300} />} */}
                     </Space>}
                     <div style={{margin: 20}} />
                     <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>

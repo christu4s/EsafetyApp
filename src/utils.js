@@ -1,8 +1,8 @@
-import { Card, Button, Modal, Upload, Form, Input, Space } from "antd";
+import { Card, Button, Modal, Upload, Form, Input, Space, Select } from "antd";
 import { useEffect, useState, React } from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { CloudUploadOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
 import { isAdmin } from "./constants";
@@ -11,8 +11,8 @@ import ajax from "./ajax";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'; 
 import { useHistory } from "react-router-dom";
-
-
+import { base_url } from "./ajax";
+import axios from "axios";
 
 export const BoxHolder = ({title, img , active, url })=>{
   return (<Link to={url}>
@@ -107,56 +107,78 @@ export function MenuTitle({api, title, titleKey='title'}){
   return <span>{title}</span>
 }
 
-export function VideoInput(props) {
-  const { width, height } = props;
-
-  const inputRef = useRef();
-
-  const [source, setSource] = useState();
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const url = URL.createObjectURL(file);
-    setSource(url);
-  };
-
-  const handleChoose = (event) => {
-    inputRef.current.click();
-  };
-
-  return (
-    <div className="VideoInput">
-      <input
-        ref={inputRef}
-        className="VideoInput_input"
-        type="file"
-        onChange={handleFileChange}
-        accept=".mov,.mp4"
-      />
-      {source && (
-        <video
-          className="VideoInput_video"
-          width="100%"
-          height={height}
-          controls
-          src={source}
-        />
-      )}
-      <div className="VideoInput_footer">{source}</div>
-    </div>
-  );
-}
-
-export function SearchBar(){
+export function SearchBar() {
   const history = useHistory();
- 
-  function submit({input}){
-    history.push('/search/' + input); 
+  const [data, setData] = useState([]);
+  //const { key } = match.params;
+  // function submit({input}){
+  //   history.push('/search/' + input); 
+  // }
+
+  const onChange = (value, details) => {
+    // console.log(`selected ${value}`, details);
+    history.push(details.path); 
+  };
+
+  function massageData(json){
+    var ret = {value: json.id}; 
+
+    switch(json.subtype){
+      case 'risk_assessment_item':
+        ret.path = '/risk-assessment/' + json.id;
+        ret.label = json.title + ' (Risk Assessment)';
+      break;
+      case 'safety_critical_equipment_title':
+        ret.path = '/safety-critical/' + json.id;// this should be changed to name
+        ret.label = json.title + ' (Safety critical)';
+      break;
+      case 'emer_response_tiers_title':
+        ret.path = '/emergency-response/' + json.id;// this should be changed to name
+        ret.label = json.title + ' (Emergency response)';
+      break;
+      case 'remedial_action_title':
+        ret.path = '/remedial-action';// this should be changed to name
+        ret.label = json.title;
+      break;
+      
+
+        
+      // case 'sub':
+
+      //   break; 
+      default: 
+        ret.label = json.title;
+        ret.path = '/';
+    }
+
+    console.log(ret);
+
+    return ret;
   }
 
-  return <Form onFinish={submit}>
-    <Form.Item name="input" rules={[{ required: true, message: 'Please type what you looking for!' }]}>
-      <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
-    </Form.Item>
-  </Form>
+  const onSearch = (search) => {
+    console.log('search:', search);
+    axios.get(base_url + '/wp-json/wp/v2/search', {params:{search} }).then(res=>{   
+        setData(res.data.map(massageData));
+    });
+  };
+
+  return <Select 
+    showSearch
+    placeholder="Search anything"
+    //optionFilterProp="children"
+    options={data}
+    showArrow={false}
+    filterOption={false}
+    onChange={onChange}
+    onSearch={onSearch}  
+    width={800}
+    style={{width:'400px'}}
+  />
+
+  // return <Form>
+  //   <Form.Item name="input" rules={[{ required: true, message: 'Please type what you looking for!' }]}>
+  //     <Input type="search" allowClear placeholder="search" prefix={<SearchOutlined />} />
+  //   </Form.Item>
+  // </Form>
 }
