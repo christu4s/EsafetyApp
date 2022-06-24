@@ -128,18 +128,40 @@ export function SearchBar() {
         ret.path = '/risk-assessment/' + json.id;
         ret.label = json.title + ' (Risk Assessment)';
       break;
-      case 'safety_critical_equipment_title':
-        ret.path = '/safety-critical/' + json.id;// this should be changed to name
-        ret.label = json.title + ' (Safety critical)';
+      case 'safety_manage_commit':
+        ret.path = '/safety-management/' + json.id;// this should be changed to name
+        ret.label = json.title + ' (Safety Management System)';
       break;
-      case 'emer_response_tiers_title':
-        ret.path = '/emergency-response/' + json.id;// this should be changed to name
-        ret.label = json.title + ' (Emergency response)';
-      break;
+    
       case 'remedial_action_title':
         ret.path = '/remedial-action';// this should be changed to name
         ret.label = json.title;
       break;
+      case 'written_safety_case_title':
+        ret.path = '/writen-safety';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'safety_critical_element_title':
+        ret.path = '/safety-critical';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'safety_critical_equipment_title':
+        ret.path = '/safety-critical/equipment';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'safety_critical_procedure_title':
+        ret.path = 'safety-critical/procedure';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'safety_critical_personnel_title':
+        ret.path = '/safety-critical/personnel';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'major_accident_hazar':
+        ret.path = '/accidents-hazards/' + json.id;// this should be changed to name
+        ret.label = json.title;
+      break;
+
       
 
         
