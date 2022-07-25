@@ -8,12 +8,14 @@ import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
 import { PageTemplate } from './../../template';
+import { SubTitleEdit } from '../../../utils';
 
 export const ResponseTiers = () => {
     return <PageTemplate
         iconUrl={extinguisher}
         title="Emergency Response"
-        subtitle="Emergency Response Tiers"
+        updateMenu
+        subtitle={(content,editMode)=> SubTitleEdit(content,editMode,"Emergency Response Tiers")} 
         api="/emergency_response_tiers"
         descName="tiers_desc"
         imageName="tiers_image"

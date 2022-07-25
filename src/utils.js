@@ -94,6 +94,11 @@ export function TitleEdit(content, editMode, title="", key="title"){
   return editMode ? <Form.Item name={key} initialValue={title}><Input /></Form.Item> : title;
 }
 
+export function SubTitleEdit(content, editMode, subtitle="", key="subtitle"){
+  if(content && content[key]) subtitle=content[key]; 
+  return editMode ? <Form.Item name={key} initialValue={subtitle}><Input /></Form.Item> : subtitle;
+}
+
 export function MenuTitle({api, title, titleKey='title'}){
   const [menu, setTitle] = useMenuContext();
   if(menu[api]) title = menu[api];
