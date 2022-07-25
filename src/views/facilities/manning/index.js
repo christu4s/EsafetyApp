@@ -13,11 +13,14 @@ Array.prototype.sum = function (prop) {
     return total.toExponential()
 }
 
+ 
+
 export const FacilityManning = () => {
     const [editMode, setEditMode] = useState(false);
     const toggleMode = () => setEditMode(!editMode);
     const [data, setData] = useState([]);
     const [cols, setCols] = useState([]);
+    const [subtitle, setSubtitle] = useState(null);
     var response = {};
     
     useEffect(() => {
@@ -27,14 +30,20 @@ export const FacilityManning = () => {
     function setResponse(res){
         if(!res) return;
         response = res
+        setSubtitle(res.subtitle);
         setState(res.data, setData);
         setState(res.columns, setCols);
+        
     }
+    
+    function SubTitleEdit( editMode){
+       
+        return editMode ? <Input value={subtitle} type="text" onChange={(e) => setSubtitle(e.target.value)}/> : subtitle;
+      }
 
     function setState(value, fn){
         try { var res = JSON.parse(value.replace(/\\/g, '')); fn(res); } catch (e) { }
     }
-
     function addData(){ setData([...data,{}]) }
     function addColumn(){ setCols([...cols,{}]); }
     function editColTitle(i, val){
@@ -46,13 +55,15 @@ export const FacilityManning = () => {
         data[i][key] = val;
         setData([...data]);
     }
+    
+   
 
     function renderField(val,key, i){
         return editMode ? <Input value={val} type={key=='hours' ? 'text' : 'number'} onChange={e=>editField(i,key,e.target.value)} /> : val;
     }
 
     async function save(){
-        ajax.post('/facility_manning', {data: JSON.stringify(data), columns: JSON.stringify(cols)}).then(res => { 
+        ajax.post('/facility_manning', {data: JSON.stringify(data), columns: JSON.stringify(cols), subtitle:subtitle}).then(res => { 
             setResponse(res);
             toggleMode();
         });
@@ -77,7 +88,7 @@ export const FacilityManning = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div>
                                 <p>Facilities Overview</p>
-                                <h2 >Manning</h2>
+                                <h2 >{SubTitleEdit(editMode)}</h2>
                             </div>
                             <div><EditButtons editMode={editMode} toggle={revertMode} save={save} /></div>
                         </div>
