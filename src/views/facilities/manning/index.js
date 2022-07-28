@@ -20,7 +20,7 @@ export const FacilityManning = () => {
     const toggleMode = () => setEditMode(!editMode);
     const [data, setData] = useState([]);
     const [cols, setCols] = useState([]);
-    const [subtitle, setSubtitle] = useState(null);
+    const [title, setTitle] = useState(null);
     var response = {};
     
     useEffect(() => {
@@ -30,15 +30,15 @@ export const FacilityManning = () => {
     function setResponse(res){
         if(!res) return;
         response = res
-        setSubtitle(res.subtitle);
+        setTitle(res.title);
         setState(res.data, setData);
         setState(res.columns, setCols);
         
     }
     
-    function SubTitleEdit( editMode){
+    function titleEdit( editMode){
        
-        return editMode ? <Input value={subtitle} type="text" onChange={(e) => setSubtitle(e.target.value)}/> : subtitle;
+        return editMode ? <Input value={title} type="text" onChange={(e) => setTitle(e.target.value)}/> : title;
       }
 
     function setState(value, fn){
@@ -63,7 +63,7 @@ export const FacilityManning = () => {
     }
 
     async function save(){
-        ajax.post('/facility_manning', {data: JSON.stringify(data), columns: JSON.stringify(cols), subtitle:subtitle}).then(res => { 
+        ajax.post('/facility_manning', {data: JSON.stringify(data), columns: JSON.stringify(cols), title:title}).then(res => { 
             setResponse(res);
             toggleMode();
         });
@@ -88,7 +88,7 @@ export const FacilityManning = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div>
                                 <p>Facilities Overview</p>
-                                <h2 >{SubTitleEdit(editMode)}</h2>
+                                <h2 >{titleEdit(editMode)}</h2>
                             </div>
                             <div><EditButtons editMode={editMode} toggle={revertMode} save={save} /></div>
                         </div>

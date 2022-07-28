@@ -41,8 +41,6 @@ class App extends React.Component {
       </Menu>
     );
     
-    console.log('hello'+this.state.search);
-   // console.log(menus);
 
     const selected = getSelectedMenuItem(menus);
     const handleChange = (event) => {
@@ -90,8 +88,7 @@ export default withRouter(App);
 function customMenu(menus, parent = ''){
   return menus.map((v,i)=> {
     var key = parent + '_'  + i; 
-    console.log('v.children' + JSON.stringify(v.children));
-    return v.children ? <Menu.SubMenu key={key} onTitleClick={()=>{ window.location.href=v.url; }} title={v.title} icon={v.icon}>{customMenu(v.children,i)}</Menu.SubMenu> 
+     return v.children ? <Menu.SubMenu key={key} onTitleClick={()=>{ window.location.href=v.url; }} title={v.title} icon={v.icon}>{customMenu(v.children,i)}</Menu.SubMenu> 
     : <Menu.Item key={key} url={v.url} icon={v.icon}><MenuTitle {...v} /></Menu.Item>;
   })
 }

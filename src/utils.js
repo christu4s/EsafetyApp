@@ -90,7 +90,6 @@ export function EditButtons({editMode, toggle, save}){
 
 
 export function TitleEdit(content, editMode, title="", key="title"){
-  console.log('content'+content);
   if(content && content[key]) title=content[key]; 
   return editMode ? <Form.Item name={key} initialValue={title}><Input /></Form.Item> : title;
 }
@@ -185,7 +184,7 @@ export function SearchBar() {
   }
 
   const onSearch = (search) => {
-    console.log('search:', search);
+   
     axios.get(base_url + '/wp-json/wp/v2/search', {params:{search} }).then(res=>{   
         setData(res.data.map(massageData));
     });

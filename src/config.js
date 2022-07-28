@@ -73,9 +73,9 @@ export const menus = [
         url: '#/facility-overview',
         api: '/facility_overview',
         children: [
-            { title: 'Area', exact: true, url: '#/facility-overview/area', api: '/facility-overview/area', },
-            { title: 'Process', exact: true, url: '#/facility-overview/process' },
-            { title: 'Manning', exact: true, url: '#/facility-overview/manning' },
+            { title: 'Area', exact: true, url: '#/facility-overview/area', api: '/facility-overview/area' },
+            { title: 'Process', exact: true, url: '#/facility-overview/process', api: '/facility-overview/facilities_process' },
+            { title: 'Manning', exact: true, url: '#/facility-overview/manning' , api: '/facility-overview/facility_manning'},
         ]
     },
     {
