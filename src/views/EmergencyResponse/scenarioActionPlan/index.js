@@ -10,14 +10,14 @@ import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
 import { getFormFields, PageTemplate } from '../../template';
 import { ButtonUpload } from '../../../utils';
-import { SubTitleEdit } from '../../../utils';
+import { TitleEdit } from '../../../utils';
 
 export const ScenarioActionPlan = () => {
     return <PageTemplate
         iconUrl={extinguisher}
         title="Emergency Response"
         updateMenu
-        subtitle={(content,editMode)=> SubTitleEdit(content,editMode,"Scenario Specific Action Plan")} 
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Scenario Specific Action Plan")} 
         api="/scenario_action"
         descName="scenario_desc"
         imageName="scenario_image"

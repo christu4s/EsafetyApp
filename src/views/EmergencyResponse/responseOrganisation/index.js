@@ -10,14 +10,14 @@ import { Link } from 'react-router-dom';
 import { PageTemplate } from './../../template';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import { SubTitleEdit } from '../../../utils';
+import { TitleEdit } from '../../../utils';
 
 export const ResponseOrganisation = () => {
     return <PageTemplate
         iconUrl={extinguisher}
         title="Emergency Response"
         updateMenu
-        subtitle={(content,editMode)=> SubTitleEdit(content,editMode,"Emergency Response Organisation")} 
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Emergency Response Organisation")} 
         api="/emergency_response_organisation"
         descName="organisation_desc"
         imageName="organisation_image"

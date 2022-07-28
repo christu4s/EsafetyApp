@@ -6,7 +6,7 @@ import { Timeline } from "antd";
 import { Link } from "react-router-dom";
 import { PageTemplate } from "./../../template";
 import { criticalEquipments } from "../../../constants";
-import { SubTitleEdit } from '../../../utils';
+import { TitleEdit } from '../../../utils';
 
 export const CriticalEquipment = () => {
   return (
@@ -14,7 +14,7 @@ export const CriticalEquipment = () => {
       iconUrl={alert}
       title="Safty Critical Element"
       updateMenu
-      subtitle={(content,editMode)=> SubTitleEdit(content,editMode,"Safty Critical Equipment")} 
+      subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safty Critical Equipment")} 
       api="/criticalEquipment"
       descName="equipment_desc"
       imageName="equipment_image"

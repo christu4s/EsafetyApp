@@ -6,7 +6,7 @@ import { ButtonUpload, DescField, EditButtons, FileViewer } from '../../../utils
 import { PageTemplate } from './../../template';
 import { SearchOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import { SubTitleEdit } from '../../../utils';
+import { TitleEdit } from '../../../utils';
 
 export const SafetyManagementItem = ({match}) => {
     const { id } = match.params;
@@ -16,7 +16,7 @@ export const SafetyManagementItem = ({match}) => {
         iconUrl={danger} 
         title="Safety Management System" 
         updateMenu
-        subtitle={(content,editMode)=> SubTitleEdit(content,editMode,content.title)}
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,content.title)}
         api={"/safety_manage_commit/"+id} 
         descName="desc"
         imageName="commitment_file_image"
