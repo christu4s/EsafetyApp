@@ -6,14 +6,14 @@ import { DeleteOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { getFormFields, PageTemplate } from './../../template';
 import { ButtonUpload } from '../../../utils';
-import { SubTitleEdit } from '../../../utils';
+import { TitleEdit } from '../../../utils';
 
 export const CriticalProcedure = () => {
     return <PageTemplate
         iconUrl={alert} 
         title="Safty Critical Element" 
         updateMenu
-        subtitle={(content,editMode)=> SubTitleEdit(content,editMode,"Safty Critical Procedure")} 
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safty Critical Procedure")} 
         api="/critical_procedure" 
         descName="procedure_desc"
         imageName="procedure_image"

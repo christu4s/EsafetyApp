@@ -90,6 +90,7 @@ export function EditButtons({editMode, toggle, save}){
 
 
 export function TitleEdit(content, editMode, title="", key="title"){
+  console.log('content'+content);
   if(content && content[key]) title=content[key]; 
   return editMode ? <Form.Item name={key} initialValue={title}><Input /></Form.Item> : title;
 }

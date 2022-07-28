@@ -7,14 +7,14 @@ import ajax from '../../../ajax';
 
 import './index.css';
 import { PageTemplate } from './../../template';
-import { SubTitleEdit } from '../../../utils';
+import { TitleEdit } from '../../../utils';
 
 export const CriticalPersonnel = () => {
     return <PageTemplate
         iconUrl={alert}
         title="Safty Critical Element"
         updateMenu
-        subtitle={(content,editMode)=> SubTitleEdit(content,editMode,"Safty Critical Personnel")} 
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safty Critical Personnel")} 
         api="/critical_personnel"
         descName="personnel_desc"
         imageName="personnel_image"

@@ -73,7 +73,7 @@ export const menus = [
         url: '#/facility-overview',
         api: '/facility_overview',
         children: [
-            { title: 'Area', exact: true, url: '#/facility-overview/area' },
+            { title: 'Area', exact: true, url: '#/facility-overview/area', api: '/facility-overview/area', },
             { title: 'Process', exact: true, url: '#/facility-overview/process' },
             { title: 'Manning', exact: true, url: '#/facility-overview/manning' },
         ]
@@ -108,9 +108,9 @@ export const menus = [
         url: '#/safety-critical',
         api: '/safetyCriticalElement',
         children: [
-            { title: 'Safety Critical Equipment', exact: true, url: '#/safety-critical/equipment' },
-            { title: 'Safety Critical Personnel', exact: true, url: '#/safety-critical/personnel' },
-            { title: 'Safety Critical Procedure', exact: true, url: '#/safety-critical/procedure' },
+            { title: 'Safety Critical Equipment', exact: true, url: '#/safety-critical/equipment', api: '/criticalEquipment' },
+            { title: 'Safety Critical Personnel', exact: true, url: '#/safety-critical/personnel', api: '/critical_personnel' },
+            { title: 'Safety Critical Procedure', exact: true, url: '#/safety-critical/procedure', api: '/critical_procedure' },
         ]
     },
     {
@@ -119,10 +119,10 @@ export const menus = [
         url: '#/emergency-response',
         api: '/emergency_respons',
         children: [
-            { title: 'Emergency Response Tiers', exact: true, url: '#/emergency-response/tiers' },
-            { title: 'Emergency Response Organisation', exact: true, url: '#/emergency-response/organisation' },
-            { title: 'Emergency Response Plan', exact: true, url: '#/emergency-response/plan' },
-            { title: 'Scenario Specific Action Plan', exact: true, url: '#/emergency-response/scenario' },
+            { title: 'Emergency Response Tiers', exact: true, url: '#/emergency-response/tiers', api: '/emergency_response_tiers'},
+            { title: 'Emergency Response Organisation', exact: true, url: '#/emergency-response/organisation', api: '/emergency_response_organisation' },
+            { title: 'Emergency Response Plan', exact: true, url: '#/emergency-response/plan', api: '/response_plan' },
+            { title: 'Scenario Specific Action Plan', exact: true, url: '#/emergency-response/scenario', api: '/scenario_action' },
         ]
     },
     {
@@ -154,6 +154,11 @@ export async function getMenu() {
             // console.log(childrens);
             var childrens = res.data.map(v => ({ title: v.title, exact: true, url: menu.url + '/' + v.id, api: menu.childApi + '/' + v.id }));
             menu.children = childrens;
+        }
+        if (menu.children && menu.children.api) {
+            var res = await ajax.get(menu.children.api, { count: -1 });
+            var apiInchildrens = res.data.map(v => ({ title: v.title, exact: true, url: menu.url, api: menu.children.api }));
+            menu.children = apiInchildrens; 
         }
     }
     return menus;
