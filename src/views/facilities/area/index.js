@@ -2,7 +2,7 @@ import { Input, Form } from 'antd';
 import React from 'react';
 import area from '../../../assets/area.png';
 import { ListItems, PageTemplate } from '../../template';
-import { SubTitleEdit } from '../../../utils';
+import { TitleEdit } from '../../../utils';
 
 export * from './details';
 
@@ -11,7 +11,8 @@ export const FacilityArea = () => {
         iconUrl={area} 
         title="Facilities Overview" 
         updateMenu
-        subtitle={(content,editMode)=> SubTitleEdit(content,editMode,"Area")} 
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Area", "subtitle")} 
+        titleKey="subtitle"
         api="/facility_overview" 
         descName="area_desc"
         >

@@ -4,6 +4,7 @@ import group from '../../../assets/group@3x.png';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { EditButtons } from '../../../utils';
+import { useMenuContext } from '../../../provider';
 
 Array.prototype.sum = function (prop) {
     var total = 0
@@ -21,10 +22,12 @@ export const FacilityManning = () => {
     const [data, setData] = useState([]);
     const [cols, setCols] = useState([]);
     const [title, setTitle] = useState(null);
+    const [menu, setMenuTitle] = useMenuContext();
     var response = {};
-    
+    var api = '/facility_manning';
+
     useEffect(() => {
-        ajax.get('/facility_manning').then(setResponse);
+        ajax.get(api).then(setResponse);
     }, []);
 
     function setResponse(res){
@@ -33,11 +36,10 @@ export const FacilityManning = () => {
         setTitle(res.title);
         setState(res.data, setData);
         setState(res.columns, setCols);
-        
+        setMenuTitle(api + 'title',res.title);
     }
     
-    function titleEdit( editMode){
-       
+    function titleEdit( editMode, title){
         return editMode ? <Input value={title} type="text" onChange={(e) => setTitle(e.target.value)}/> : title;
       }
 
@@ -88,7 +90,7 @@ export const FacilityManning = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div>
                                 <p>Facilities Overview</p>
-                                <h2 >{titleEdit(editMode)}</h2>
+                                <h2 >{titleEdit(editMode, title)}</h2>
                             </div>
                             <div><EditButtons editMode={editMode} toggle={revertMode} save={save} /></div>
                         </div>

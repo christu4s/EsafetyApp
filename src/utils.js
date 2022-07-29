@@ -101,13 +101,14 @@ export function SubTitleEdit(content, editMode, subtitle="", key="subtitle"){
 
 export function MenuTitle({api, title, titleKey='title'}){
   const [menu, setTitle] = useMenuContext();
-  if(menu[api]) title = menu[api];
-  console.log(api, title);
+  var menukey = api + titleKey;
+  if(menu[menukey]) title = menu[menukey];
+  console.log(menukey, title);
   useEffect(()=>{
-    api && !menu[api] && ajax.get(api).then(res =>{ 
-      res && setTitle(api,res[titleKey]);
+    api && !menu[menukey] && ajax.get(api).then(res =>{ 
+      res && setTitle(menukey,res[titleKey]);
     })
-  }, [api]);
+  }, [menukey]);
 
   return <span>{title}</span>
 }

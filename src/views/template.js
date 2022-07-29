@@ -60,7 +60,7 @@ export const PageTemplate = ({
         console.log(getFormFields(form));
         await ajax.post(api, getFormFields(form)).then(res =>{ 
             res && setContent(res);
-            updateMenu && res[titleKey] && setMenuTitle(api,res[titleKey]);
+            updateMenu && res[titleKey] && setMenuTitle(api + titleKey,res[titleKey]);
         });
         setEditMode(!editMode);
     }

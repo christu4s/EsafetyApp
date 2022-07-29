@@ -72,7 +72,7 @@ export const menus = [
         url: '#/facility-overview',
         api: '/facility_overview',
         children: [
-            { title: 'Area', exact: true, url: '#/facility-overview/area', api: '/facility-overview/area' },
+            { title: 'Area', exact: true, url: '#/facility-overview/area', api: '/facility_overview', titleKey: 'subtitle' },
             { title: 'Process', exact: true, url: '#/facility-overview/process', api: '/facilities_process' },
             { title: 'Manning', exact: true, url: '#/facility-overview/manning' , api: '/facility_manning'},
         ]
