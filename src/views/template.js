@@ -60,7 +60,7 @@ export const PageTemplate = ({
         console.log(getFormFields(form));
         await ajax.post(api, getFormFields(form)).then(res =>{ 
             res && setContent(res);
-            updateMenu && res[titleKey] && setMenuTitle(api,res[titleKey]);
+            updateMenu && res[titleKey] && setMenuTitle(api + titleKey,res[titleKey]);
         });
         setEditMode(!editMode);
     }
@@ -113,12 +113,8 @@ export const PageTemplate = ({
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                         {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
-                        {/* {videoName && <VideoInput width={400} height={300} />} */}
                     </Space>}
                     <div style={{margin: 20}} />
-                    {/* {imageName && <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />}
-                    {pdfName && <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />}
-                    {videoName && <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />} */}
                     <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
                         {sortView}
                     </ReactSortable>
@@ -138,12 +134,12 @@ export function VideoViewer({videos = [],videoName='', editMode, form}){
     const [fls, setFls] = useState();
     useEffect(()=>{ setFls((videos && videos[0]) || null); }, [videos, editMode]);
     useEffect(()=>{ fls && form.setFieldsValue({[videoName]: fls.id }) }, [fls]);
-    if(!fls) return null;
+    if(!fls) return <Form.Item hidden name={'_'+ videoName} />;
 
     const {type = '', name, src} = fls;
   
     return <div style={{border:'1px dashed', borderRadius:4, padding:10}} className="img-wrap">
-               {/* {src}  */}
+               {editMode && <Button danger style={{float: 'right'}} type="link" onClick={()=> setFls(null)}>Delete</Button>}
                <video
           className="VideoInput_video"
           width="100%"

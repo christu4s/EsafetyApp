@@ -2,7 +2,7 @@ import { Card, Button, Modal, Upload, Form, Input, Space, Select } from "antd";
 import { useEffect, useState, React } from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { CloudUploadOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
 import { isAdmin } from "./constants";
@@ -94,57 +94,23 @@ export function TitleEdit(content, editMode, title="", key="title"){
   return editMode ? <Form.Item name={key} initialValue={title}><Input /></Form.Item> : title;
 }
 
-export function MenuTitle({api, title, titleKey='title'}){
-  const [menu, setTitle] = useMenuContext();
-  if(menu[api]) title = menu[api];
-  
-  useEffect(()=>{
-    api && !menu[api] && ajax.get(api).then(res =>{ 
-      res && setTitle(api,res[titleKey]);
-    })
-  }, [api]);
-
-  return <span>{title}</span>
+export function SubTitleEdit(content, editMode, subtitle="", key="subtitle"){
+  if(content && content[key]) subtitle=content[key]; 
+  return editMode ? <Form.Item name={key} initialValue={subtitle}><Input /></Form.Item> : subtitle;
 }
 
-export function VideoInput(props) {
-  const { width, height } = props;
+export function MenuTitle({api, title, titleKey='title'}){
+  const [menu, setTitle] = useMenuContext();
+  var menukey = api + titleKey;
+  if(menu[menukey]) title = menu[menukey];
+  console.log(menukey, title);
+  useEffect(()=>{
+    api && !menu[menukey] && ajax.get(api).then(res =>{ 
+      res && setTitle(menukey,res[titleKey]);
+    })
+  }, [menukey]);
 
-  const inputRef = useRef();
-
-  const [source, setSource] = useState();
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const url = URL.createObjectURL(file);
-    setSource(url);
-  };
-
-  const handleChoose = (event) => {
-    inputRef.current.click();
-  };
-
-  return (
-    <div className="VideoInput">
-      <input
-        ref={inputRef}
-        className="VideoInput_input"
-        type="file"
-        onChange={handleFileChange}
-        accept=".mov,.mp4"
-      />
-      {source && (
-        <video
-          className="VideoInput_video"
-          width="100%"
-          height={height}
-          controls
-          src={source}
-        />
-      )}
-      <div className="VideoInput_footer">{source}</div>
-    </div>
-  );
+  return <span>{title}</span>
 }
 
 export function SearchBar() {
@@ -168,14 +134,38 @@ export function SearchBar() {
         ret.path = '/risk-assessment/' + json.id;
         ret.label = json.title + ' (Risk Assessment)';
       break;
-      case 'safety_critical_equipment_title':
-        ret.path = '/safety-critical/' + json.id;// this should be changed to name
-        ret.label = json.title + ' (Safety critical)';
+      case 'safety_manage_commit':
+        ret.path = '/safety-management/' + json.id;// this should be changed to name
+        ret.label = json.title + ' (Safety Management System)';
       break;
-
-      case 'emer_response_tiers_title':
-        ret.path = '/emergency-response/' + json.id;// this should be changed to name
-        ret.label = json.title + ' (Emergency response)';
+    
+      case 'remedial_action_title':
+        ret.path = '/remedial-action';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'written_safety_case_title':
+        ret.path = '/writen-safety';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'safety_critical_element_title':
+        ret.path = '/safety-critical';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'safety_critical_equipment_title':
+        ret.path = '/safety-critical/equipment';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'safety_critical_procedure_title':
+        ret.path = 'safety-critical/procedure';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'safety_critical_personnel_title':
+        ret.path = '/safety-critical/personnel';// this should be changed to name
+        ret.label = json.title;
+      break;
+      case 'major_accident_hazar':
+        ret.path = '/accidents-hazards/' + json.id;// this should be changed to name
+        ret.label = json.title;
       break;
 
       
@@ -195,7 +185,7 @@ export function SearchBar() {
   }
 
   const onSearch = (search) => {
-    console.log('search:', search);
+   
     axios.get(base_url + '/wp-json/wp/v2/search', {params:{search} }).then(res=>{   
         setData(res.data.map(massageData));
     });

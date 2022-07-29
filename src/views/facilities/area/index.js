@@ -2,6 +2,7 @@ import { Input, Form } from 'antd';
 import React from 'react';
 import area from '../../../assets/area.png';
 import { ListItems, PageTemplate } from '../../template';
+import { TitleEdit } from '../../../utils';
 
 export * from './details';
 
@@ -9,7 +10,9 @@ export const FacilityArea = () => {
     return <PageTemplate 
         iconUrl={area} 
         title="Facilities Overview" 
-        subtitle="Area" 
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Area", "subtitle")} 
+        titleKey="subtitle"
         api="/facility_overview" 
         descName="area_desc"
         >

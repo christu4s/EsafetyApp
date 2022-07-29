@@ -4,6 +4,7 @@ import group from '../../../assets/group@3x.png';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { EditButtons } from '../../../utils';
+import { useMenuContext } from '../../../provider';
 
 Array.prototype.sum = function (prop) {
     var total = 0
@@ -13,28 +14,38 @@ Array.prototype.sum = function (prop) {
     return total.toExponential()
 }
 
+ 
+
 export const FacilityManning = () => {
     const [editMode, setEditMode] = useState(false);
     const toggleMode = () => setEditMode(!editMode);
     const [data, setData] = useState([]);
     const [cols, setCols] = useState([]);
+    const [title, setTitle] = useState(null);
+    const [menu, setMenuTitle] = useMenuContext();
     var response = {};
-    
+    var api = '/facility_manning';
+
     useEffect(() => {
-        ajax.get('/facility_manning').then(setResponse);
+        ajax.get(api).then(setResponse);
     }, []);
 
     function setResponse(res){
         if(!res) return;
         response = res
+        setTitle(res.title);
         setState(res.data, setData);
         setState(res.columns, setCols);
+        setMenuTitle(api + 'title',res.title);
     }
+    
+    function titleEdit( editMode, title){
+        return editMode ? <Input value={title} type="text" onChange={(e) => setTitle(e.target.value)}/> : title;
+      }
 
     function setState(value, fn){
         try { var res = JSON.parse(value.replace(/\\/g, '')); fn(res); } catch (e) { }
     }
-
     function addData(){ setData([...data,{}]) }
     function addColumn(){ setCols([...cols,{}]); }
     function editColTitle(i, val){
@@ -46,13 +57,15 @@ export const FacilityManning = () => {
         data[i][key] = val;
         setData([...data]);
     }
+    
+   
 
     function renderField(val,key, i){
         return editMode ? <Input value={val} type={key=='hours' ? 'text' : 'number'} onChange={e=>editField(i,key,e.target.value)} /> : val;
     }
 
     async function save(){
-        ajax.post('/facility_manning', {data: JSON.stringify(data), columns: JSON.stringify(cols)}).then(res => { 
+        ajax.post('/facility_manning', {data: JSON.stringify(data), columns: JSON.stringify(cols), title:title}).then(res => { 
             setResponse(res);
             toggleMode();
         });
@@ -77,7 +90,7 @@ export const FacilityManning = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div>
                                 <p>Facilities Overview</p>
-                                <h2 >Manning</h2>
+                                <h2 >{titleEdit(editMode, title)}</h2>
                             </div>
                             <div><EditButtons editMode={editMode} toggle={revertMode} save={save} /></div>
                         </div>

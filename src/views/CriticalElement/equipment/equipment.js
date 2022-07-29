@@ -6,13 +6,15 @@ import { Timeline } from "antd";
 import { Link } from "react-router-dom";
 import { PageTemplate } from "./../../template";
 import { criticalEquipments } from "../../../constants";
+import { TitleEdit } from '../../../utils';
 
 export const CriticalEquipment = () => {
   return (
     <PageTemplate
       iconUrl={alert}
       title="Safty Critical Element"
-      subtitle="Safty Critical Equipment"
+      updateMenu
+      subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safty Critical Equipment")} 
       api="/criticalEquipment"
       descName="equipment_desc"
       imageName="equipment_image"

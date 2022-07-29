@@ -11,12 +11,14 @@ import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
 import { PageTemplate } from './../../template';
+import { TitleEdit } from '../../../utils';
 
 export const ResponsePlan = () => {
     return <PageTemplate
         iconUrl={extinguisher}
         title="Emergency Response"
-        subtitle="Emergency Response Plan"
+        updateMenu
+        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Emergency Response Plan")} 
         api="/response_plan"
         descName="reponse_plan_desc"
         imageName="reponse_plan_image"
