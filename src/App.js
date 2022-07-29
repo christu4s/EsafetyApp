@@ -88,7 +88,7 @@ export default withRouter(App);
 function customMenu(menus, parent = ''){
   return menus.map((v,i)=> {
     var key = parent + '_'  + i; 
-     return v.children ? <Menu.SubMenu key={key} onTitleClick={()=>{ window.location.href=v.url; }} title={v.title} icon={v.icon}>{customMenu(v.children,i)}</Menu.SubMenu> 
+     return v.children ? <Menu.SubMenu key={key} onTitleClick={()=>{ window.location.href=v.url; }} title={<MenuTitle {...v} />} icon={v.icon}>{customMenu(v.children,i)}</Menu.SubMenu> 
     : <Menu.Item key={key} url={v.url} icon={v.icon}><MenuTitle {...v} /></Menu.Item>;
   })
 }
