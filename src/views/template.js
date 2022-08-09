@@ -135,31 +135,61 @@ export const PageTemplate = ({
 function ButtonTable({data, onSubmit}){
     const [popup, setPopup] = useState(false);
     var [tableDetail, setTableDetail] = useState(data || {dataSource:[], columns: []});
-
+    const [dataSource, setdataSource] = useState([]);
     function addColumn(){
-        var dataIndex = tableDetail.columns.length;
-        tableDetail.columns.push({title: <Input />,dataIndex});
-        setTableDetail({...tableDetail});
+        var dataIndex = columns.length;
+        console.log('dataIndex',dataIndex);
+         columns.push({title: <Input />,dataIndex:<Input value={'name'+dataIndex}/>});
+        //setTableDetail({...tableDetail});
     }
     function addRow(){
-        // tableDetail.dataSource.push(  );
-        // setTableDetail({...tableDetail});
+        var dataIndexRow =dataSource.length;
+        // dataSource.push( {name: <Input />, key:dataIndexRow,projectName:'test'})
+        const rowsInput = {
+            key:dataIndexRow,
+            name: <Input />,
+        }
+        setdataSource([...dataSource, rowsInput]);
     }
 
     function onSave(){
         setPopup(false);
     }
+    // const dataSource = [
+    //     {
+    //       key: 1,
+    //       name: <Input />,
+    //       projectName: <Input />,
+    //     },
+    //     {
+    //         key: 2,
+    //         name: <Input />,
+    //         projectName:<Input />,
+    //       }
+    //   ];
+      
+      const columns = [
+        {
+          title: 'Name',
+          dataIndex: 'name',
+          key:'name'
+        },
+        {
+            title: 'Project Name',
+            dataIndex: 'projectName',
+            key:'projectName'
+          },
+
+      ];
 
     return <><Button type='primary' onClick={()=> setPopup(true)}>Create Table</Button>
-    <Modal >
-        <Modal title="Create Table" visible={popup} onOk={onSave} >
+          <Modal title="Create Table" visible={popup} onOk={onSave} >
             <Space>
-                <Button onClick={addColumn}>Add Row</Button>
-                <Button onClick={addRow}>Add Column</Button>
+                <Button onClick={addRow}>Add Row</Button>
+                <Button onClick={addColumn}>Add Column</Button>
             </Space>
-            <Table dataSource={tableDetail.dataSource} columns={tableDetail.columns}  ></Table>
+            <Table dataSource={dataSource} columns={columns}  ></Table>
         </Modal>
-    </Modal>
     </>
 }
 
