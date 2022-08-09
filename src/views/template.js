@@ -1,4 +1,4 @@
-import { Row, Col, Form, Space, Carousel, Image, Popconfirm, Select, Input, Button } from 'antd';
+import { Row, Col, Form, Space, Carousel, Image, Popconfirm, Select, Input, Button, Modal, Table } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
 import { ButtonUpload, CardHolder, DescField, EditButtons,VideoInput } from '../utils';
@@ -19,6 +19,7 @@ export const PageTemplate = ({
     pdfName, 
     imageName, 
     videoName,
+    tableName= "tableDetail",
     iconUrl,
     backButton,
     children, 
@@ -113,6 +114,7 @@ export const PageTemplate = ({
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                         {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
+                        {tableName && <ButtonTable />}
                     </Space>}
                     <div style={{margin: 20}} />
                     <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
@@ -128,6 +130,37 @@ export const PageTemplate = ({
             </Form>
         </div>
     );
+}
+
+function ButtonTable({data, onSubmit}){
+    const [popup, setPopup] = useState(false);
+    var [tableDetail, setTableDetail] = useState(data || {dataSource:[], columns: []});
+
+    function addColumn(){
+        var dataIndex = tableDetail.columns.length;
+        tableDetail.columns.push({title: <Input />,dataIndex});
+        setTableDetail({...tableDetail});
+    }
+    function addRow(){
+        // tableDetail.dataSource.push(  );
+        // setTableDetail({...tableDetail});
+    }
+
+    function onSave(){
+        setPopup(false);
+    }
+
+    return <><Button type='primary' onClick={()=> setPopup(true)}>Create Table</Button>
+    <Modal >
+        <Modal title="Create Table" visible={popup} onOk={onSave} >
+            <Space>
+                <Button onClick={addColumn}>Add Row</Button>
+                <Button onClick={addRow}>Add Column</Button>
+            </Space>
+            <Table dataSource={tableDetail.dataSource} columns={tableDetail.columns}  ></Table>
+        </Modal>
+    </Modal>
+    </>
 }
 
 export function VideoViewer({videos = [],videoName='', editMode, form}){
