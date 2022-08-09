@@ -135,12 +135,25 @@ export const PageTemplate = ({
 function ButtonTable({data, onSubmit}){
     const [popup, setPopup] = useState(false);
     var [tableDetail, setTableDetail] = useState(data || {dataSource:[], columns: []});
-    const [dataSource, setdataSource] = useState([]);
-    function addColumn(){
-        var dataIndex = columns.length;
-        console.log('dataIndex',dataIndex);
-         columns.push({title: <Input />,dataIndex:<Input value={'name'+dataIndex}/>});
-        //setTableDetail({...tableDetail});
+    const [dataSource, setdataSource] = useState([{}]);
+    const [columns, setColumns] = useState([{}]);
+    // function addColumn(){
+    //     var dataIndex = columns.length;
+    //     console.log('dataIndex',dataIndex);
+    //      columns.push({title: <Input />,dataIndex});
+    //     //setTableDetail({...tableDetail});
+    // }
+
+    function addColumn() {
+        var dataIndexColumn =columns.length;
+        // dataSource.push( {name: <Input />, key:dataIndexRow,projectName:'test'})
+        const columnsInput = {
+            title:<Input />,
+            dataIndex: dataIndexColumn,
+            key:dataSource[dataIndexColumn].name,
+
+        }
+        setColumns([...columns, columnsInput]);
     }
     function addRow(){
         var dataIndexRow =dataSource.length;
@@ -168,19 +181,19 @@ function ButtonTable({data, onSubmit}){
     //       }
     //   ];
       
-      const columns = [
-        {
-          title: 'Name',
-          dataIndex: 'name',
-          key:'name'
-        },
-        {
-            title: 'Project Name',
-            dataIndex: 'projectName',
-            key:'projectName'
-          },
+    //   const columns = [
+    //     {
+    //       title: 'Name',
+    //       dataIndex: 'name',
+    //       key:'name'
+    //     },
+    //     {
+    //         title: 'Project Name',
+    //         dataIndex: 'projectName',
+    //         key:'projectName'
+    //       },
 
-      ];
+    //   ];
 
     return <><Button type='primary' onClick={()=> setPopup(true)}>Create Table</Button>
           <Modal title="Create Table" visible={popup} onOk={onSave} >
