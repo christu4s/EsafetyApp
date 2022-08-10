@@ -135,8 +135,8 @@ export const PageTemplate = ({
 function ButtonTable({data, onSubmit}){
     const [popup, setPopup] = useState(false);
    // var [tableDetail, setTableDetail] = useState(data || {dataSource:[], columns: []});
-    const [dataSource, setdataSource] = useState([{}]);
-    const [columns, setColumns] = useState([{}]);
+    const [dataSource, setdataSource] = useState([]);
+    const [columns, setColumns] = useState([]);
     const [count, setCount] = useState(0);
     // function addColumn(){
     //     var dataIndex = columns.length;
@@ -162,15 +162,24 @@ function ButtonTable({data, onSubmit}){
     function addDataSource() {
         var dataIndexRow =dataIndexColumn.length;
         // dataSource.push( {namconst rowsInput = [];e: <Input />, key:dataIndexRow,projectName:'test'})
-        const rowsInput =  {
-                  key: '1',
-                  name0: <Input />,
-                  name1: <Input />,
-                  name2: <Input />,
-                  name3: <Input />,
-                  name4: <Input />,
-              
-                };
+        
+        // const rowsInput =  {
+        //           key: '1',
+        //           name0: <Input />,
+        //           name1: <Input />,
+        //           name2: <Input />,
+        //           name3: <Input />,
+        //           name4: <Input />,
+        //         };
+      
+        const rowsInput = {};
+
+        {columns.map(function(column, key){
+             var listName = column.dataIndex;
+             rowsInput[key] = key;
+             rowsInput[column.dataIndex] = <Input />
+          })}
+                   
         //setColumns([...columns, columnsInput]);
          console.log('rowsInput',rowsInput);
         setdataSource([...dataSource, rowsInput]);
