@@ -134,7 +134,7 @@ export const PageTemplate = ({
 
 function ButtonTable({data, onSubmit}){
     const [popup, setPopup] = useState(false);
-    var [tableDetail, setTableDetail] = useState(data || {dataSource:[], columns: []});
+   // var [tableDetail, setTableDetail] = useState(data || {dataSource:[], columns: []});
     const [dataSource, setdataSource] = useState([{}]);
     const [columns, setColumns] = useState([{}]);
     const [count, setCount] = useState(0);
@@ -147,7 +147,7 @@ function ButtonTable({data, onSubmit}){
     var dataIndexColumn =columns.length;
     var i = 0;
     function addColumn() {
-       
+        setColumns({});
         // dataSource.push( {name: <Input />, key:dataIndexRow,projectName:'test'})
         setCount(count+1);
         const columnsInput = {
@@ -162,13 +162,16 @@ function ButtonTable({data, onSubmit}){
     function addDataSource() {
         var dataIndexRow =dataIndexColumn.length;
         // dataSource.push( {namconst rowsInput = [];e: <Input />, key:dataIndexRow,projectName:'test'})
-        var rowsInput = [];
-        for(var i = 0; i < dataIndexColumn;  i++) {
-            
-           // 
-            var data = {name: <Input />, dataIndex: 'name'+i, key:'name'+i}
-         }
-         rowsInput.push(data);
+        const rowsInput =  {
+                  key: '1',
+                  name0: <Input />,
+                  name1: <Input />,
+                  name2: <Input />,
+                  name3: <Input />,
+                  name4: <Input />,
+              
+                };
+        //setColumns([...columns, columnsInput]);
          console.log('rowsInput',rowsInput);
         setdataSource([...dataSource, rowsInput]);
 
