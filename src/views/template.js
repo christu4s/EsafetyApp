@@ -137,32 +137,41 @@ function ButtonTable({data, onSubmit}){
     var [tableDetail, setTableDetail] = useState(data || {dataSource:[], columns: []});
     const [dataSource, setdataSource] = useState([{}]);
     const [columns, setColumns] = useState([{}]);
+    const [count, setCount] = useState(0);
     // function addColumn(){
     //     var dataIndex = columns.length;
     //     console.log('dataIndex',dataIndex);
     //      columns.push({title: <Input />,dataIndex});
     //     //setTableDetail({...tableDetail});
     // }
-
+    var dataIndexColumn =columns.length;
+    var i = 0;
     function addColumn() {
-        var dataIndexColumn =columns.length;
+       
         // dataSource.push( {name: <Input />, key:dataIndexRow,projectName:'test'})
+        setCount(count+1);
         const columnsInput = {
-            title:<Input />,
-            dataIndex: dataIndexColumn,
-            key:dataSource[dataIndexColumn].name,
-
+            title:<Input id={count} name={'name'+count}/>,
+            dataIndex: 'name'+count,
+            key:'name'+count,
         }
         setColumns([...columns, columnsInput]);
+       
+        console.log('columns',columns);
     }
-    function addRow(){
-        var dataIndexRow =dataSource.length;
-        // dataSource.push( {name: <Input />, key:dataIndexRow,projectName:'test'})
-        const rowsInput = {
-            key:dataIndexRow,
-            name: <Input />,
-        }
+    function addDataSource() {
+        var dataIndexRow =dataIndexColumn.length;
+        // dataSource.push( {namconst rowsInput = [];e: <Input />, key:dataIndexRow,projectName:'test'})
+        var rowsInput = [];
+        for(var i = 0; i < dataIndexColumn;  i++) {
+            
+           // 
+            var data = {name: <Input />, dataIndex: 'name'+i, key:'name'+i}
+         }
+         rowsInput.push(data);
+         console.log('rowsInput',rowsInput);
         setdataSource([...dataSource, rowsInput]);
+
     }
 
     function onSave(){
@@ -198,7 +207,7 @@ function ButtonTable({data, onSubmit}){
     return <><Button type='primary' onClick={()=> setPopup(true)}>Create Table</Button>
           <Modal title="Create Table" visible={popup} onOk={onSave} >
             <Space>
-                <Button onClick={addRow}>Add Row</Button>
+                <Button onClick={addDataSource}>Add Row</Button>
                 <Button onClick={addColumn}>Add Column</Button>
             </Space>
             <Table dataSource={dataSource} columns={columns}  ></Table>
