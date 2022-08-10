@@ -58,7 +58,7 @@ export const PageTemplate = ({
     const sortView = order.map((item) =>(<div style={{margin: '20px 0', cursor:'move'}} key={item}>{viewers[item]}</div>)); 
 
     async function saveData() {
-        console.log(getFormFields(form));
+       // console.log(getFormFields(form));
         await ajax.post(api, getFormFields(form)).then(res =>{ 
             res && setContent(res);
             updateMenu && res[titleKey] && setMenuTitle(api + titleKey,res[titleKey]);
@@ -114,7 +114,7 @@ export const PageTemplate = ({
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                         {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
-                        {tableName && <ButtonTable />}
+                        {tableName && <ButtonTable name={tableName} onSubmit={saveData}/>}
                     </Space>}
                     <div style={{margin: 20}} />
                     <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
@@ -138,6 +138,9 @@ function ButtonTable({data, onSubmit}){
     const [dataSource, setdataSource] = useState([]);
     const [columns, setColumns] = useState([]);
     const [count, setCount] = useState(0);
+    const [dataSet, setDataSet] = useState([{}]);
+    const [rowsData, setRowsData] = useState([]);
+    const [columnsData, setColumnsData] = useState([]);
     // function addColumn(){
     //     var dataIndex = columns.length;
     //     console.log('dataIndex',dataIndex);
@@ -146,19 +149,37 @@ function ButtonTable({data, onSubmit}){
     // }
     var dataIndexColumn =columns.length;
     var i = 0;
+
+    function onChangeColumnValues(event){
+        console.log('columns',event.target.value);
+       // dataSet[{key}] = val;
+       // setRowsData([...dataSet]);
+    }
+
     function addColumn() {
         setColumns({});
         // dataSource.push( {name: <Input />, key:dataIndexRow,projectName:'test'})
         setCount(count+1);
         const columnsInput = {
-            title:<Input id={count} name={'name'+count}/>,
+            title:<Input id={count} name={'name'+count} value="" onChange={onChangeColumnValues}/>,
             dataIndex: 'name'+count,
             key:'name'+count,
         }
         setColumns([...columns, columnsInput]);
        
-        console.log('columns',columns);
+        //console.log('columns',columns);
     }
+
+    function onChangeRowValues(event) {
+        console.log('rows',event.target.value);
+        //dataSet[{key}] = val;
+        //setColumnsData([...dataSet]); 
+    }
+
+   
+
+    //console.log('setColumnsData',setColumnsData);
+    //console.log('setRowsData',setRowsData);
     function addDataSource() {
         var dataIndexRow =dataIndexColumn.length;
         // dataSource.push( {namconst rowsInput = [];e: <Input />, key:dataIndexRow,projectName:'test'})
@@ -171,17 +192,20 @@ function ButtonTable({data, onSubmit}){
         //           name3: <Input />,
         //           name4: <Input />,
         //         };
-      
+      if(columns.length == 0) {
+        alert('Please add the column first');
+        return false;
+      }
         const rowsInput = {};
 
         {columns.map(function(column, key){
              var listName = column.dataIndex;
              rowsInput[key] = key;
-             rowsInput[column.dataIndex] = <Input />
+             rowsInput[column.dataIndex] = <Input name={'value'+key} id={key} value="" onChange={onChangeRowValues}/>
           })}
                    
         //setColumns([...columns, columnsInput]);
-         console.log('rowsInput',rowsInput);
+       //  console.log('rowsInput',rowsInput);
         setdataSource([...dataSource, rowsInput]);
 
     }
@@ -219,8 +243,9 @@ function ButtonTable({data, onSubmit}){
     return <><Button type='primary' onClick={()=> setPopup(true)}>Create Table</Button>
           <Modal title="Create Table" visible={popup} onOk={onSave} >
             <Space>
-                <Button onClick={addDataSource}>Add Row</Button>
                 <Button onClick={addColumn}>Add Column</Button>
+                <Button onClick={addDataSource}>Add Row</Button>
+                
             </Space>
             <Table dataSource={dataSource} columns={columns}  ></Table>
         </Modal>
