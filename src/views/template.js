@@ -5,7 +5,7 @@ import { ButtonUpload, CardHolder, DescField, EditButtons,VideoInput } from '../
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
-import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined, TableOutlined } from '@ant-design/icons';
 import { useMenuContext } from '../provider';
 import { ReactSortable } from "react-sortablejs";
 import { useLocation } from 'react-router-dom';
@@ -19,7 +19,7 @@ export const PageTemplate = ({
     pdfName, 
     imageName, 
     videoName,
-    tableName= "table_detail",
+    tableName,
     iconUrl,
     backButton,
     children, 
@@ -33,7 +33,7 @@ export const PageTemplate = ({
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({});
     const [order, setOrder] = useState(getOrder());
-    const [menu, setMenuTitle] = useMenuContext();
+    const [_, setMenuTitle] = useMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
 
@@ -41,21 +41,22 @@ export const PageTemplate = ({
     function getOrder(){
         var stored = window.localStorage.getItem(order_storage_key);
         if(stored) return stored.split(',');
-        return [imageName, pdfName, videoName].filter(Boolean);
+        return [imageName, pdfName, videoName, tableName].filter(Boolean);
     }
 
     //save order to localStorage once changed
     useEffect(()=>{ window.localStorage.setItem(order_storage_key, order.join(',')); },[order])
 
     
-    const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName]; 
+    const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName], tableData=content[tableName]; 
     var viewers = {};
 
     if(imageName) viewers[imageName]=<ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
     if(pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
-    if(tableName) viewers[tableName] = <TableViewer  tableName={tableName} form={form} editMode={editMode} />;
+    if(tableName) viewers[tableName] = <TableViewer  tableName={tableName} data={tableData} />;
     if(videoName) viewers[videoName] = <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />;
    
+    console.log(viewers);
 
     const sortView = order.map((item) =>(<div style={{margin: '20px 0', cursor:'move'}} key={item}>{viewers[item]}</div>)); 
 
@@ -116,7 +117,7 @@ export const PageTemplate = ({
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                         {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
-                        {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} />}
+                        {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
                     </Space>}
                     <div style={{margin: 20}} />
                     <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
@@ -134,10 +135,14 @@ export const PageTemplate = ({
     );
 }
 
-function ButtonTable({value, name, onSubmit, form}){
+function ButtonTable({data, name, onSubmit, form}){
+    var jsonData;
+    try{
+        jsonData = JSON.parse(data);
+    }catch(e){}
     const [popup, setPopup] = useState(false);
-    const [dataSource, setdataSource] = useState([]);
-    const [columns, setColumns] = useState([]);
+    const [dataSource, setdataSource] = useState(jsonData ? jsonData.dataSource : []);
+    const [columns, setColumns] = useState(jsonData ? jsonData.columns : []);
 
 
     function onChangeColumnValues(value, index){
@@ -188,13 +193,13 @@ function ButtonTable({value, name, onSubmit, form}){
 
     return <>
         <Form.Item hidden name={name} initialValue="" />
-        <Button type='primary' onClick={()=> setPopup(true)}>Create Table</Button>
-          <Modal title="Create Table" okText="Save" visible={popup} onOk={onSave} onCancel={()=> setPopup(false)} >
+        <Button type='primary' icon={<TableOutlined />} onClick={()=> setPopup(true)}>Dynamic Table</Button>
+          <Modal title="Dynamic Table" okText="Save" visible={popup} onOk={onSave} onCancel={()=> setPopup(false)} >
             <Space>
                 <Button onClick={addColumn}>Add Column</Button>
                 <Button onClick={addDataSource}>Add Row</Button>
             </Space>
-            <Table dataSource={dataSourceEditable} columns={columnsEditable}  ></Table>
+            <Table dataSource={dataSourceEditable} columns={columnsEditable}  pagination={false} />
         </Modal>
     </>
 }
@@ -219,16 +224,16 @@ export function VideoViewer({videos = [],videoName='', editMode, form}){
     </div>
 }
 
-export function TableViewer({tableName='', editMode, form}){
-    //  const [fls, setFls] = useState();
-    //  console.log('tableName  : '+tableName);
-    //  useEffect(()=>{ setFls((tableName) || null); }, [tableName, editMode]);
-    //  useEffect(()=>{ fls && form.setFieldsValue({[tableName]: fls.id }) }, [fls]);
+export function TableViewer({data}){
+    var jsonData;
+    try{
+        jsonData = JSON.parse(data);
+    }catch(e){
+        return null;
+    }
+    const {dataSource, columns} = jsonData;
     
-    return <div style={{border:'1px dashed', borderRadius:4, padding:10}} className="img-wrap">
-       testing table view
-             
-    </div>
+    return <Table dataSource={dataSource} columns={columns} pagination={false} />
 }
 export function ImageViewer({images = [], imageName='', form, editMode}){
     const [imgs, setImgs] = useState([]);
