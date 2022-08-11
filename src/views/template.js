@@ -19,7 +19,7 @@ export const PageTemplate = ({
     pdfName, 
     imageName, 
     videoName,
-    tableName= "tableDetail",
+    tableName= "table_detail",
     iconUrl,
     backButton,
     children, 
@@ -53,7 +53,9 @@ export const PageTemplate = ({
 
     if(imageName) viewers[imageName]=<ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
     if(pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
+    if(tableName) viewers[tableName] = <TableViewer  tableName={tableName} form={form} editMode={editMode} />;
     if(videoName) viewers[videoName] = <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />;
+   
 
     const sortView = order.map((item) =>(<div style={{margin: '20px 0', cursor:'move'}} key={item}>{viewers[item]}</div>)); 
 
@@ -163,7 +165,7 @@ function ButtonTable({value, name, onSubmit, form}){
     }
 
     function onSave(){
-        form.setFieldsValue({[name]: {dataSource, columns}});
+        form.setFieldsValue({[name]: JSON.stringify({dataSource, columns})});
         typeof onSubmit == 'function' && onSubmit();
         setPopup(false);
     }
@@ -214,6 +216,18 @@ export function VideoViewer({videos = [],videoName='', editMode, form}){
           controls
           src={src}
         />
+    </div>
+}
+
+export function TableViewer({tableName='', editMode, form}){
+    //  const [fls, setFls] = useState();
+    //  console.log('tableName  : '+tableName);
+    //  useEffect(()=>{ setFls((tableName) || null); }, [tableName, editMode]);
+    //  useEffect(()=>{ fls && form.setFieldsValue({[tableName]: fls.id }) }, [fls]);
+    
+    return <div style={{border:'1px dashed', borderRadius:4, padding:10}} className="img-wrap">
+       testing table view
+             
     </div>
 }
 export function ImageViewer({images = [], imageName='', form, editMode}){
