@@ -19,6 +19,7 @@ export const AccidentsHazardItem = ({ match }) => {
         imageName="image"
         pdfName="pdf"
         videoName="video"
+        tableName="table_detail"
         right={({content, setContent}) => <MajorSCE content={content} setContent={setContent} />}>
     </PageTemplate>
 }

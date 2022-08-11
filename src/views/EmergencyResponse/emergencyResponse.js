@@ -42,6 +42,7 @@ export const EmergencyResponse = () => {
       imageName="response_image"
       pdfName="response_pdf"
       videoName="response_video"
+      tableName="table_detail"
     > <ListItems list={subpages} countInRow={4} />
     </PageTemplate>
   );

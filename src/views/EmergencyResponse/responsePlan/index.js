@@ -24,6 +24,7 @@ export const ResponsePlan = () => {
         imageName="reponse_plan_image"
         pdfName="reponse_plan_pdf"
         videoName="reponse_plan_video"
+        tableName="table_detail"
     >{(content, editMode, form) => <TablePlan content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

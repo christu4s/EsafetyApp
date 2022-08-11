@@ -20,6 +20,7 @@ export const CriticalEquipment = () => {
       imageName="equipment_image"
       pdfName="equipment_pdf"
       videoName="equipment_video"
+      tableName="table_detail"
     >
       <div style={{ marginTop: 30 }}>
         <Timeline>

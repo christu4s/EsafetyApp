@@ -17,6 +17,7 @@ export const WrittenSafetyCase = () => {
         imageName="safety_image"
         pdfName="safety_pdf"
         videoName="safety_video"
+        tableName="table_detail"
         >
         {(content, editMode) => <TableWritten editMode={editMode} />}    
     </PageTemplate>
