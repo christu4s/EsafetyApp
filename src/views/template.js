@@ -231,7 +231,7 @@ export function TableViewer({data}){
     }catch(e){
         return null;
     }
-    const {dataSource, columns} = jsonData;
+    const {dataSource, columns} = jsonData || [];
     
     return <Table dataSource={dataSource} columns={columns} pagination={false} />
 }
