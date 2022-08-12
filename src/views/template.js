@@ -56,12 +56,10 @@ export const PageTemplate = ({
     if(tableName) viewers[tableName] = <TableViewer  tableName={tableName} data={tableData} />;
     if(videoName) viewers[videoName] = <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />;
    
-    console.log(viewers);
-
+   
     const sortView = order.map((item) =>(<div style={{margin: '20px 0', cursor:'move'}} key={item}>{viewers[item]}</div>)); 
 
     async function saveData() {
-       // console.log(getFormFields(form));
         await ajax.post(api, getFormFields(form)).then(res =>{ 
             res && setContent(res);
             updateMenu && res[titleKey] && setMenuTitle(api + titleKey,res[titleKey]);
@@ -171,6 +169,8 @@ function ButtonTable({data, name, onSubmit, form}){
 
     function onSave(){
         form.setFieldsValue({[name]: JSON.stringify({dataSource, columns})});
+        console.log('stringify',JSON.stringify({dataSource, columns}));
+        console.log('not stringify',{dataSource, columns});
         typeof onSubmit == 'function' && onSubmit();
         setPopup(false);
     }
@@ -186,7 +186,6 @@ function ButtonTable({data, name, onSubmit, form}){
     });
     const columnsEditable = columns.map((column, index)=>{
         var editableCol = {...column};
-        console.log(column.title);
         editableCol.title = <Input value={column.title} onChange={(e)=> onChangeColumnValues(e.target.value, index)} />;
         return editableCol;
     });
@@ -231,9 +230,9 @@ export function TableViewer({data}){
     }catch(e){
         return null;
     }
-    const {dataSource, columns} = jsonData || [];
-    
-    return <Table dataSource={dataSource} columns={columns} pagination={false} />
+   // console.log('typeof',typeof(jsonData));
+    const {dataSource, columns} = jsonData || {};
+    return (jsonData != null)? <Table dataSource={dataSource} columns={columns} pagination={false} /> : null;
 }
 export function ImageViewer({images = [], imageName='', form, editMode}){
     const [imgs, setImgs] = useState([]);
