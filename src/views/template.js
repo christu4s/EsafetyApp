@@ -5,7 +5,7 @@ import { ButtonUpload, CardHolder, DescField, EditButtons,VideoInput } from '../
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
-import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined, TableOutlined } from '@ant-design/icons';
 import { useMenuContext } from '../provider';
 import { ReactSortable } from "react-sortablejs";
 import { useLocation } from 'react-router-dom';
@@ -19,7 +19,7 @@ export const PageTemplate = ({
     pdfName, 
     imageName, 
     videoName,
-    tableName= "tableDetail",
+    tableName,
     iconUrl,
     backButton,
     children, 
@@ -33,7 +33,7 @@ export const PageTemplate = ({
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({});
     const [order, setOrder] = useState(getOrder());
-    const [menu, setMenuTitle] = useMenuContext();
+    const [_, setMenuTitle] = useMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
 
@@ -41,24 +41,25 @@ export const PageTemplate = ({
     function getOrder(){
         var stored = window.localStorage.getItem(order_storage_key);
         if(stored) return stored.split(',');
-        return [imageName, pdfName, videoName].filter(Boolean);
+        return [imageName, pdfName, videoName, tableName].filter(Boolean);
     }
 
     //save order to localStorage once changed
     useEffect(()=>{ window.localStorage.setItem(order_storage_key, order.join(',')); },[order])
 
     
-    const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName]; 
+    const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName], tableData=content[tableName]; 
     var viewers = {};
 
     if(imageName) viewers[imageName]=<ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
     if(pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
+    if(tableName) viewers[tableName] = <TableViewer  tableName={tableName} data={tableData} />;
     if(videoName) viewers[videoName] = <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />;
-
+   
+   
     const sortView = order.map((item) =>(<div style={{margin: '20px 0', cursor:'move'}} key={item}>{viewers[item]}</div>)); 
 
     async function saveData() {
-        console.log(getFormFields(form));
         await ajax.post(api, getFormFields(form)).then(res =>{ 
             res && setContent(res);
             updateMenu && res[titleKey] && setMenuTitle(api + titleKey,res[titleKey]);
@@ -114,7 +115,7 @@ export const PageTemplate = ({
                         {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                         {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                         {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
-                        {tableName && <ButtonTable />}
+                        {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
                     </Space>}
                     <div style={{margin: 20}} />
                     <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
@@ -132,34 +133,73 @@ export const PageTemplate = ({
     );
 }
 
-function ButtonTable({data, onSubmit}){
+function ButtonTable({data, name, onSubmit, form}){
+    var jsonData;
+    try{
+        jsonData = JSON.parse(data);
+    }catch(e){}
     const [popup, setPopup] = useState(false);
-    var [tableDetail, setTableDetail] = useState(data || {dataSource:[], columns: []});
+    const [dataSource, setdataSource] = useState(jsonData ? jsonData.dataSource : []);
+    const [columns, setColumns] = useState(jsonData ? jsonData.columns : []);
 
-    function addColumn(){
-        var dataIndex = tableDetail.columns.length;
-        tableDetail.columns.push({title: <Input />,dataIndex});
-        setTableDetail({...tableDetail});
+
+    function onChangeColumnValues(value, index){
+        columns[index].title = value;
+        setColumns([...columns]);
     }
-    function addRow(){
-        // tableDetail.dataSource.push(  );
-        // setTableDetail({...tableDetail});
+
+    function addColumn() {
+        const columnsInput = {
+            title: "",
+            dataIndex: 'col'+columns.length,
+        }
+        setColumns([...columns, columnsInput]);
+    }
+
+    function onChangeRowValues(value, index, key) {
+        dataSource[index][key] = value;
+        setdataSource([...dataSource]);
+    }
+
+    function addDataSource() {
+        const rowsInput = {};
+        for(var column of columns) rowsInput[column.dataIndex] = "";
+        setdataSource([...dataSource, rowsInput]);
     }
 
     function onSave(){
+        form.setFieldsValue({[name]: JSON.stringify({dataSource, columns})});
+        console.log('stringify',JSON.stringify({dataSource, columns}));
+        console.log('not stringify',{dataSource, columns});
+        typeof onSubmit == 'function' && onSubmit();
         setPopup(false);
     }
+    
+    const dataSourceEditable = dataSource.map((data, index)=>{
+        var editableData = {};
+        for(let column of columns){
+            let key = column.dataIndex; 
+            let value = data[key] || '';
+            editableData[key] = <Input value={value} onChange={(e)=> onChangeRowValues(e.target.value, index, key)} />;
+        }
+        return editableData;
+    });
+    const columnsEditable = columns.map((column, index)=>{
+        var editableCol = {...column};
+        editableCol.title = <Input value={column.title} onChange={(e)=> onChangeColumnValues(e.target.value, index)} />;
+        return editableCol;
+    });
 
-    return <><Button type='primary' onClick={()=> setPopup(true)}>Create Table</Button>
-    <Modal >
-        <Modal title="Create Table" visible={popup} onOk={onSave} >
+    return <>
+        <Form.Item hidden name={name} initialValue="" />
+        <Button type='primary' icon={<TableOutlined />} onClick={()=> setPopup(true)}>Dynamic Table</Button>
+          <Modal title="Dynamic Table" okText="Save" visible={popup} onOk={onSave} onCancel={()=> setPopup(false)} >
             <Space>
-                <Button onClick={addColumn}>Add Row</Button>
-                <Button onClick={addRow}>Add Column</Button>
+                <Button onClick={addColumn}>Add Column</Button>
+                <Button onClick={addDataSource}>Add Row</Button>
             </Space>
-            <Table dataSource={tableDetail.dataSource} columns={tableDetail.columns}  ></Table>
+            <Table dataSource={dataSourceEditable} columns={columnsEditable}  pagination={false} />
         </Modal>
-    </Modal>
     </>
 }
 
@@ -181,6 +221,18 @@ export function VideoViewer({videos = [],videoName='', editMode, form}){
           src={src}
         />
     </div>
+}
+
+export function TableViewer({data}){
+    var jsonData;
+    try{
+        jsonData = JSON.parse(data);
+    }catch(e){
+        return null;
+    }
+   // console.log('typeof',typeof(jsonData));
+    const {dataSource, columns} = jsonData || {};
+    return (jsonData != null)? <Table dataSource={dataSource} columns={columns} pagination={false} /> : null;
 }
 export function ImageViewer({images = [], imageName='', form, editMode}){
     const [imgs, setImgs] = useState([]);

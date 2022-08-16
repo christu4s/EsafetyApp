@@ -15,6 +15,7 @@ export const FacilityArea = () => {
         titleKey="subtitle"
         api="/facility_overview" 
         descName="area_desc"
+        tableName="table_detail"
         >
         {(content,editMode)=> <ListItems 
             api="/facility-overview/area" 

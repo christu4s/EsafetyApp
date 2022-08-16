@@ -21,6 +21,7 @@ export const ResponseTiers = () => {
         imageName="tiers_image"
         pdfName="tiers_pdf"
         videoName="tiers_video"
+        tableName="table_detail"
     >{(content, editMode, form) => <TableTiers content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }

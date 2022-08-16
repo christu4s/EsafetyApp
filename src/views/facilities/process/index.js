@@ -15,5 +15,6 @@ export const FacilityProcess = () => {
         imageName="process_image" 
         pdfName="process_pdf"
         videoName="process_video"
+        tableName="table_detail"
     />
 }

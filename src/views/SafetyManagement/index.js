@@ -22,6 +22,7 @@ export const SafetyManagement = ({history}) => {
         imageName="safety_management_image"
         pdfName="safety_management_pdf"
         videoName="safety_management_video"
+        tableName="table_detail"
     >{(content, editMode) => <ListItems 
         api="/safety_manage_commit" 
         editMode={editMode} 
