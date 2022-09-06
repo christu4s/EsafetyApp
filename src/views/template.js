@@ -336,7 +336,7 @@ export function ListItems({api,editMode, list = [], countInRow=3, imageKey = 'im
     const [form] = Form.useForm();
     const history = useHistory();
     const {pathname} = history.location;
-    useEffect(()=>{ api && ajax.get(api).then(res => res && setData(res.data)) },[]);
+    useEffect(()=>{ api && ajax.get(api, {count: 12}).then(res => res && setData(res.data)) },[]);
 
     async function saveData(){
         await ajax.post(api,getFormFields(form)).then(res=> res && history.push(`${pathname}/${res.id}`))

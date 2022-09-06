@@ -1,7 +1,7 @@
 @import '../node_modules/antd/lib/style/themes/default.less';
 @import '../node_modules/antd/dist/antd.less'; // Import Ant Design styles by less entry
 
-@primary-color: #387bf7;
+@primary-color: #F50A1D;
 // @menu-item-active-bg: linear-gradient(to top, #387bf7, #61c5ff);
 @layout-header-background: #fff;
 @text-color: #000;
@@ -10,6 +10,12 @@
 // @component-background: #2A2F31;
 
 // @table-header-bg: @component-background;
+
+//mixin
+.menu-background() {
+    background-color: lighten(@primary-color, 20%) !important;
+}
+//end mixing
 
 .header{
     box-shadow: 1px 1px 2px 4px #ddd;
@@ -118,6 +124,10 @@
     overflow: hidden;
 }
 
+.area--img img{
+    filter: invert(35%) sepia(99%) saturate(7465%) hue-rotate(352deg) brightness(121%) contrast(105%);
+}
+
 .dashboard--holder{
  
     .bg--patteren{
@@ -149,11 +159,12 @@
             object-fit: contain;
             display: block;
             margin-left: 5px;
-            filter: invert(20%) sepia(73%) saturate(5000%) hue-rotate(187deg) brightness(97%) contrast(112%);
+            // filter: invert(20%) sepia(73%) saturate(5000%) hue-rotate(187deg) brightness(97%) contrast(112%);
+            filter: invert(35%) sepia(99%) saturate(7465%) hue-rotate(352deg) brightness(121%) contrast(105%);
         }
     }
     .box--col .box--icon:hover{
-        background-image: linear-gradient(to top, #387bf7, #61c5ff);
+        background-image: linear-gradient(to top, @primary-color, lighten(@primary-color, 20%));
         img{
             filter: brightness(200%) saturate(0%) contrast(100%);
         }
@@ -249,9 +260,9 @@
     }
 }
 .ant-btn-primary{
-    background-color: #0047af;
+    // background-color: #0047af;
     padding: 12px 22px 30px;
-    border-color: #0047af;
+    // border-color: #0047af;
     color: #fff;
     font-family: 'Lato', sans-serif;
     border-radius: 4px;
@@ -259,7 +270,7 @@
     margin: 20px 0;
     padding: 7px 24px 30px;
     border-radius: 4px;
-    background-color: #0047af
+    // background-color: #0047af
 }
 .upload--modal{
     text-align: center;
@@ -370,7 +381,9 @@
    
 }
 .ant-menu-item.ant-menu-item-selected{
-    background-image: linear-gradient(to top, #387bf7, #61c5ff);
+    // background-image:  linear-gradient(to top, @primary-color, lighten(@primary-color, 30%));
+    // background-color: lighten(@primary-color, 20%) !important;
+    .menu-background();
     .ant-menu-title-content,.ant-menu-item-icon{
         color:#fff ;
         a{color: #fff;}
@@ -385,7 +398,9 @@
     }
 }
 .ant-menu-item.ant-menu-item-selected.ant-menu-item-only-child{
-    background-image: linear-gradient(to top, #387bf7, #61c5ff);
+    // background-image: linear-gradient(to top, #387bf7, #61c5ff);
+    // background-color: lighten(@primary-color, 20%) !important;
+    .menu-background();
     .ant-menu-title-content{
         color: #fff;
     }
@@ -393,7 +408,9 @@
 .ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-selected{
     color: #fff;
     .ant-menu-submenu-title{
-        background-image: linear-gradient(to top, #387bf7, #61c5ff);
+        // background-image: linear-gradient(to top, #387bf7, #61c5ff);
+        // background-color: lighten(@primary-color, 20%) !important;
+        .menu-background();
         img{
             filter: invert(1) brightness(2);
         }
@@ -474,10 +491,10 @@
         top: -50px;
         
         text-align: center;
-        .ant-btn-primary{
-            background-color: #0047af;
-            border-color: #0047af;
-        }
+        // .ant-btn-primary{
+        //     background-color: @primary-color;
+        //     border-color: @primary-color;
+        // }
         .ant-btn-danger{
             background-color: #9e0b0f;
             border-color: #9e0b0f;

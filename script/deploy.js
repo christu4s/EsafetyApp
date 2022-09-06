@@ -4,7 +4,7 @@ var request = require('request');
 var filename = 'target.zip';
 
 // var putURL = 'http://esafety.enkuire.com/wp-admin/admin-ajax.php?action=deploy';
-var putURL = 'https://actsyn.com/esafety/wp-admin/admin-ajax.php?action=deploy';
+var putURL = 'https://actsyn.com/esafety-dev/wp-admin/admin-ajax.php?action=deploy';
 
 var output = fs.createWriteStream(filename);
 var archive = archiver('zip');
@@ -23,11 +23,11 @@ archive.directory(__dirname + '/../build', false);
 archive.finalize();
 
 //deploy
-function deploy(){
-    var req = request.post(putURL, async function (err, resp, body) {
+function deploy() {
+    var req = request.post(putURL, async function(err, resp, body) {
         err ? console.error('Error!', err) : console.log(body);
         try {
-            fs.unlink(filename, function(){ console.log(`successfully deleted ${filename}`); });
+            fs.unlink(filename, function() { console.log(`successfully deleted ${filename}`); });
         } catch (error) {
             console.error('there was an error:', error.message);
         }

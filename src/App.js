@@ -6,12 +6,11 @@ import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import { UserOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { userName } from './constants';
 import { MenuTitle, SearchBar } from './utils';
-import ajax from './ajax';
-
+import logo from './assets/logo.jpeg';
 
 const { Content, Footer, Sider, Header } = Layout;
 
-const logo = 'http://esafety.enkuire.com/wp-content/uploads/2021/06/E-safety-02.png';
+// const logo = 'http://esafety.enkuire.com/wp-content/uploads/2021/06/E-safety-02.png';
 
 class App extends React.Component {
   state = {
