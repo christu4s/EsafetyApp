@@ -24992,6 +24992,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .img-wrap img.ant-image-img {
   height: 300px;
+  object-fit: contain !important;
 }
 .img-wrap .img-delete-icon {
   position: absolute;
