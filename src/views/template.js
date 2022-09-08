@@ -200,7 +200,6 @@ function ButtonTable({data, name, onSubmit, form}){
             let value = data[key] || '';
             editableData[key] = 
              <Row  justify="center" align="middle">
-            
             <Col span={ columns.indexOf(column) === (columns.length -1) ? 23 :24}>
                 <Input value={value}  onChange={(e)=> onChangeRowValues(e.target.value, index, key)}   />
             </Col>
@@ -212,13 +211,7 @@ function ButtonTable({data, name, onSubmit, form}){
             
             
         </Row>
-            // <Input 
-            //     value={value} onChange={(e)=> onChangeRowValues(e.target.value, index, key)}
-            //     addonAfter={
-            //         columns.indexOf(column) === (columns.length -1) &&
-            //         <DeleteOutlined className='delete_icon'onClick={() => removeRow(index)}
-            //     />} 
-            // />;
+
         }
         return editableData;
     });
