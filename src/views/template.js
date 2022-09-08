@@ -7,8 +7,10 @@ import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
 import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined, TableOutlined } from '@ant-design/icons';
 import { useMenuContext } from '../provider';
-import { ReactSortable } from "react-sortablejs";
+import { ReactSortable, Options, Sortable } from "react-sortablejs";
 import { useLocation } from 'react-router-dom';
+
+
 
 export const PageTemplate = ({
     updateData,
@@ -67,6 +69,8 @@ export const PageTemplate = ({
         setEditMode(!editMode);
     }
     
+
+
     function deleteItem(){
         ajax.delete(api).then( ()=> history.goBack() );
     }
@@ -118,9 +122,14 @@ export const PageTemplate = ({
                         {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
                     </Space>}
                     <div style={{margin: 20}} />
-                    <ReactSortable list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
-                        {sortView}
+
+                    {
+                        !editMode ? sortView : <ReactSortable group="groupName"  list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
+                           {sortView} 
                     </ReactSortable>
+                    }
+                    
+                    
                     {typeof children=='function' ? children(content, editMode, form, saveData) : children}
                 </Col>
                 <Col span={8} push={1} style={{ marginTop: 35 }}>
