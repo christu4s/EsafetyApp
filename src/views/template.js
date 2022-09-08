@@ -172,8 +172,8 @@ function ButtonTable({data, name, onSubmit, form}){
 
     function removeRow(index) {
         const newDataSource = dataSource;
-        newDataSource.splice(0, 1);
-        setColumns([...newDataSource])
+        newDataSource.splice(index, 1);
+        setdataSource([...newDataSource])
     }
 
     
@@ -195,9 +195,30 @@ function ButtonTable({data, name, onSubmit, form}){
     const dataSourceEditable = dataSource.map((data, index)=>{
         var editableData = {};
         for(let column of columns){
+            
             let key = column.dataIndex; 
             let value = data[key] || '';
-            editableData[key] = <Input  value={value} onChange={(e)=> onChangeRowValues(e.target.value, index, key)} />;
+            editableData[key] = 
+             <Row  justify="center" align="middle">
+            
+            <Col span={ columns.indexOf(column) === (columns.length -1) ? 23 :24}>
+                <Input value={value}  onChange={(e)=> onChangeRowValues(e.target.value, index, key)}   />
+            </Col>
+            <Col  span={ columns.indexOf(column) === (columns.length -1) ? 1 : 0}>
+                {columns.indexOf(column) === (columns.length -1) &&
+                    <DeleteOutlined className='delete_icon delete_icon_row' onClick={() => removeRow(index)}
+                />} 
+            </Col>
+            
+            
+        </Row>
+            // <Input 
+            //     value={value} onChange={(e)=> onChangeRowValues(e.target.value, index, key)}
+            //     addonAfter={
+            //         columns.indexOf(column) === (columns.length -1) &&
+            //         <DeleteOutlined className='delete_icon'onClick={() => removeRow(index)}
+            //     />} 
+            // />;
         }
         return editableData;
     });
@@ -210,6 +231,7 @@ function ButtonTable({data, name, onSubmit, form}){
             </Col>
             <Col span={24}>
                 <Input value={column.title} onChange={(e)=> onChangeColumnValues(e.target.value, index)}  />
+
             </Col>
         </Row> ;
         
