@@ -25413,4 +25413,8 @@ div.ant-typography-edit-content.ant-typography-rtl {
   font-weight: bold;
   margin-left: 10px;
 }
+.delete_icon {
+  border: unset;
+  color: #F50A1D;
+}
 /*# sourceMappingURL=App.css.map */

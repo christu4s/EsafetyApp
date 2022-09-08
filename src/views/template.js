@@ -1,4 +1,5 @@
 import { Row, Col, Form, Space, Carousel, Image, Popconfirm, Select, Input, Button, Modal, Table } from 'antd';
+import { SettingOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
 import { ButtonUpload, CardHolder, DescField, EditButtons,VideoInput } from '../utils';
@@ -148,18 +149,35 @@ function ButtonTable({data, name, onSubmit, form}){
         setColumns([...columns]);
     }
 
+    
+
     function addColumn() {
         const columnsInput = {
             title: "",
             dataIndex: 'col'+columns.length,
+            action: 'hi'
         }
         setColumns([...columns, columnsInput]);
+    }
+
+    function removeColumn(index) {
+        let newColumns = columns;
+        newColumns.splice(index, 1);
+        setColumns([...newColumns])
     }
 
     function onChangeRowValues(value, index, key) {
         dataSource[index][key] = value;
         setdataSource([...dataSource]);
     }
+
+    function removeRow(index) {
+        const newDataSource = dataSource;
+        newDataSource.splice(0, 1);
+        setColumns([...newDataSource])
+    }
+
+    
 
     function addDataSource() {
         const rowsInput = {};
@@ -180,25 +198,34 @@ function ButtonTable({data, name, onSubmit, form}){
         for(let column of columns){
             let key = column.dataIndex; 
             let value = data[key] || '';
-            editableData[key] = <Input value={value} onChange={(e)=> onChangeRowValues(e.target.value, index, key)} />;
+            editableData[key] = <Input  value={value} onChange={(e)=> onChangeRowValues(e.target.value, index, key)} />;
         }
         return editableData;
     });
     const columnsEditable = columns.map((column, index)=>{
         var editableCol = {...column};
-        editableCol.title = <Input value={column.title} onChange={(e)=> onChangeColumnValues(e.target.value, index)} />;
+        editableCol.title = 
+        <Row justify="center" align="middle">
+            <Col span={1}  >
+                <DeleteOutlined className='delete_icon' onClick={() => removeColumn(index)} />
+            </Col>
+            <Col span={24}>
+                <Input value={column.title} onChange={(e)=> onChangeColumnValues(e.target.value, index)}  />
+            </Col>
+        </Row> ;
+        
         return editableCol;
     });
 
     return <>
         <Form.Item hidden name={name} initialValue="" />
         <Button type='primary' icon={<TableOutlined />} onClick={()=> setPopup(true)}>Dynamic Table</Button>
-          <Modal title="Dynamic Table" okText="Save" visible={popup} onOk={onSave} onCancel={()=> setPopup(false)} >
+          <Modal title="Dynamic Table" okText="Save" visible={popup} onOk={onSave} onCancel={()=> {setColumns([]); setdataSource([]) ;setPopup(false)}} >
             <Space>
                 <Button onClick={addColumn}>Add Column</Button>
                 <Button onClick={addDataSource}>Add Row</Button>
             </Space>
-            <Table dataSource={dataSourceEditable} columns={columnsEditable}  pagination={false} />
+            <Table dataSource={dataSourceEditable} columns={columnsEditable}  pagination={false}  />
         </Modal>
     </>
 }
