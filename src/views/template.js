@@ -1,5 +1,4 @@
-import { Row, Col, Form, Space, Carousel, Image, Popconfirm, Select, Input, Button, Modal, Table } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { Row, Col, Form, Space,  Image, Popconfirm, Select, Input, Button, Modal, Table, Pagination } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
 import { ButtonUpload, CardHolder, DescField, EditButtons,VideoInput } from '../utils';
@@ -343,8 +342,8 @@ export function ImageViewer({images = [], imageName='', form, editMode}){
 export function PdfViewer({files = [],pdfName='', editMode, form}){
     const [fls, setFls] = useState();
     useEffect(()=>{ setFls((files && files[0]) || null); }, [files, editMode]);
-    useEffect(()=>{ fls && form.setFieldsValue({[pdfName]: fls.id }) }, [fls]);
-    if(!fls) return null;
+    useEffect(()=>{ form.setFieldsValue({[pdfName]: fls ? fls.id : null }) }, [fls]);
+    if(!fls) return <Form.Item hidden name={pdfName} />;
 
     const {type = '', name, src} = fls;
   
@@ -384,6 +383,7 @@ export function ListItems({api,editMode, list = [], countInRow=3, imageKey = 'im
             </Col>
         })}
         </Row>
+        <Pagination />
         {api && editMode && <Form style={{marginTop:30}} form={form}>
             <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
                 {popupExtra}
