@@ -51,7 +51,7 @@ function MajorSCE({content, setContent}) {
 
     return <div className='accident--box bg--white' style={{ marginTop: 60 }} >
         {criticalEquipments.map((v, i) =>{
-            var data = content[v.type] || [];
+            var data = content[v.type.toLowerCase()] || [];
             return <div key={i} className='accident--box--content'>
                 <h4>{v.title}</h4>
                 <div className='accident--icon--box'>
