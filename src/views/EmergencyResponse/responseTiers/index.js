@@ -22,8 +22,9 @@ export const ResponseTiers = () => {
         pdfName="tiers_pdf"
         videoName="tiers_video"
         tableName="table_detail"
-    >{(content, editMode, form) => <TableTiers content={content} editMode={editMode} form={form} />}
-    </PageTemplate>
+    />
+        {/* {(content, editMode, form) => <TableTiers content={content} editMode={editMode} form={form} />} */}
+    
 }
 
 function TableTiers({ content, editMode, form }) {
