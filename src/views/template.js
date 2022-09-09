@@ -70,6 +70,7 @@ export const PageTemplate = ({
     function deleteItem() {
         ajax.delete(api).then(() => history.goBack());
     }
+    console.log("canDelete" + canDelete)
 
     useEffect(() => {
         ajax.get(api).then(res => res && setContent(res));
