@@ -338,8 +338,9 @@ export function ListItems({ api, editMode, list = [], countInRow = 3, imageKey =
     const [form] = Form.useForm();
     const history = useHistory();
     const { pathname } = history.location;
-    const perPage = 9
+    const perPage = 9 //for pagination & Api
     useEffect(() => {
+
         api && ajax.get(api, { count: perPage, page }).then(res => {
             setTotalPages(res.total)
             res && setData(res.data)
@@ -366,7 +367,7 @@ export function ListItems({ api, editMode, list = [], countInRow = 3, imageKey =
         })}
     </Row>
 
-        <Pagination style={{ marginTop: "30px" }} total={totalPages} pageSize={perPage} onChange={(page) => setPage(page)} />
+        {data.length > 0 && <Pagination style={{ marginTop: "30px" }} total={totalPages} pageSize={perPage} onChange={(page) => setPage(page)} />}
         {api && editMode && <Form style={{ marginTop: 30 }} form={form}>
             <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
                 {popupExtra}
