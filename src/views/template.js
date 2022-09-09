@@ -333,10 +333,18 @@ export function PdfViewer({ files = [], pdfName = '', editMode, form }) {
 
 export function ListItems({ api, editMode, list = [], countInRow = 3, imageKey = 'image', popupExtra }) {
     const [data, setData] = useState(list);
+    const [totalPages, setTotalPages] = useState(1);
+    const [page, setPage] = useState(1);
     const [form] = Form.useForm();
     const history = useHistory();
     const { pathname } = history.location;
-    useEffect(() => { api && ajax.get(api, { count: 12 }).then(res => res && setData(res.data)) }, []);
+    const perPage = 9
+    useEffect(() => {
+        api && ajax.get(api, { count: perPage, page }).then(res => {
+            setTotalPages(res.total)
+            res && setData(res.data)
+        })
+    }, [page]);
 
     async function saveData() {
         await ajax.post(api, getFormFields(form)).then(res => res && history.push(`${pathname}/${res.id}`))
@@ -357,7 +365,8 @@ export function ListItems({ api, editMode, list = [], countInRow = 3, imageKey =
             </Col>
         })}
     </Row>
-        <Pagination />
+
+        <Pagination style={{ marginTop: "30px" }} total={totalPages} pageSize={perPage} onChange={(page) => setPage(page)} />
         {api && editMode && <Form style={{ marginTop: 30 }} form={form}>
             <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
                 {popupExtra}
