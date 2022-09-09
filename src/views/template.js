@@ -55,7 +55,7 @@ export const PageTemplate = ({
 
     if(imageName) viewers[imageName]=<ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
     if(pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
-    if(tableName) viewers[tableName] = <TableViewer  tableName={tableName} data={tableData} />;
+    if(tableName) viewers[tableName] = <TableViewer  tableName={tableName} data={tableData} editMode={editMode} form={form} />;
     if(videoName) viewers[videoName] = <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />;
    
    
@@ -273,7 +273,22 @@ export function VideoViewer({videos = [],videoName='', editMode, form}){
     </div>
 }
 
-export function TableViewer({data}){
+export function TableViewer({ tableName, data, editMode, form}){
+    const [table, setTable] = useState();
+    const handleDelete = () => {
+        setTable(null);
+        form.setFieldsValue({[tableName]: table ? table : null });
+    }
+    useEffect(() =>{
+        try{
+        jsonData = JSON.parse(data);
+        const {dataSource, columns} = jsonData || null;
+        setTable({dataSource, columns})
+    }catch(e){
+        return null;
+    }
+    }, [data, editMode]);
+    // useEffect(() => form.setFieldsValue({["table_detail"]: table ? table : null }), [table])
     var jsonData;
     try{
         jsonData = JSON.parse(data);
@@ -281,8 +296,12 @@ export function TableViewer({data}){
         return null;
     }
    // console.log('typeof',typeof(jsonData));
-    const {dataSource, columns} = jsonData || {};
-    return (jsonData != null)? <Table dataSource={dataSource} columns={columns} pagination={false} /> : null;
+    
+    return (table != null)? 
+    <div className='table_wrapper'>
+        {editMode && <a style={{color:'red'}} onClick={handleDelete} >Delete</a>}
+        <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false}  />
+    </div> : null;
 }
 export function ImageViewer({images = [], imageName='', form, editMode}){
     const [imgs, setImgs] = useState([]);
@@ -367,6 +386,7 @@ export function PdfViewer({files = [],pdfName='', editMode, form}){
     const [fls, setFls] = useState();
     useEffect(()=>{ setFls((files && files[0]) || null); }, [files, editMode]);
     useEffect(()=>{ form.setFieldsValue({[pdfName]: fls ? fls.id : null }) }, [fls]);
+    
     if(!fls) return <Form.Item hidden name={pdfName} />;
 
     const {type = '', name, src} = fls;
