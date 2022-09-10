@@ -8,43 +8,44 @@ import { TitleEdit } from '../../../../utils';
 
 export * from './details';
 
-export const CriticalElementType = ({match}) => {
-    const {type = ''} = match.params;
-    const equipment = criticalEquipments.find(p => p.type==type);
-    if(!equipment) return null;
-
-    return <PageTemplate 
-        backButton
-        iconUrl={alert}
-        title="Safety Critical Equipment" 
-        subtitle={equipment.title}
-        api={equipment.api} 
-        descName={type + "_desc"}
-        imageName={equipment.imageKey}
-        pdfName={equipment.pdfKey}
-        >{(content,editMode)=> <ListItems 
-            api={equipment.itemApi} 
-            editMode={editMode} 
-            imageKey={equipment.imageKey}
-            popupExtra={<div className='area--form'>
-                <label>Name of {equipment.title}</label>
-                <Form.Item name="title"><Input /></Form.Item>
-            </div>} 
-        />}
-    </PageTemplate>
-}
-
-export const CriticalEquipmentItem = ({match}) => {
-    const {type = '', id} = match.params;
-    const equipment = criticalEquipments.find(p => p.type==type);
-    if(!equipment) return null;
+export const CriticalElementType = ({ match }) => {
+    const { type = '' } = match.params;
+    const equipment = criticalEquipments.find(p => p.type == type);
+    if (!equipment) return null;
 
     return <PageTemplate
         backButton
         iconUrl={alert}
-        title={"Safety Critical Equipment (" + equipment.title + ")"} 
+        title="Safety Critical Equipment"
+        subtitle={equipment.title}
+        api={equipment.api}
+        descName={type + "_desc"}
+        imageName={equipment.imageKey}
+        pdfName={equipment.pdfKey}
+    >{(content, editMode) => <ListItems
+        api={equipment.itemApi}
+        editMode={editMode}
+        imageKey={equipment.imageKey}
+        popupExtra={<div className='area--form'>
+            <label>Name of {equipment.title}</label>
+            <Form.Item name="title"><Input /></Form.Item>
+        </div>}
+    />}
+    </PageTemplate>
+}
+
+export const CriticalEquipmentItem = ({ match }) => {
+    const { type = '', id } = match.params;
+    const equipment = criticalEquipments.find(p => p.type == type);
+    if (!equipment) return null;
+
+    return <PageTemplate
+        canDelete
+        backButton
+        iconUrl={alert}
+        title={"Safety Critical Equipment (" + equipment.title + ")"}
         subtitle={TitleEdit}
-        api={equipment.itemApi + '/' + id} 
+        api={equipment.itemApi + '/' + id}
         descName="desc"
         imageName={equipment.imageKey}
         pdfName={equipment.pdfKey}
