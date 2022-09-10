@@ -76,8 +76,6 @@ export const PageTemplate = ({
         ajax.get(api).then(res => res && setContent(res));
     }, [updateData]);
 
-
-
     return (
         <div className='facility--wrapper'>
 
@@ -107,7 +105,6 @@ export const PageTemplate = ({
                                     </Popconfirm>
                                     }
                                 </div>
-
                             </Col>
                         </Row>
                         {descName && <div className='box--facility area--box--facility'>

@@ -12,6 +12,7 @@ export const SafetyManagementItem = ({ match }) => {
   const { id } = match.params;
 
   return <PageTemplate
+    canDelete
     updateData={id}
     backButton
     iconUrl={danger}
