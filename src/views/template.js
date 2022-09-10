@@ -70,7 +70,7 @@ export const PageTemplate = ({
     function deleteItem() {
         ajax.delete(api).then(() => history.goBack());
     }
-    console.log("canDelete" + canDelete)
+
 
     useEffect(() => {
         ajax.get(api).then(res => res && setContent(res));
@@ -80,6 +80,7 @@ export const PageTemplate = ({
 
     return (
         <div className='facility--wrapper'>
+
             {backButton && <a href="#" onClick={() => history.goBack()} style={{ color: '#282828' }}>
                 <Space><ArrowLeftOutlined />Back</Space>
             </a>}

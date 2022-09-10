@@ -13,7 +13,9 @@ import { getFormFields, ListItems, PageTemplate } from './../template';
 export * from './details';
 
 export const SafetyManagement = ({ history }) => {
+
     return <PageTemplate
+
         iconUrl={extinguisher}
         updateMenu
         subtitle={(content, editMode) => TitleEdit(content, editMode, "Safety Management System")}
@@ -23,16 +25,19 @@ export const SafetyManagement = ({ history }) => {
         pdfName="safety_management_pdf"
         videoName="safety_management_video"
         tableName="table_detail"
-    >{(content, editMode) => <ListItems
-        api="/safety_manage_commit"
-        editMode={editMode}
-        popupExtra={<div className='area--form'>
-            <label>Name of File</label>
-            <Form.Item name="title"><Input /></Form.Item>
-            <label>Add Description</label>
-            <Form.Item name="desc"><Input.TextArea /></Form.Item>
-        </div>}
-    />}
+    >
+        {(content, editMode) => <ListItems
+
+            api="/safety_manage_commit"
+            editMode={editMode}
+            popupExtra={<div className='area--form'>
+                <label>Name of File</label>
+                <Form.Item name="title"><Input /></Form.Item>
+                <label>Add Description</label>
+                <Form.Item name="desc"><Input.TextArea /></Form.Item>
+            </div>}
+        />
+        }
     </PageTemplate>
 }
 

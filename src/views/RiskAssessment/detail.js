@@ -9,7 +9,7 @@ export const RiskAssessmentDetail = ({ match }) => {
     const { id } = match.params;
 
     return <PageTemplate
-
+        canDelete
         updateData={id}
         iconUrl={danger}
         title="Risk Assessment"

@@ -17,19 +17,19 @@ export const CriticalElement = () => {
         { title: 'Procedure', url: '/safety-critical/procedure', image: imageProcedure },
     ]
 
-    return <PageTemplate 
-        iconUrl={alert}  
+    return <PageTemplate
+        iconUrl={alert}
         updateMenu
-        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safety Critical Element")} 
-        api="/safetyCriticalElement" 
+        subtitle={(content, editMode) => TitleEdit(content, editMode, "Safety Critical Element")}
+        api="/safetyCriticalElement"
         descName="critical_element_desc"
         imageName="critical_element_image"
         pdfName="critical_element_pdf"
         videoName="critical_element_video"
         tableName="table_detail"
-        >
+    >
         <Row>
-            {subpages.map((sub, i) => <Col key={i} span={8}><CardHolder {...sub} /></Col>)}              
+            {subpages.map((sub, i) => <Col key={i} span={8}><CardHolder {...sub} /></Col>)}
         </Row>
     </PageTemplate>
 }
