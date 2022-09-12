@@ -64,11 +64,11 @@ function ProcedureTable({ editMode }) {
 
     return <div className="management--wrapper">
         <div className='divider' style={{ marginBottom: 20 }}></div>
-        <Table dataSource={data} columns={columns} pagination={{
+        {data.length > 0 && <Table dataSource={data} columns={columns} pagination={{
             total: totalPages,
             pageSize: perPage,
             onChange: (v) => setPage(v)
-        }} />
+        }} />}
         {editMode && <Form form={form}><ButtonUpload name="procedure_file" onSubmit={submit}>
             <div className='area--form'>
                 <label>Safety Critical Procedure</label>
