@@ -434,7 +434,6 @@ export function ListItems({ api, editMode, list = [], countInRow = 3, imageKey =
             </Col>
         })}
     </Row>
-
         {data.length > 0 && <Pagination style={{ marginTop: "30px" }} total={totalPages} pageSize={perPage} onChange={(page) => setPage(page)} />}
         {api && editMode && <Form style={{ marginTop: 30 }} form={form}>
             <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
