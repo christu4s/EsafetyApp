@@ -43,7 +43,7 @@ export const CriticalEquipment = () => {
           <Timeline.Item>
             <div className="timeline--box timeline--box--withimage">
               <p>
-                <img width="25" src={fire} /> Hazards
+                <img width="25" src={fire} /> Consequence
               </p>
             </div>
           </Timeline.Item>

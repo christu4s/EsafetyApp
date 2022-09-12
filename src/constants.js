@@ -20,5 +20,4 @@ export const criticalEquipments = [
     { title: "Control", type: "control", api: '/control', itemApi: '/control_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf" },
     { title: "Mitigation", type: "mitigation", api: '/mitigation', itemApi: '/mitigation_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf" },
     { title: "Emergency Response", type: "emergencyResponse", api: '/equipment_emergency_response', itemApi: '/response_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf"},
-    { title: "Incident", type: "incident", api: '/incident', itemApi: '/incident_add_sce', imageKey:'prevention_image', pdfKey:"prevention_pdf"},
 ];
