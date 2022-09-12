@@ -61,7 +61,6 @@ function ProcedureTable({ editMode }) {
             render: (value, row, index) => editMode && <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
         },
     ];
-    console.log(totalPages)
 
     return <div className="management--wrapper">
         <div className='divider' style={{ marginBottom: 20 }}></div>

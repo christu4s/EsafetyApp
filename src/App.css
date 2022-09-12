@@ -25135,6 +25135,11 @@ div.ant-typography-edit-content.ant-typography-rtl {
   margin-top: 0;
   line-height: 28px;
 }
+.facility--wrapper h1 {
+  font-size: 32px;
+  font-weight: 800;
+  font-family: 'Lato', sans-serif;
+}
 .facility--wrapper h2 {
   font-size: 25px;
   font-weight: 700;
