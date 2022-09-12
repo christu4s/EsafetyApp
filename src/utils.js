@@ -26,7 +26,7 @@ export const BoxHolder = ({title, img , active, url })=>{
   )
 }
 
-export const CardHolder = ({url, image, title}) => <Link to={url}>
+export const CardHolder = ({url, image, title, pin, onChangePin}) => <Link to={url}>
   <Card className='custom--card' hoverable cover={<img alt="example" src={image} />}>
       <Card.Meta title={title} />
   </Card>
