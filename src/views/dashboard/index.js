@@ -29,7 +29,7 @@ export const Dashboard = () =>{
         {title: 'Emergency Response ', img: alert,  active:false, url: '/emergency-response'},
         {title: 'Safety Management System ', img: checked,  active:false, url: '/safety-management'},
         {title: 'Remedial Action Plan ', img: planning,  active:false, url: '/remedial-action'},
-        {title: 'Written Safety Case ', img: writting,  active:false, url: '/written-safety'},
+        {title: 'Written Safety Case ', img: writting,  active:false, url: '/writen-safety'},
     ] 
 
     return(
