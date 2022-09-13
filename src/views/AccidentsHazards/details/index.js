@@ -55,7 +55,7 @@ function MajorSCE({content, setContent}) {
             return <div key={i} className='accident--box--content'>
                 <h4>{v.title}</h4>
                 <div className='accident--icon--box'>
-                    <Button type="text" style={{color:'#fff'}} onClick={()=> setSCE(v)} icon={<PlusCircleOutlined />}>Add SCE</Button>
+                    <Button type="text" style={{color:'#fff'}} onClick={()=> setSCE({...v, type: v.type.toLowerCase()})} icon={<PlusCircleOutlined />}>Add SCE</Button>
                 </div>
                 <List bordered dataSource={data} size="small" renderItem={item => (<List.Item >
                     <Link to={'/safety-critical/equipment/'+ v.type + '/' + item.ID}>{item.post_title}</Link>       
