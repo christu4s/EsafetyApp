@@ -63,7 +63,7 @@ class App extends React.Component {
         </Header>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider width={300}>
-          <Menu selectedKeys={selected} openKeys={selected} className='menu--holder' onClick={this.redirect} mode="inline">
+          <Menu  selectedKeys={selected}  className='menu--holder' onClick={this.redirect} mode="inline">
             {customMenu(menus)}
           </Menu>
         </Sider>

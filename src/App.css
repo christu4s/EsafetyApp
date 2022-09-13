@@ -25414,4 +25414,19 @@ div.ant-typography-edit-content.ant-typography-rtl {
   font-weight: bold;
   margin-left: 10px;
 }
+.delete_icon {
+  color: #F50A1D;
+}
+.delete_icon_row {
+  padding-left: 5px;
+}
+.table_wrapper {
+  position: relative;
+}
+.table_wrapper a {
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  top: 10px;
+}
 /*# sourceMappingURL=App.css.map */

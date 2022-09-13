@@ -24,8 +24,7 @@ export const ResponseOrganisation = () => {
         pdfName="organisation_pdf"
         videoName="organisation_video"
         tableName="table_detail"
-    >{(content,editMode,form)=> <TableOrg content={content} editMode={editMode} form={form} />}
-    </PageTemplate>
+    />
 }
 
 function TableOrg({ content, editMode, form }) {

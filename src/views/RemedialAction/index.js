@@ -19,8 +19,8 @@ export const RemedialAction = () => {
         pdfName="remedial_pdf"
         videoName="remedial_video"
         tableName="table_detail"
-    >{(content,editMode,form)=> <TableRemedial content={content} editMode={editMode} form={form} />}
-    </PageTemplate>
+    />
+   
 }
 
 function TableRemedial({ content, editMode, form }) {
