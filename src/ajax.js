@@ -20,9 +20,11 @@ export default class ajax {
                 var r = await axios({ method, url: ajax_url + path, ...params });
                 if (showLoading) this.message(r, key);
                 resolve(r.data);
+                message.destroy();
             } catch (e) {
                 this.message(e.response, key);
                 reject('Error');
+                message.destroy();
             }
         });
     }
