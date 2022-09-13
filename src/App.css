@@ -25434,4 +25434,28 @@ div.ant-typography-edit-content.ant-typography-rtl {
   right: 10px;
   top: 10px;
 }
+.card_pin {
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  z-index: 2;
+  width: 50px;
+  font-size: 40px;
+  cursor: pointer ;
+  transition: 0.3s;
+}
+.card_pin.pinned {
+  color: red;
+}
+.card_pin.pinned:hover {
+  color: #fff;
+  transform: rotate(50deg);
+}
+.card_pin.unpinned {
+  color: #fff;
+}
+.card_pin.unpinned:hover {
+  color: red;
+  transform: rotate(-50deg);
+}
 /*# sourceMappingURL=App.css.map */
