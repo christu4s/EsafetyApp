@@ -22,14 +22,14 @@ export const Dashboard = () =>{
     };
 
     const boxContent = [
-        {title: 'Facilities Overview', img: blueprint, active:true, url: '/facility-overview' },
+        {title: 'Facilities Overview new', img: blueprint, active:true, url: '/facility-overview' },
         {title: 'Major Accident Hazards', img: fire, active:false,url: '/accidents-hazards' },
-        {title: 'Risk Assessment', img: danger,  active:false, url: '/risk-assessment' },
+        {title: 'Risk Assessment Test', img: danger,  active:false, url: '/risk-assessment' },
         {title: 'Safety Critical Element ', img: extinguisher,  active:false, url: '/safety-critical'},
         {title: 'Emergency Response ', img: alert,  active:false, url: '/emergency-response'},
         {title: 'Safety Management System ', img: checked,  active:false, url: '/safety-management'},
         {title: 'Remedial Action Plan ', img: planning,  active:false, url: '/remedial-action'},
-        {title: 'Written Safety Case ', img: writting,  active:false, url: '/written-safety'},
+        {title: 'Written Safety Case ', img: writting,  active:false, url: '/writen-safety'},
     ] 
 
     return(
