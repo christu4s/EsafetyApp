@@ -28,10 +28,11 @@ export const BoxHolder = ({ title, img, active, url }) => {
 
 export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
   <>
-    {pin ?
+    {pin !== undefined ? pin ?
       <PushpinFilled className="card_pin pinned " onClick={onChangePin} />
       :
-      <PushpinOutlined rotate={50} className="card_pin unpinned " onClick={onChangePin} />
+      <PushpinOutlined rotate={50} className="card_pin unpinned " onClick={onChangePin} /> :
+      null
     }
     <Link to={url}>
       <Card className='custom--card' hoverable cover={<img alt="example" src={image} />}>
