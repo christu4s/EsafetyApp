@@ -1,4 +1,4 @@
-import { Row, Col, Form, Space,  Image, Popconfirm, Select, Input, Button, Modal, Table, Pagination } from 'antd';
+import { Row, Col, Form, Space, Image, Popconfirm, Select, Input, Button, Modal, Table, Pagination } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
 import { ButtonUpload, CardHolder, DescField, EditButtons, VideoInput } from '../utils';
@@ -75,11 +75,10 @@ export const PageTemplate = ({
         ajax.delete(api).then( ()=> history.goBack() );
     }
 
+
     useEffect(() => {
         ajax.get(api).then(res => res && setContent(res));
     }, [updateData]);
-
-
 
     return (
         <div className='facility--wrapper'>
@@ -157,7 +156,7 @@ function ButtonTable({ data, name, onSubmit, form }) {
         setColumns([...columns]);
     }
 
-    
+
 
     function addColumn() {
         const columnsInput = {
@@ -184,7 +183,7 @@ function ButtonTable({ data, name, onSubmit, form }) {
         setdataSource([...newDataSource])
     }
 
-    
+
 
     function addDataSource() {
         const rowsInput = {};
@@ -202,40 +201,40 @@ function ButtonTable({ data, name, onSubmit, form }) {
 
     const dataSourceEditable = dataSource.map((data, index) => {
         var editableData = {};
-        for(let column of columns){
-            
-            let key = column.dataIndex; 
+        for (let column of columns) {
+
+            let key = column.dataIndex;
             let value = data[key] || '';
-            editableData[key] = 
-             <Row  justify="center" align="middle">
-            <Col span={ columns.indexOf(column) === (columns.length -1) ? 23 :24}>
-                <Input value={value}  onChange={(e)=> onChangeRowValues(e.target.value, index, key)}   />
-            </Col>
-            <Col  span={ columns.indexOf(column) === (columns.length -1) ? 1 : 0}>
-                {columns.indexOf(column) === (columns.length -1) &&
-                    <DeleteOutlined className='delete_icon delete_icon_row' onClick={() => removeRow(index)}
-                />} 
-            </Col>
-            
-            
-        </Row>
+            editableData[key] =
+                <Row justify="center" align="middle">
+                    <Col span={columns.indexOf(column) === (columns.length - 1) ? 23 : 24}>
+                        <Input.TextArea Row={1} value={value} onChange={(e) => onChangeRowValues(e.target.value, index, key)} />
+                    </Col>
+                    <Col span={columns.indexOf(column) === (columns.length - 1) ? 1 : 0}>
+                        {columns.indexOf(column) === (columns.length - 1) &&
+                            <DeleteOutlined className='delete_icon delete_icon_row' onClick={() => removeRow(index)}
+                            />}
+                    </Col>
+
+
+                </Row>
 
         }
         return editableData;
     });
-    const columnsEditable = columns.map((column, index)=>{
-        var editableCol = {...column};
-        editableCol.title = 
-        <Row justify="center" align="middle">
-            <Col span={1}  >
-                <DeleteOutlined className='delete_icon' onClick={() => removeColumn(index)} />
-            </Col>
-            <Col span={24}>
-                <Input value={column.title} onChange={(e)=> onChangeColumnValues(e.target.value, index)}  />
+    const columnsEditable = columns.map((column, index) => {
+        var editableCol = { ...column };
+        editableCol.title =
+            <Row justify="center" align="middle">
+                <Col span={1}  >
+                    <DeleteOutlined className='delete_icon' onClick={() => removeColumn(index)} />
+                </Col>
+                <Col span={24}>
+                    <Input.TextArea Row={1} value={column.title} onChange={(e) => onChangeColumnValues(e.target.value, index)} />
 
-            </Col>
-        </Row> ;
-        
+                </Col>
+            </Row>;
+
         return editableCol;
     });
 
@@ -247,7 +246,7 @@ function ButtonTable({ data, name, onSubmit, form }) {
                 <Button onClick={addColumn}>Add Column</Button>
                 <Button onClick={addDataSource}>Add Row</Button>
             </Space>
-            <Table dataSource={dataSourceEditable} columns={columnsEditable}  pagination={false}  />
+            <Table dataSource={dataSourceEditable} columns={columnsEditable} pagination={false} />
         </Modal>
     </>
 }
@@ -272,20 +271,20 @@ export function VideoViewer({ videos = [], videoName = '', editMode, form }) {
     </div>
 }
 
-export function TableViewer({ tableName, data, editMode, form}){
+export function TableViewer({ tableName, data, editMode, form }) {
     const [table, setTable] = useState();
     const handleDelete = () => {
         setTable(null);
-        form.setFieldsValue({[tableName]: table ? table : null });
+        form.setFieldsValue({ [tableName]: table ? table : null });
     }
-    useEffect(() =>{
-        try{
-        jsonData = JSON.parse(data);
-        const {dataSource, columns} = jsonData || null;
-        setTable({dataSource, columns})
-    }catch(e){
-        return null;
-    }
+    useEffect(() => {
+        try {
+            jsonData = JSON.parse(data);
+            const { dataSource, columns } = jsonData || null;
+            setTable({ dataSource, columns })
+        } catch (e) {
+            return null;
+        }
     }, [data, editMode]);
     // useEffect(() => form.setFieldsValue({["table_detail"]: table ? table : null }), [table])
     var jsonData;
@@ -301,6 +300,13 @@ export function TableViewer({ tableName, data, editMode, form}){
         {editMode && <a style={{color:'red'}} onClick={handleDelete} >Delete</a>}
         <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false}  />
     </div> : null;
+    // console.log('typeof',typeof(jsonData));
+
+    return (table != null) ?
+        <div className='table_wrapper'>
+            {editMode && <a style={{ color: 'red' }} onClick={handleDelete} >Delete</a>}
+            <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false} />
+        </div> : null;
 }
 export function ImageViewer({ images = [], imageName = '', form, editMode }) {
     const [imgs, setImgs] = useState([]);
@@ -401,18 +407,31 @@ export function PdfViewer({ files = [], pdfName = '', editMode, form }) {
 
 export function ListItems({ api, editMode, list = [], countInRow = 3, imageKey = 'image', popupExtra }) {
     const [data, setData] = useState(list);
+    const [totalPages, setTotalPages] = useState(1);
+    const [page, setPage] = useState(1);
+    const [refresh, setRefresh] = useState(true);
     const [form] = Form.useForm();
     const history = useHistory();
     const { pathname } = history.location;
-    useEffect(() => { api && ajax.get(api, { count: 12 }).then(res => res && setData(res.data)) }, []);
+    const perPage = 9 //for pagination & Api
+    useEffect(() => {
+        api && ajax.get(api, { count: perPage, page }).then(res => {
+            setTotalPages(res.total)
+            res && setData(res.data)
+        })
+    }, [page, refresh]);
 
     async function saveData() {
         await ajax.post(api, getFormFields(form)).then(res => res && history.push(`${pathname}/${res.id}`))
     }
 
+    async function pin(id, pin = true) {
+        await ajax.post(api + '/' + id, { order: pin ? (new Date()).getTime() : 0 }).then(res => setRefresh(!refresh))
+    }
+
     return <div><Row gutter={[16, 16]}>
         {data && data.map((v, i) => {
-            var src, url;
+            var src, url, isPin = v.order > 0;
             if (api) {
                 src = v[imageKey] && v[imageKey].length ? v[imageKey][0].src : image;
                 url = `${pathname}/${v.id}`;
@@ -421,11 +440,11 @@ export function ListItems({ api, editMode, list = [], countInRow = 3, imageKey =
                 url = v.url;
             }
             return <Col key={i} span={24 / countInRow}>
-                <CardHolder image={src} title={v.title} url={url} />
+                <CardHolder image={src} title={v.title} url={url} pin={isPin} onChangePin={() => pin(v.id, !isPin)} />
             </Col>
         })}
     </Row>
-        <Pagination />
+        {data.length > 0 && <Pagination style={{ marginTop: "30px" }} total={totalPages} pageSize={perPage} onChange={(page) => setPage(page)} />}
         {api && editMode && <Form style={{ marginTop: 30 }} form={form}>
             <ButtonUpload name={imageKey} onSubmit={saveData} addMore buttonText="Add more" accept="image/*">
                 {popupExtra}

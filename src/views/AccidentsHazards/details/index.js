@@ -9,8 +9,10 @@ import { criticalEquipments } from '../../../constants';
 import { Link, useParams } from 'react-router-dom';
 
 export const AccidentsHazardItem = ({ match }) => {
+
     const { id } = match.params;
     return <PageTemplate
+        canDelete
         iconUrl={fire}
         title="Major Accident Hazards"
         subtitle={TitleEdit}
@@ -20,34 +22,34 @@ export const AccidentsHazardItem = ({ match }) => {
         pdfName="pdf"
         videoName="video"
         tableName="table_detail"
-        right={({content, setContent}) => <MajorSCE content={content} setContent={setContent} />}>
+        right={({ content, setContent }) => <MajorSCE content={content} setContent={setContent} />}>
     </PageTemplate>
 }
 
-function MajorSCE({content, setContent}) {
-    const {id} = useParams();
+function MajorSCE({ content, setContent }) {
+    const { id } = useParams();
     const [sce, setSCE] = useState();
     const [options, setOption] = useState([]);
     const [formExisting] = Form.useForm();
-    const closeModal = ()=> setSCE(null);  
-    const sces = sce ? (content[sce.type] || []) : [];  
-    async function save(){
-        formExisting.validateFields().then(async v=>{
+    const closeModal = () => setSCE(null);
+    const sces = sce ? (content[sce.type] || []) : [];
+    async function save() {
+        formExisting.validateFields().then(async v => {
             var res = await ajax.post('/major_accident_hazards_item/' + id, v);
             setContent(res);
             closeModal();
         })
     }
-    useEffect(()=>{
-        sce && formExisting.setFieldsValue({[sce.type]: sces.map(v=> v.ID)});
+    useEffect(() => {
+        sce && formExisting.setFieldsValue({ [sce.type]: sces.map(v => v.ID) });
     }, [sce]);
-    
-    async function search(search){
-        var res = await ajax.get(sce.itemApi, {search})
-        if(!res || !res.data) return;
-        setOption(res.data.map(v=> ({label: v.title, value: v.id})));
+
+    async function search(search) {
+        var res = await ajax.get(sce.itemApi, { search })
+        if (!res || !res.data) return;
+        setOption(res.data.map(v => ({ label: v.title, value: v.id })));
     }
-    
+
 
     return <div className='accident--box bg--white' style={{ marginTop: 60 }} >
         {criticalEquipments.map((v, i) =>{
@@ -58,16 +60,17 @@ function MajorSCE({content, setContent}) {
                     <Button type="text" style={{color:'#fff'}} onClick={()=> setSCE({...v, type: v.type.toLowerCase()})} icon={<PlusCircleOutlined />}>Add SCE</Button>
                 </div>
                 <List bordered dataSource={data} size="small" renderItem={item => (<List.Item >
-                    <Link to={'/safety-critical/equipment/'+ v.type + '/' + item.ID}>{item.post_title}</Link>       
-                </List.Item>)}/>
-            </div>})}
-        {sce && <Modal title={sce.title} visible={true} onOk={save} onCancel={closeModal} bodyStyle={{padding:0}}>
+                    <Link to={'/safety-critical/equipment/' + v.type + '/' + item.ID}>{item.post_title}</Link>
+                </List.Item>)} />
+            </div>
+        })}
+        {sce && <Modal title={sce.title} visible={true} onOk={save} onCancel={closeModal} bodyStyle={{ padding: 0 }}>
             <Tabs defaultActiveKey="1" type="card">
-                <Tabs.TabPane tab="Existing" key="1" style={{padding:'0 20px'}}>
+                <Tabs.TabPane tab="Existing" key="1" style={{ padding: '0 20px' }}>
                     <Form form={formExisting}>
                         <Form.List name={sce.type}>
-                            {(fields) =><> 
-                                {sces.map((item, i)=><Form.Item hidden name={i}><Input /></Form.Item>)}
+                            {(fields) => <>
+                                {sces.map((item, i) => <Form.Item hidden name={i}><Input /></Form.Item>)}
                                 <Form.Item name={sces.length} label="SCE" required>
                                     <Select showSearch showArrow={false} notFoundContent={null} filterOption={false} onSearch={search} options={options} />
                                 </Form.Item>
@@ -95,7 +98,7 @@ function MajorSCE({content, setContent}) {
 
 //     async function saveData() {
 //         var {desc, image} = form.getFieldsValue();
-//         await ajax.post('/major_accident_hazards_item/'+ id, {desc, image: image ? image.file : null}).then(res =>{ 
+//         await ajax.post('/major_accident_hazards_item/'+ id, {desc, image: image ? image.file : null}).then(res =>{
 //             res && setContent(res);
 //             setEditMode(!editMode);
 //         });
@@ -114,7 +117,7 @@ function MajorSCE({content, setContent}) {
 //                                 <div>
 //                                     <p style={{marginBottom:0}}>Major Accident Hazards</p>
 //                                     <h2>{content.title}</h2>
-//                                 </div>   
+//                                 </div>
 //                             </Space>
 //                         </div>
 //                         <div><EditButtons editMode={editMode} toggle={()=> setEditMode(!editMode)} save={saveData} /></div>

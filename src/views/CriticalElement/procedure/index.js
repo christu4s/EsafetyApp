@@ -10,29 +10,40 @@ import { TitleEdit } from '../../../utils';
 
 export const CriticalProcedure = () => {
     return <PageTemplate
-        iconUrl={alert} 
-        title="Safty Critical Element" 
+        iconUrl={alert}
+        title="Safty Critical Element"
         updateMenu
-        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safty Critical Procedure")} 
-        api="/critical_procedure" 
+        subtitle={(content, editMode) => TitleEdit(content, editMode, "Safty Critical Procedure")}
+        api="/critical_procedure"
         descName="procedure_desc"
         imageName="procedure_image"
         pdfName="procedure_pdf"
         videoName="procedure_video"
         tableName="table_detail"
-        >{(content,editMode)=> <ProcedureTable editMode={editMode} />}
+    >{(content, editMode) => <ProcedureTable editMode={editMode} />}
     </PageTemplate>
 }
 
 function ProcedureTable({ editMode }) {
     const [data, setData] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [page, setPage] = useState(1);
+    const perPage = 10 //for pagination & Api
+
+
+
     const [form] = Form.useForm();
     const [now, setNow] = useState();
     const refresh = () => setNow(new Date());
-    useEffect(() => { ajax.get('/safety_critical_procedure').then(res => res && setData(res.data)); }, [now]);
+    useEffect(() => {
+        ajax.get('/safety_critical_procedure', { count: perPage, page }).then(res => {
+            res && setTotalPages(res.total)
+            res && setData(res.data)
+        });
+    }, [now, page]);
 
-    function submit() { 
-        ajax.post('/safety_critical_procedure',getFormFields(form)).then(refresh);
+    function submit() {
+        ajax.post('/safety_critical_procedure', getFormFields(form)).then(refresh);
     }
     function deleteRow(id) {
         ajax.delete('/safety_critical_procedure/' + id).then(refresh);
@@ -53,7 +64,11 @@ function ProcedureTable({ editMode }) {
 
     return <div className="management--wrapper">
         <div className='divider' style={{ marginBottom: 20 }}></div>
-        <Table dataSource={data} columns={columns} />
+        {data.length > 0 && <Table dataSource={data} columns={columns} pagination={{
+            total: totalPages,
+            pageSize: perPage,
+            onChange: (v) => setPage(v)
+        }} />}
         {editMode && <Form form={form}><ButtonUpload name="procedure_file" onSubmit={submit}>
             <div className='area--form'>
                 <label>Safety Critical Procedure</label>

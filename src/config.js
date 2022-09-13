@@ -71,10 +71,12 @@ export const menus = [
         icon: < img src={facilityImg} alt="facility" />,
         url: '#/facility-overview',
         api: '/facility_overview',
+        // childApi: '/facility_overview',
+
         children: [
             { title: 'Area', exact: true, url: '#/facility-overview/area', api: '/facility_overview', titleKey: 'subtitle' },
             { title: 'Process', exact: true, url: '#/facility-overview/process', api: '/facilities_process' },
-            { title: 'Manning', exact: true, url: '#/facility-overview/manning' , api: '/facility_manning'},
+            { title: 'Manning', exact: true, url: '#/facility-overview/manning', api: '/facility_manning' },
         ]
     },
     {
@@ -118,7 +120,7 @@ export const menus = [
         url: '#/emergency-response',
         api: '/emergency_respons',
         children: [
-            { title: 'Emergency Response Tiers', exact: true, url: '#/emergency-response/tiers', api: '/emergency_response_tiers'},
+            { title: 'Emergency Response Tiers', exact: true, url: '#/emergency-response/tiers', api: '/emergency_response_tiers' },
             { title: 'Emergency Response Organisation', exact: true, url: '#/emergency-response/organisation', api: '/emergency_response_organisation' },
             { title: 'Emergency Response Plan', exact: true, url: '#/emergency-response/plan', api: '/response_plan' },
             { title: 'Scenario Specific Action Plan', exact: true, url: '#/emergency-response/scenario', api: '/scenario_action' },

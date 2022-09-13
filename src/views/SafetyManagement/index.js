@@ -12,27 +12,32 @@ import { getFormFields, ListItems, PageTemplate } from './../template';
 
 export * from './details';
 
-export const SafetyManagement = ({history}) => {
+export const SafetyManagement = ({ history }) => {
+
     return <PageTemplate
+
         iconUrl={extinguisher}
         updateMenu
-        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safety Management System")}
+        subtitle={(content, editMode) => TitleEdit(content, editMode, "Safety Management System")}
         api="/safety_management"
         descName="safety_management_desc"
         imageName="safety_management_image"
         pdfName="safety_management_pdf"
         videoName="safety_management_video"
         tableName="table_detail"
-    >{(content, editMode) => <ListItems 
-        api="/safety_manage_commit" 
-        editMode={editMode} 
-        popupExtra={<div className='area--form'>
-            <label>Name of File</label>
-            <Form.Item name="title"><Input /></Form.Item>
-            <label>Add Description</label>
-            <Form.Item name="desc"><Input.TextArea /></Form.Item>
-        </div>} 
-    />}
+    >
+        {(content, editMode) => <ListItems
+
+            api="/safety_manage_commit"
+            editMode={editMode}
+            popupExtra={<div className='area--form'>
+                <label>Name of File</label>
+                <Form.Item name="title"><Input /></Form.Item>
+                <label>Add Description</label>
+                <Form.Item name="desc"><Input.TextArea /></Form.Item>
+            </div>}
+        />
+        }
     </PageTemplate>
 }
 
@@ -43,8 +48,8 @@ function SafetyBox({ editMode, history }) {
     const refresh = () => setNow(new Date());
     useEffect(() => { ajax.get('/safety_manage_commit').then(res => res && setData(res.data)); }, [now]);
 
-    function submit() { 
-        ajax.post('/safety_manage_commit',getFormFields(form)).then(res => { res && history.push('/safety-management/' + res.id) });
+    function submit() {
+        ajax.post('/safety_manage_commit', getFormFields(form)).then(res => { res && history.push('/safety-management/' + res.id) });
     }
 
     return <div className="management--wrapper">
@@ -62,7 +67,7 @@ function SafetyBox({ editMode, history }) {
                 <Link to={'/safety-management/' + v.id}>
                     <div className="blue--box">
                         <h3>{v.title}</h3>
-                        <p className="box-desc" dangerouslySetInnerHTML={{__html: v.desc}} />
+                        <p className="box-desc" dangerouslySetInnerHTML={{ __html: v.desc }} />
                     </div>
                 </Link>
             </Col>)}
