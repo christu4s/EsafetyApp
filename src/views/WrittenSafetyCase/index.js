@@ -9,27 +9,36 @@ import { DeleteOutlined } from '@ant-design/icons';
 
 export const WrittenSafetyCase = () => {
     return <PageTemplate
-        iconUrl={extinguisher} 
+        iconUrl={extinguisher}
         updateMenu
-        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Written Safety Case")}
-        api="/written_safety_case" 
+        subtitle={(content, editMode) => TitleEdit(content, editMode, "Written Safety Case")}
+        api="/written_safety_case"
         descName="safety_desc"
         imageName="safety_image"
         pdfName="safety_pdf"
         videoName="safety_video"
         tableName="table_detail"
-        >
-        {(content, editMode) => <TableWritten editMode={editMode} />}    
+    >
+        {(content, editMode) => <TableWritten editMode={editMode} />}
     </PageTemplate>
 }
 
-function TableWritten({editMode}){
+function TableWritten({ editMode }) {
     const [data, setData] = useState([]);
     const [form] = Form.useForm();
     const [now, setNow] = useState();
     const refresh = () => setNow(new Date());
-    useEffect(() => { ajax.get('/writen-safety').then(res => res && setData(res.data)); },[now]);
-    
+    const [totalPages, setTotalPages] = useState(1);
+    const [page, setPage] = useState(1);
+    const perPage = 10 //for pagination & Api
+    useEffect(() => {
+        ajax.get('/writen-safety', { count: perPage, page }).then(res => {
+            res && setTotalPages(res.total)
+
+            res && setData(res.data)
+        });
+    }, [now, page]);
+
     const columns = [
         { title: 'File Name', dataIndex: 'title', },
         {
@@ -40,9 +49,9 @@ function TableWritten({editMode}){
             title: '', dataIndex: '',
             render: (value, row, index) => editMode && <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
         },
-    ];                                  
+    ];
     function submit() { ajax.post('/writen-safety', getFormFields(form)).then(refresh); }
-    function deleteRow(id) {ajax.delete('/writen-safety/' + id).then(refresh); }
+    function deleteRow(id) { ajax.delete('/writen-safety/' + id).then(refresh); }
 
     return <div>
         <div className="divider" style={{ marginBottom: 10 }}></div>
@@ -50,12 +59,16 @@ function TableWritten({editMode}){
             <ButtonUpload name="safety_case" onSubmit={submit} >
                 <div>
                     <label>Name of File</label>
-                        <Form.Item name="title"><Input /></Form.Item>
-                    </div>
-                </ButtonUpload>
-            </Form>}
+                    <Form.Item name="title"><Input /></Form.Item>
+                </div>
+            </ButtonUpload>
+        </Form>}
         <div class="esafty-table">
-            <Table dataSource={data} columns={columns} />
+            {data.length > 0 && <Table dataSource={data} columns={columns} pagination={{
+                total: totalPages,
+                pageSize: perPage,
+                onChange: (v) => setPage(v)
+            }} />}
         </div>
     </div>
 }
