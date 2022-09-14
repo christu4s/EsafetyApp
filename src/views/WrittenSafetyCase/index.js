@@ -5,7 +5,7 @@ import download from '../../assets/direct-download@3x.png';
 import { getFormFields, PageTemplate } from './../template';
 import ajax from '../../ajax';
 import { ButtonUpload, TitleEdit } from '../../utils';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
 
 export const WrittenSafetyCase = () => {
     return <PageTemplate
@@ -30,21 +30,39 @@ function TableWritten({ editMode }) {
     const refresh = () => setNow(new Date());
     const [totalPages, setTotalPages] = useState(1);
     const [page, setPage] = useState(1);
+
     const perPage = 10 //for pagination & Api
     useEffect(() => {
+        // setRowTitle(data)
         ajax.get('/writen-safety', { count: perPage, page }).then(res => {
             res && setTotalPages(res.total)
-
             res && setData(res.data)
         });
     }, [now, page]);
 
+    const editRow = (e, i) => {
+        const value = e.target.value
+        data[i].title = value
+
+        setData([...data])
+
+    }
+    const saveRow = (value) => {
+
+        console.log(data)
+
+    }
     const columns = [
-        { title: 'File Name', dataIndex: 'title', },
+        { title: 'File Name', dataIndex: 'title', render: (value, row, index) => editMode ? <Input value={data[index].title} onChange={(e) => editRow(e, index)} /> : value },
+        {
+            title: '', dataIndex: '',
+            render: (value, row, index) => editMode && <SaveOutlined onClick={() => saveRow()} />
+        },
         {
             title: '', dataIndex: 'safety_case',
             render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
         },
+
         {
             title: '', dataIndex: '',
             render: (value, row, index) => editMode && <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
