@@ -17,13 +17,13 @@ export const ScenarioActionPlan = () => {
         iconUrl={extinguisher}
         title="Emergency Response"
         updateMenu
-        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Scenario Specific Action Plan")} 
+        subtitle={(content, editMode) => TitleEdit(content, editMode, "Scenario Specific Action Plan")}
         api="/scenario_action"
         descName="scenario_desc"
         imageName="scenario_image"
         pdfName="scenario_pdf"
         videoName="scenario_video"
-        tableName = "table_detail"
+        tableName="table_detail"
     >{(content, editMode, form) => <TableScenario content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }
@@ -68,9 +68,7 @@ function TableScenario({ editMode }) {
                 </div>
             </ButtonUpload>
         </Form>}
-        <div>
-            <h3 style={{ marginTop: 25 }}>Flow Chat - ERP</h3>
-        </div>
+
         <div class="esafty-table">
             <Table dataSource={data} columns={columns} />
         </div>

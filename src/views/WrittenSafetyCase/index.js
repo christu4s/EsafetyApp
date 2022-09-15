@@ -48,7 +48,7 @@ function TableWritten({ editMode }) {
 
     const columns = [
         {
-            title: 'File Name', dataIndex: 'title', render: (text, record) => editMode && editingRowId === record.id ?
+            title: 'File Name', dataIndex: 'title', render: (value, record) => editMode && editingRowId === record.id ?
                 // <Input value={data[index].title} onChange={(e) => editRow(e, index)} /> 
                 <Form.Item
                     name="title"
@@ -59,7 +59,7 @@ function TableWritten({ editMode }) {
                 >
                     <Input />
                 </Form.Item>
-                : text
+                : value
         },
         {
             title: '', dataIndex: '',
