@@ -1,4 +1,4 @@
-import { Form, Table, Popconfirm, Input } from 'antd';
+import { Form, Table, Popconfirm, Input, Button } from 'antd';
 import React, { useState, useEffect } from 'react';
 import extinguisher from '../../assets/fire-extinguisher@3x.png';
 import download from '../../assets/direct-download@3x.png';
@@ -32,31 +32,51 @@ function TableWritten({ editMode }) {
     const [page, setPage] = useState(1);
 
     const perPage = 10 //for pagination & Api
+    const [editingRowId, setEditingRowId] = useState(null);
     useEffect(() => {
-        // setRowTitle(data)
         ajax.get('/writen-safety', { count: perPage, page }).then(res => {
             res && setTotalPages(res.total)
             res && setData(res.data)
         });
     }, [now, page]);
 
-    const editRow = (e, i) => {
-        const value = e.target.value
-        data[i].title = value
 
-        setData([...data])
-
+    const onSave = () => {
+        ajax.post('/writen-safety/' + editingRowId, getFormFields(form)).then(refresh);
+        setEditingRowId(null)
     }
-    const saveRow = (value) => {
 
-        console.log(data)
-
-    }
     const columns = [
-        { title: 'File Name', dataIndex: 'title', render: (value, row, index) => editMode ? <Input value={data[index].title} onChange={(e) => editRow(e, index)} /> : value },
+        {
+            title: 'File Name', dataIndex: 'title', render: (text, record) => editMode && editingRowId === record.id ?
+                // <Input value={data[index].title} onChange={(e) => editRow(e, index)} /> 
+                <Form.Item
+                    name="title"
+                    rules={[{
+                        required: true,
+                        message: "Please add a Title"
+                    }]}
+                >
+                    <Input />
+                </Form.Item>
+                : text
+        },
         {
             title: '', dataIndex: '',
-            render: (value, row, index) => editMode && <SaveOutlined onClick={() => saveRow()} />
+            render: (_, record) => editMode &&
+                <>
+                    <Button onClick={() => {
+                        setEditingRowId(record.id)
+                        form.setFieldsValue({
+                            title: record.title,
+                        })
+                    }}>
+                        <EditOutlined />
+                    </Button>
+                    <Button onClick={onSave} >
+                        <SaveOutlined />
+                    </Button>
+                </>
         },
         {
             title: '', dataIndex: 'safety_case',
@@ -68,8 +88,12 @@ function TableWritten({ editMode }) {
             render: (value, row, index) => editMode && <Popconfirm onConfirm={() => deleteRow(row.id)} title="Are you sure to delete this?" ><DeleteOutlined danger /></Popconfirm>
         },
     ];
-    function submit() { ajax.post('/writen-safety', getFormFields(form)).then(refresh); }
+    function submit() {
+        ajax.post('/writen-safety', getFormFields(form)).then(refresh);
+    }
     function deleteRow(id) { ajax.delete('/writen-safety/' + id).then(refresh); }
+
+
 
     return <div>
         <div className="divider" style={{ marginBottom: 10 }}></div>
@@ -82,11 +106,16 @@ function TableWritten({ editMode }) {
             </ButtonUpload>
         </Form>}
         <div class="esafty-table">
-            {data.length > 0 && <Table dataSource={data} columns={columns} pagination={{
-                total: totalPages,
-                pageSize: perPage,
-                onChange: (v) => setPage(v)
-            }} />}
+            {data.length > 0 &&
+                <Form form={form}>
+
+                    <Table dataSource={data} columns={columns} pagination={{
+                        total: totalPages,
+                        pageSize: perPage,
+                        onChange: (v) => setPage(v)
+                    }} />
+                </Form>
+            }
         </div>
     </div>
 }
