@@ -49,6 +49,7 @@ function MajorSCE({ content, setContent }) {
             if(item?.ID !== index) cont.push(item)
         })
         setContent({...content, [test.type.toLowerCase()]: cont});
+        // var res = await ajax.post('/major_accident_hazards_item/' + id, );
 
     }
 
