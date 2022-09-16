@@ -48,7 +48,8 @@ function TableWritten({ editMode }) {
 
     const columns = [
         {
-            title: 'File Name', dataIndex: 'title', render: (value, record) => editMode && editingRowId === record.id ?
+            title: 'File Name', dataIndex: 'title',
+            render: (value, record) => editMode && editingRowId === record.id ?
                 // <Input value={data[index].title} onChange={(e) => editRow(e, index)} /> 
                 <Form.Item
                     name="title"
@@ -92,7 +93,6 @@ function TableWritten({ editMode }) {
         ajax.post('/writen-safety', getFormFields(form)).then(refresh);
     }
     function deleteRow(id) { ajax.delete('/writen-safety/' + id).then(refresh); }
-
 
 
     return <div>

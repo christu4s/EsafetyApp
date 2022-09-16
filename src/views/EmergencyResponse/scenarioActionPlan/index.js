@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import download from '../../../assets/direct-download@3x.png';
 
 import extinguisher from '../../../assets/fire-extinguisher@3x.png';
-import { CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined, DownloadOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { EditOutlined, SaveOutlined, CloudUploadOutlined, ArrowLeftOutlined, DeleteOutlined, DownloadOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import computing from '../../../assets/cloud-computing@3x.png';
 import ajax from '../../../ajax';
 import { Link } from 'react-router-dom';
@@ -34,11 +34,47 @@ function TableScenario({ editMode }) {
     const [form] = Form.useForm();
     const [now, setNow] = useState();
     const refresh = () => setNow(new Date());
+    const [editingRowId, setEditingRowId] = useState(null);
+
     useEffect(() => { ajax.get('/scenario_action_flow').then(res => res && setData(res.data)); }, [now]);
 
+    const onSave = () => {
+        ajax.post('/scenario_action_flow/' + editingRowId, getFormFields(form)).then(refresh);
+        setEditingRowId(null)
+    }
     const columns = [
-        { title: 'Action Plan', dataIndex: 'title', },
+        {
+            title: 'Action Plan', dataIndex: 'title',
+            render: (value, record) => editMode && editingRowId === record.id ?
+                <Form.Item
+                    name="title"
+                    rules={[{
+                        required: true,
+                        message: "Please add a Title"
+                    }]}
+                >
+                    <Input />
+                </Form.Item>
+                : value
+        },
         { title: 'Document Number', dataIndex: 'desc', },
+        {
+            title: '', dataIndex: '',
+            render: (_, record) => editMode &&
+                <>
+                    <Button onClick={() => {
+                        setEditingRowId(record.id)
+                        form.setFieldsValue({
+                            title: record.title,
+                        })
+                    }}>
+                        <EditOutlined />
+                    </Button>
+                    <Button onClick={onSave} >
+                        <SaveOutlined />
+                    </Button>
+                </>
+        },
         {
             title: '', dataIndex: 'scenario_file',
             render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
@@ -70,7 +106,10 @@ function TableScenario({ editMode }) {
         </Form>}
 
         <div class="esafty-table">
-            <Table dataSource={data} columns={columns} />
+            <Form form={form}>
+
+                <Table dataSource={data} columns={columns} />
+            </Form>
         </div>
     </div>
 }
