@@ -1,7 +1,7 @@
 import { Row, Col, Input, Space, Form, Modal, Button, Tabs, Select, List } from 'antd';
 import React, { useState, useEffect } from 'react';
 import fire from '../../../assets/fire@3x.png';
-import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { ButtonUpload, DescField, EditButtons, FileViewer, TitleEdit } from '../../../utils';
 import { PageTemplate } from '../../template';
@@ -73,14 +73,14 @@ function MajorSCE({ content, setContent }) {
                     <Button type="text" style={{color:'#fff'}} onClick={()=> setSCE({...v, type: v.type.toLowerCase()})} icon={<PlusCircleOutlined />}>Add SCE</Button>
                 </div>
                 <List bordered dataSource={data} size="small" renderItem={item => (<List.Item >
-                    <Row justify='space-between' align='middle'>
-                        <Col span={23}>
+                    <div className='sce_wrapper'>
+                        
                             <Link to={'/safety-critical/equipment/' + v.type + '/' + item.ID}>{item.post_title}</Link>
-                        </Col>
-                        <Col span={1}>
-                            <CloseOutlined onClick={() => handleRemoveSce(v, item.ID)} />
-                        </Col>
-                    </Row>
+                        
+                        
+                            <DeleteOutlined className='delete_icon' onClick={() => handleRemoveSce(v, item.ID)} />
+                        
+                    </div>
                     
                 </List.Item>)} />
             </div>
