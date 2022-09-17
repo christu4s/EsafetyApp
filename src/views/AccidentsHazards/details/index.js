@@ -42,26 +42,20 @@ function MajorSCE({ content, setContent }) {
     }
 
     const handleRemoveSce = async (test, index) => {
-        console.log(test);
-        console.log({index});
         let cont = [];
         content[test?.type.toLowerCase()]?.map(item => {
-            if(item?.ID !== index) cont.push(item)
+            if(item?.ID !== index) cont.push(item.ID)
         })
-        setContent({...content, [test.type.toLowerCase()]: cont});
-        // var res = await ajax.post('/major_accident_hazards_item/' + id, );
-
+        var res = await ajax.post('/major_accident_hazards_item/' + id, {
+            [test.type.toLowerCase()]: cont.length > 0 ? cont : ['']
+        });
+        setContent(res);
     }
 
     useEffect(() => {
         sce && formExisting.setFieldsValue({ [sce.type]: sces.map(v => v.ID) });
         
     }, [sce]);
-
-    useEffect(() => {
-                console.log('content',content);
-
-    }, [content])
 
     async function search(search) {
         var res = await ajax.get(sce.itemApi, { search })
