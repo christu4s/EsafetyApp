@@ -1,7 +1,7 @@
 import { Row, Col, Input, Space, Form, Modal, Button, Tabs, Select, List } from 'antd';
 import React, { useState, useEffect } from 'react';
 import fire from '../../../assets/fire@3x.png';
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { ButtonUpload, DescField, EditButtons, FileViewer, TitleEdit } from '../../../utils';
 import { PageTemplate } from '../../template';
@@ -40,9 +40,28 @@ function MajorSCE({ content, setContent }) {
             closeModal();
         })
     }
+
+    const handleRemoveSce = async (test, index) => {
+        console.log(test);
+        console.log({index});
+        let cont = [];
+        content[test?.type.toLowerCase()]?.map(item => {
+            if(item?.ID !== index) cont.push(item)
+        })
+        setContent({...content, [test.type.toLowerCase()]: cont});
+        // var res = await ajax.post('/major_accident_hazards_item/' + id, );
+
+    }
+
     useEffect(() => {
         sce && formExisting.setFieldsValue({ [sce.type]: sces.map(v => v.ID) });
+        
     }, [sce]);
+
+    useEffect(() => {
+                console.log('content',content);
+
+    }, [content])
 
     async function search(search) {
         var res = await ajax.get(sce.itemApi, { search })
@@ -60,7 +79,15 @@ function MajorSCE({ content, setContent }) {
                     <Button type="text" style={{color:'#fff'}} onClick={()=> setSCE({...v, type: v.type.toLowerCase()})} icon={<PlusCircleOutlined />}>Add SCE</Button>
                 </div>
                 <List bordered dataSource={data} size="small" renderItem={item => (<List.Item >
-                    <Link to={'/safety-critical/equipment/' + v.type + '/' + item.ID}>{item.post_title}</Link>
+                    <Row justify='space-between' align='middle'>
+                        <Col span={23}>
+                            <Link to={'/safety-critical/equipment/' + v.type + '/' + item.ID}>{item.post_title}</Link>
+                        </Col>
+                        <Col span={1}>
+                            <CloseOutlined onClick={() => handleRemoveSce(v, item.ID)} />
+                        </Col>
+                    </Row>
+                    
                 </List.Item>)} />
             </div>
         })}
