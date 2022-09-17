@@ -53,13 +53,13 @@ export const PageTemplate = ({
     const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName], tableData = content[tableName];
     var viewers = {};
 
-    if(imageName) viewers[imageName]=<ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
-    if(pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
-    if(tableName) viewers[tableName] = <TableViewer  tableName={tableName} data={tableData} editMode={editMode} form={form} />;
-    if(videoName) viewers[videoName] = <VideoViewer  videoName={videoName} form={form} editMode={editMode} videos={video} />;
-   
-   
-    const sortView = order.map((item) =>(<div style={{margin: '20px 0', cursor:'move'}} key={item}>{viewers[item]}</div>)); 
+    if (imageName) viewers[imageName] = <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
+    if (pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
+    if (tableName) viewers[tableName] = <TableViewer tableName={tableName} data={tableData} editMode={editMode} form={form} />;
+    if (videoName) viewers[videoName] = <VideoViewer videoName={videoName} form={form} editMode={editMode} videos={video} />;
+
+
+    const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: 'move' }} key={item}>{viewers[item]}</div>));
 
     async function saveData() {
         await ajax.post(api, getFormFields(form)).then(res => {
@@ -68,11 +68,11 @@ export const PageTemplate = ({
         });
         setEditMode(!editMode);
     }
-    
 
 
-    function deleteItem(){
-        ajax.delete(api).then( ()=> history.goBack() );
+
+    function deleteItem() {
+        ajax.delete(api).then(() => history.goBack());
     }
 
 
@@ -106,36 +106,36 @@ export const PageTemplate = ({
                                     {canDelete && editMode && <Popconfirm title="Are you sure to delete this?" onConfirm={deleteItem}>
                                         <a style={{ color: 'red', float: 'right' }}>Delete</a>
                                     </Popconfirm>
-                                }
-                            </div>
+                                    }
+                                </div>
 
-                        </Col>
-                    </Row>
-                    {descName && <div className='box--facility area--box--facility'>
-                        <DescField editMode={editMode} value={desc} name={descName} />
-                    </div>}
-                    {editMode && <Space>
-                        {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
-                        {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
-                        {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
-                        {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
-                    </Space>}
-                    <div style={{margin: 20}} />
+                            </Col>
+                        </Row>
+                        {descName && <div className='box--facility area--box--facility'>
+                            <DescField editMode={editMode} value={desc} name={descName} />
+                        </div>}
+                        {editMode && <Space>
+                            {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
+                            {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
+                            {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
+                            {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
+                        </Space>}
+                        <div style={{ margin: 20 }} />
 
-                    {
-                        !editMode ? sortView : <ReactSortable group="groupName"  list={order.map(id=> ({id}))} setList={items => setOrder(items.map(item=> item.id))}>
-                           {sortView} 
-                    </ReactSortable>
-                    }
-                    
-                    
-                    {typeof children=='function' ? children(content, editMode, form, saveData) : children}
-                </Col>
-                <Col span={8} push={1} style={{ marginTop: 35 }}>
-                    {typeof right=='function' ? right({content, editMode, form, setContent, saveData}) : right}
-                </Col>
-            </Row>
-            {typeof outside=='function' ? outside(content, editMode, form) : outside}
+                        {
+                            !editMode ? sortView : <ReactSortable group="groupName" list={order.map(id => ({ id }))} setList={items => setOrder(items.map(item => item.id))}>
+                                {sortView}
+                            </ReactSortable>
+                        }
+
+
+                        {typeof children == 'function' ? children(content, editMode, form, saveData) : children}
+                    </Col>
+                    <Col span={8} push={1} style={{ marginTop: 35 }}>
+                        {typeof right == 'function' ? right({ content, editMode, form, setContent, saveData }) : right}
+                    </Col>
+                </Row>
+                {typeof outside == 'function' ? outside(content, editMode, form) : outside}
             </Form>
         </div>
     );
@@ -240,8 +240,8 @@ function ButtonTable({ data, name, onSubmit, form }) {
 
     return <>
         <Form.Item hidden name={name} initialValue="" />
-        <Button type='primary' icon={<TableOutlined />} onClick={()=> setPopup(true)}>Dynamic Table</Button>
-          <Modal title="Dynamic Table" okText="Save" visible={popup} onOk={onSave} onCancel={()=> {setColumns([]); setdataSource([]) ;setPopup(false)}} >
+        <Button type='primary' icon={<TableOutlined />} onClick={() => setPopup(true)}>Dynamic Table</Button>
+        <Modal title="Dynamic Table" okText="Save" visible={popup} onOk={onSave} onCancel={() => { setColumns([]); setdataSource([]); setPopup(false) }} >
             <Space>
                 <Button onClick={addColumn}>Add Column</Button>
                 <Button onClick={addDataSource}>Add Row</Button>
@@ -273,6 +273,7 @@ export function VideoViewer({ videos = [], videoName = '', editMode, form }) {
 
 export function TableViewer({ tableName, data, editMode, form }) {
     const [table, setTable] = useState();
+
     const handleDelete = () => {
         setTable(null);
         form.setFieldsValue({ [tableName]: table ? table : null });
@@ -293,20 +294,27 @@ export function TableViewer({ tableName, data, editMode, form }) {
     } catch (e) {
         return null;
     }
-   // console.log('typeof',typeof(jsonData));
-    
-    return (table != null)? 
-    <div className='table_wrapper'>
-        {editMode && <a style={{color:'red'}} onClick={handleDelete} >Delete</a>}
-        <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false}  />
-    </div> : null;
-    // console.log('typeof',typeof(jsonData));
+    const newColumns = table?.columns?.map((culomn) => {
+        return {
+            ...culomn,
+            render: (value) => <p>{value} </p>
+        }
+    })
+
 
     return (table != null) ?
         <div className='table_wrapper'>
             {editMode && <a style={{ color: 'red' }} onClick={handleDelete} >Delete</a>}
-            <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false} />
+            {/* <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false} /> */}
+            <Table dataSource={table?.dataSource} columns={newColumns} pagination={false} />
         </div> : null;
+    // console.log('typeof',typeof(jsonData));
+
+    // return (table != null) ?
+    //     <div className='table_wrapper'>
+    //         {editMode && <a style={{ color: 'red' }} onClick={handleDelete} >Delete</a>}
+    //         <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false} />
+    //     </div> : null;
 }
 export function ImageViewer({ images = [], imageName = '', form, editMode }) {
     const [imgs, setImgs] = useState([]);

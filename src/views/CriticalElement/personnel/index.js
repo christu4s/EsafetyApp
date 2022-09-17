@@ -14,14 +14,15 @@ export const CriticalPersonnel = () => {
         iconUrl={alert}
         title="Safty Critical Element"
         updateMenu
-        subtitle={(content,editMode)=> TitleEdit(content,editMode,"Safty Critical Personnel")} 
+        subtitle={(content, editMode) => TitleEdit(content, editMode, "Safty Critical Personnel")}
         api="/critical_personnel"
         descName="personnel_desc"
         imageName="personnel_image"
         pdfName="personnel_pdf"
         videoName="personnel_video"
         tableName="table_detail"
-    >{(content,editMode, form)=> <TablePersonel content={content} editMode={editMode} form={form}/>}
+    >
+        {/* {(content, editMode, form) => <TablePersonel content={content} editMode={editMode} form={form} />} */}
     </PageTemplate>
 }
 
@@ -224,7 +225,7 @@ function TablePersonel({ content, editMode, form }) {
 //                                 </div>
 
 //                             </Col>
-//                         </Row> 
+//                         </Row>
 //                         <Form.Item label='Remark :' >
 //                             <Input.TextArea readOnly={!editMode} value={level.remark} onChange={e => onLevelChange(index, 'remark', e.target.value)} />
 //                         </Form.Item>

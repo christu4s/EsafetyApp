@@ -10,7 +10,6 @@ import { TitleEdit } from '../../../utils';
 
 export const SafetyManagementItem = ({ match }) => {
   const { id } = match.params;
-
   return <PageTemplate
     canDelete
     updateData={id}
@@ -25,7 +24,8 @@ export const SafetyManagementItem = ({ match }) => {
     pdfName="commitment_file_pdf"
     videoName="commitment_file_video"
     tableName="table_detail"
-  >{(content, editMode, form) => <TableOrg content={content} editMode={editMode} form={form} />}
+  >
+    {/* {(content, editMode, form) => <TableOrg content={content} editMode={editMode} form={form} />} */}
   </PageTemplate>
 }
 function TableOrg({ content, editMode, form }) {
