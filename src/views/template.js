@@ -150,7 +150,6 @@ function ButtonTable({ data, name, onSubmit, form }) {
     const [dataSource, setdataSource] = useState(jsonData ? jsonData.dataSource : []);
     const [columns, setColumns] = useState(jsonData ? jsonData.columns : []);
 
-
     function onChangeColumnValues(value, index) {
         columns[index].title = value;
         setColumns([...columns]);
@@ -182,8 +181,6 @@ function ButtonTable({ data, name, onSubmit, form }) {
         newDataSource.splice(index, 1);
         setdataSource([...newDataSource])
     }
-
-
 
     function addDataSource() {
         const rowsInput = {};
@@ -297,7 +294,7 @@ export function TableViewer({ tableName, data, editMode, form }) {
     const newColumns = table?.columns?.map((culomn) => {
         return {
             ...culomn,
-            render: (value) => <p>{value} </p>
+            render: (value) => <pre>{value}</pre>
         }
     })
 
@@ -305,16 +302,8 @@ export function TableViewer({ tableName, data, editMode, form }) {
     return (table != null) ?
         <div className='table_wrapper'>
             {editMode && <a style={{ color: 'red' }} onClick={handleDelete} >Delete</a>}
-            {/* <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false} /> */}
             <Table dataSource={table?.dataSource} columns={newColumns} pagination={false} />
         </div> : null;
-    // console.log('typeof',typeof(jsonData));
-
-    // return (table != null) ?
-    //     <div className='table_wrapper'>
-    //         {editMode && <a style={{ color: 'red' }} onClick={handleDelete} >Delete</a>}
-    //         <Table dataSource={table?.dataSource} columns={table?.columns} pagination={false} />
-    //     </div> : null;
 }
 export function ImageViewer({ images = [], imageName = '', form, editMode }) {
     const [imgs, setImgs] = useState([]);

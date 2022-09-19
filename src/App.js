@@ -74,7 +74,7 @@ class App extends React.Component {
               {routes.map((v, i) => <Route key={i} {...v} />)}
             </Switch>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Esafety Dashboard ©2021 Created by Caspian Digital Solution</Footer>
+          <Footer style={{ textAlign: 'center' }}>eSafety Portal ©2022 Created by Caspian Digital Solution</Footer>
         </Layout>
       </Layout>
     </Layout>
