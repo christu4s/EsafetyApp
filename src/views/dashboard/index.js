@@ -15,21 +15,27 @@ import alert from '../../assets/alert@3x.png';
 
 import './dashboard.css';
 import { BoxHolder } from '../../utils';
+import { useMenuContext } from '../../provider';
 
 export const Dashboard = () =>{
+    const [menu] = useMenuContext();
     var sectionStyle = {
         backgroundImage: `url(${Background})`
     };
 
+    function getTitleByApi(api, def = ''){
+        return menu[api+ 'title'] || def;
+    }
+
     const boxContent = [
-        {title: 'Facilities Overview new', img: blueprint, active:true, url: '/facility-overview' },
-        {title: 'Major Accident Hazards', img: fire, active:false,url: '/accidents-hazards' },
-        {title: 'Risk Assessment Test', img: danger,  active:false, url: '/risk-assessment' },
-        {title: 'Safety Critical Element ', img: extinguisher,  active:false, url: '/safety-critical'},
-        {title: 'Emergency Response ', img: alert,  active:false, url: '/emergency-response'},
-        {title: 'Safety Management System ', img: checked,  active:false, url: '/safety-management'},
-        {title: 'Remedial Action Plan ', img: planning,  active:false, url: '/remedial-action'},
-        {title: 'Written Safety Case ', img: writting,  active:false, url: '/writen-safety'},
+        {title: getTitleByApi('/facility_overview', 'Facilities Overview'), img: blueprint, active:true, url: '/facility-overview' },
+        {title: getTitleByApi('/major_accident_hazards', 'Major Accident Hazards'), img: fire, active:false,url: '/accidents-hazards' },
+        {title: getTitleByApi('/risk_assessment', 'Risk Assessment'), img: danger,  active:false, url: '/risk-assessment' },
+        {title: getTitleByApi('/safetyCriticalElement', 'Safety Critical Element'), img: extinguisher,  active:false, url: '/safety-critical'},
+        {title: getTitleByApi('/emergency_respons', 'Emergency Response'), img: alert,  active:false, url: '/emergency-response'},
+        {title: getTitleByApi('/safety_management', 'Safety Management System'), img: checked,  active:false, url: '/safety-management'},
+        {title: getTitleByApi('/remedial_action', 'Remedial Action Plan'), img: planning,  active:false, url: '/remedial-action'},
+        {title: getTitleByApi('/written_safety_case', 'Writen Safety Case'), img: writting,  active:false, url: '/writen-safety'},
     ] 
 
     return(

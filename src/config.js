@@ -105,7 +105,7 @@ export const menus = [
     },
     {
         title: 'Safety Critical Element',
-        icon: < img src={safetCriticalImg} alt="Major Accident Hazards" height={20} />,
+        icon: <img src={safetCriticalImg} alt="Major Accident Hazards" height={20} />,
         url: '#/safety-critical',
         api: '/safetyCriticalElement',
         children: [
