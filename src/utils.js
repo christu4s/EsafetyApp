@@ -179,8 +179,6 @@ export function SearchBar() {
         ret.path = '/';
     }
 
-    console.log(ret);
-
     return ret;
   }
 
