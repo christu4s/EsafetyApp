@@ -1,7 +1,7 @@
 import { Row, Col, Input, Space, Form, Modal, Button, Tabs, Select, List } from 'antd';
 import React, { useState, useEffect } from 'react';
 import fire from '../../../assets/fire@3x.png';
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { ButtonUpload, DescField, EditButtons, FileViewer, TitleEdit } from '../../../utils';
 import { PageTemplate } from '../../template';
@@ -40,8 +40,21 @@ function MajorSCE({ content, setContent }) {
             closeModal();
         })
     }
+
+    const handleRemoveSce = async (test, index) => {
+        let cont = [];
+        content[test?.type.toLowerCase()]?.map(item => {
+            if(item?.ID !== index) cont.push(item.ID)
+        })
+        var res = await ajax.post('/major_accident_hazards_item/' + id, {
+            [test.type.toLowerCase()]: cont.length > 0 ? cont : ['']
+        });
+        setContent(res);
+    }
+
     useEffect(() => {
         sce && formExisting.setFieldsValue({ [sce.type]: sces.map(v => v.ID) });
+        
     }, [sce]);
 
     async function search(search) {
@@ -57,10 +70,18 @@ function MajorSCE({ content, setContent }) {
             return <div key={i} className='accident--box--content'>
                 <h4>{v.title}</h4>
                 <div className='accident--icon--box'>
-                    <Button type="text" style={{ color: '#fff' }} onClick={() => setSCE(v)} icon={<PlusCircleOutlined />}>Add SCE</Button>
+                    <Button type="text" style={{color:'#fff'}} onClick={()=> setSCE({...v, type: v.type.toLowerCase()})} icon={<PlusCircleOutlined />}>Add SCE</Button>
                 </div>
                 <List bordered dataSource={data} size="small" renderItem={item => (<List.Item >
-                    <Link to={'/safety-critical/equipment/' + v.type + '/' + item.ID}>{item.post_title}</Link>
+                    <div className='sce_wrapper'>
+                        
+                            <Link to={'/safety-critical/equipment/' + v.type + '/' + item.ID}>{item.post_title}</Link>
+                        
+                        
+                            <DeleteOutlined className='delete_icon' onClick={() => handleRemoveSce(v, item.ID)} />
+                        
+                    </div>
+                    
                 </List.Item>)} />
             </div>
         })}

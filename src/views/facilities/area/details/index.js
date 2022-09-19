@@ -48,7 +48,7 @@ function LinkedHazards({ content, editMode, form, saveData }) {
         <h2>Hazard Accident hazards</h2>
         <Row gutter={[16, 16]}>
             {hazard && hazard.map((v, i) => <Col key={i} span={8}>
-                <CardHolder image={v.image || image} title={v.title} url={`accidents-hazards/${v.id}`} />
+                <CardHolder image={v.image || image} title={v.title} url={`/accidents-hazards/${v.id}`} />
             </Col>
             )}
         </Row>

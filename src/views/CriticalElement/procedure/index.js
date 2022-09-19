@@ -2,7 +2,7 @@ import { Row, Col, Card, Button, Modal, Upload, message, Input, Table, Tag, Spac
 import React, { useState, useEffect } from 'react';
 import alert from '../../../assets/alert@3x.png';
 import download from '../../../assets/direct-download@3x.png';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
 import ajax from '../../../ajax';
 import { getFormFields, PageTemplate } from './../../template';
 import { ButtonUpload } from '../../../utils';
@@ -35,6 +35,8 @@ function ProcedureTable({ editMode }) {
     const [form] = Form.useForm();
     const [now, setNow] = useState();
     const refresh = () => setNow(new Date());
+    const [editingRowId, setEditingRowId] = useState(null);
+
     useEffect(() => {
         ajax.get('/safety_critical_procedure', { count: perPage, page }).then(res => {
             res && setTotalPages(res.total)
@@ -48,10 +50,45 @@ function ProcedureTable({ editMode }) {
     function deleteRow(id) {
         ajax.delete('/safety_critical_procedure/' + id).then(refresh);
     }
+    const onSave = () => {
+        ajax.post('/safety_critical_procedure/' + editingRowId, getFormFields(form)).then(refresh);
+        setEditingRowId(null)
+    }
+
 
     const columns = [
-        { title: 'Safety Critical Procedure', dataIndex: 'title' },
+        {
+            title: 'Safety Critical Procedure', dataIndex: 'title',
+            render: (value, record) => editMode && editingRowId === record.id ?
+                <Form.Item
+                    name="title"
+                    rules={[{
+                        required: true,
+                        message: "Please add a Title"
+                    }]}
+                >
+                    <Input />
+                </Form.Item>
+                : value
+        },
         { title: 'Document Number', dataIndex: 'desc' },
+        {
+            title: '', dataIndex: '',
+            render: (_, record) => editMode &&
+                <>
+                    <Button onClick={() => {
+                        setEditingRowId(record.id)
+                        form.setFieldsValue({
+                            title: record.title,
+                        })
+                    }}>
+                        <EditOutlined />
+                    </Button>
+                    <Button onClick={onSave} >
+                        <SaveOutlined />
+                    </Button>
+                </>
+        },
         {
             title: '', dataIndex: 'procedure_file',
             render: (value, row, index) => value && value[0] && <a href={value[0].src} download><img width='20' src={download} /></a>
@@ -64,11 +101,15 @@ function ProcedureTable({ editMode }) {
 
     return <div className="management--wrapper">
         <div className='divider' style={{ marginBottom: 20 }}></div>
-        <Table dataSource={data} columns={columns} pagination={{
-            total: totalPages,
-            pageSize: perPage,
-            onChange: (v) => setPage(v)
-        }} />
+        {data.length > 0 &&
+            <Form form={form}>
+                <Table dataSource={data} columns={columns} pagination={{
+                    total: totalPages,
+                    pageSize: perPage,
+                    onChange: (v) => setPage(v)
+                }} />
+            </Form>
+        }
         {editMode && <Form form={form}><ButtonUpload name="procedure_file" onSubmit={submit}>
             <div className='area--form'>
                 <label>Safety Critical Procedure</label>

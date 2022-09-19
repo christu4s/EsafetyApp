@@ -363,7 +363,10 @@
         z-index: 99;
         white-space: normal;
     }
+   
+   
 }
+
 .addmore--button .ant-btn-secondary{
     margin-top: 30px;
     width: 130px;
@@ -536,6 +539,13 @@
     color: @primary-color;
 }
 
+.sce_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 .delete_icon_row {
     padding-left: 5px;
 }
@@ -548,6 +558,33 @@
         z-index: 2;
         right: 10px;
         top: 10px;
+    }
+
+}
+.card_pin{
+    position: absolute;
+    top: 30px;
+    left: 10px;
+    z-index: 2;
+    width: 50px;
+    font-size: 40px;
+    cursor: pointer ;
+    transition: 0.3s;
+    
+}
+.card_pin.pinned{
+    color: red;
+    &:hover{
+        color: #fff;
+        transform: rotate(50deg);
+        
+    }
+}
+.card_pin.unpinned{
+    color: #fff;
+    &:hover{
+        color: red;
+        transform: rotate(-50deg);
     }
 }
 
