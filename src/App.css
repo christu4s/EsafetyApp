@@ -26143,6 +26143,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
   width: calc(100vw - 150px);
   align-items: center;
 }
+.img-wrap div.ant-form-item-control {
+  min-width: unset !important;
+}
 .image-preview {
   background-color: #fff;
   margin: 5px 0;
