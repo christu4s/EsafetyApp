@@ -45,19 +45,23 @@ export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
 export function ButtonUpload({ children, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
-
+  const [url, setUrl] = useState("")
   async function onSave() {
     if (typeof onSubmit == 'function') await onSubmit();
     toggleModal();
   }
-
   return <div className={addMore ? 'addmore--button' : null}>
     <Button type={addMore ? 'default' : "primary"} icon={addMore ? <PlusCircleOutlined /> : <CloudUploadOutlined />} onClick={toggleModal}>{buttonText}</Button>
     <Modal title="" className='upload--modal' visible={isModalVisible} onOk={toggleModal} onCancel={toggleModal}>
       <h3 className='modal--title text-center'>Upload Files</h3>
       <Form.Item hidden name={'update_file_' + name} initialValue={1} />
       <Form.Item name={name}>
-        <Upload.Dragger beforeUpload={() => false} {...props}>
+        <Upload.Dragger beforeUpload={(file) => {
+          console.log(name)
+          var imgUrl = name === "image" && file && URL.createObjectURL(file);
+          name === "image" && setUrl(imgUrl)
+          return false
+        }} {...props}  >
           <p className="ant-upload-drag-icon">
             <img width='50' src={computing} />
           </p>
@@ -66,6 +70,9 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
           </p>
         </Upload.Dragger>
       </Form.Item>
+      {/* <Form.Item></Form.Item> */}
+      {name === "image" && <img src={url} alt="" />}
+
       {children}
       <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
     </Modal>
