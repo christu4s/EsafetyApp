@@ -44,6 +44,7 @@ export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
 
 export function ButtonUpload({ children, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isImageModalVisible, setImageIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
   const [url, setUrl] = useState("")
   async function onSave() {
@@ -57,9 +58,13 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
       <Form.Item hidden name={'update_file_' + name} initialValue={1} />
       <Form.Item name={name}>
         <Upload.Dragger beforeUpload={(file) => {
-          console.log(name)
-          var imgUrl = name === "image" && file && URL.createObjectURL(file);
-          name === "image" && setUrl(imgUrl)
+          const imageAction = () => {
+
+            var imgUrl = URL.createObjectURL(file);
+            name === "image" && setUrl(imgUrl)
+            setImageIsModalVisible(true)
+          }
+          name === "image" && file && imageAction()
           return false
         }} {...props}  >
           <p className="ant-upload-drag-icon">
@@ -71,14 +76,20 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
         </Upload.Dragger>
       </Form.Item>
       {/* <Form.Item></Form.Item> */}
-      {name === "image" && <img src={url} alt="" />}
-
+      <Button type="primary" onClick={() => setImageIsModalVisible(!isImageModalVisible)}> toggle image</Button>
+      {name === "image" && <ImageModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} url={url} />}
       {children}
       <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
     </Modal>
   </div>
 }
+export function ImageModal({ isImageModalVisible, close, url }) {
+  return <Modal visible={isImageModalVisible} onCancel={close} width="max-content">
 
+    <img style={{ marginTop: 10 }} src={url} alt="" />
+
+  </Modal>
+}
 export function FileViewer({ images = [], index = 0 }) {
   if (!images || !images[index]) return null;
 
