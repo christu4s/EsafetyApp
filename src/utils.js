@@ -2,7 +2,7 @@ import { Card, Button, Modal, Upload, Form, Input, Space, Select } from "antd";
 import { useEffect, useState, React } from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { PushpinFilled, PushpinOutlined, CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { PushpinFilled, PushpinOutlined, CloudUploadOutlined, PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
 import { isAdmin } from "./constants";
@@ -76,18 +76,50 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
         </Upload.Dragger>
       </Form.Item>
       {/* <Form.Item></Form.Item> */}
-      <Button type="primary" onClick={() => setImageIsModalVisible(!isImageModalVisible)}> toggle image</Button>
-      {name === "image" && <ImageModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} url={url} />}
+
       {children}
-      <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
+      {name === "image" && <ImageMapModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} url={url} />}
+      {name === "image" ?
+        <Button type="primary" onClick={() => setImageIsModalVisible(!isImageModalVisible)}> Map image</Button> :
+        <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
+      }
     </Modal>
   </div>
 }
-export function ImageModal({ isImageModalVisible, close, url }) {
+export function ImageMapModal({ isImageModalVisible, close, url }) {
   return <Modal visible={isImageModalVisible} onCancel={close} width="max-content">
 
     <img style={{ marginTop: 10 }} src={url} alt="" />
+    <br />
+    <Form.List name="image-maps">
+      {(fields, { add, remove }) => (
+        <>
+          {fields.map((field, i) => {
+            return (
+              <div style={{ display: "flex", flexDirection: 'column' }} >
 
+                <Space key={field.key} direction="horisontal" size={12}>
+                  <Form.Item
+                    name={[field.name, "title"]}
+                    label={`Map-${i + 1}`}>
+                    <Input placeholder="Title" />
+                  </Form.Item>
+                  <Form.Item
+                    name={[field.name, "link"]}
+                  >
+                    <Input placeholder="Link" />
+                  </Form.Item>
+                  <MinusCircleOutlined style={{ height: 40, color: 'red' }} onClick={() => remove(field.name)} />
+                </Space>
+              </div>
+            )
+          })}
+          <Form.Item>
+            <Button icon={<PlusCircleOutlined />} type='dashed' onClick={() => add()}>Add Image Map</Button>
+          </Form.Item>
+        </>
+      )}
+    </Form.List>
   </Modal>
 }
 export function FileViewer({ images = [], index = 0 }) {
