@@ -44,12 +44,12 @@ export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
   </>
 
 
-export function ButtonUpload({ children, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
+export function ButtonUpload({ children, imageMap, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isImageModalVisible, setImageIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
   const [url, setUrl] = useState("")
-
+  const [uploadFile, setUploadFile] = useState({})
 
 
   async function onSave() {
@@ -64,12 +64,12 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
       <Form.Item name={name}>
         <Upload.Dragger beforeUpload={(file) => {
           const imageAction = () => {
-
+            setUploadFile(file)
             var imgUrl = URL.createObjectURL(file);
-            name === "image" && setUrl(imgUrl)
+            imageMap && setUrl(imgUrl)
             setImageIsModalVisible(true)
           }
-          name === "image" && file && imageAction()
+          imageMap && file && imageAction()
           return false
         }} {...props}  >
           <p className="ant-upload-drag-icon">
@@ -80,18 +80,16 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
           </p>
         </Upload.Dragger>
       </Form.Item>
-      {/* <Form.Item></Form.Item> */}
 
       {children}
-      {name === "image" && <ImageMapModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} url={url} />}
+      {imageMap && <ImageMapModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} url={url} file={uploadFile} toggleModal={toggleModal} />}
       {name !== "image" && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
       }
     </Modal>
   </div>
 }
-export function ImageMapModal({ isImageModalVisible, close, url }) {
+export function ImageMapModal({ isImageModalVisible, close, url, file, toggleModal }) {
   const [regions, setRegions] = useState([]);
-
 
   function onChange(newRegions) {
     setRegions(newRegions);
@@ -99,88 +97,63 @@ export function ImageMapModal({ isImageModalVisible, close, url }) {
 
   function regionRenderer({ index, ...props }) {
     const { title = "" } = regions[index];
-    return <div style={{ textAlign: "center" }}>{title}</div>;
+    return <p style={{ textAlign: "start", fontWeight: 600, color: "white", fontSize: "20px" }}>{title}</p>;
   }
 
   function handleInputChange(index, e) {
     regions[index][e.target.name] = e.target.value;
     setRegions([...regions]);
-    console.log(regions[index][e.target.name])
   }
-  console.log(regions)
+
   function removeRegion(index) {
     regions.splice(index, 1);
     setRegions([...regions]);
   }
-  return <Modal visible={isImageModalVisible} onCancel={close} width="max-content">
+  function onSave() {
+    console.log({ file, regions })
+    // toggleModal()
+    close()
+  }
+  return <Modal visible={isImageModalVisible}
+    onCancel={close}
+    width="max-content"
+    onOk={onSave}
+    okText="Upload"
+  >
 
     <RegionSelect
       regions={regions}
       onChange={onChange}
       regionRenderer={regionRenderer}
+      regionStyle={{ background: "#aca8a347" }}
     >
       <img src={url} alt="" />
     </RegionSelect>
 
-    {/* <img style={{ marginTop: 10 }} src={url} alt="" /> */}
     <br />
 
-    <Form.List>
-      {() => (
-        <div>
-          {regions.map((field, i) => (
-            <div style={{ display: "flex", flexDirection: 'column' }} >
 
-              <Space key={field.key} direction="horisontal" style={{ display: "flex" }} >
-
-                <Form.Item
-                  label={`Map-${i + 1}`}
-                  name={`region_title`}
-                  onChange={(e) => handleInputChange(i, e)}
-                >
-                  <Input placeholder="Title" />
-                </Form.Item>
-                <Form.Item
-                  name={`region_url`}
-                  onChange={(e) => handleInputChange(i, e)}
-                >
-                  <Input placeholder="Link" />
-                </Form.Item>
-                <MinusCircleOutlined style={{ height: 40, color: 'red' }} onClick={() => removeRegion(i)} />
-              </Space>
-            </div>
-
-            // <Form.Item {...field}>
-            //   <Input />
-            // </Form.Item>
-          ))}
-        </div>
-      )}
-    </Form.List>
-
-    {/* {regions.map((field, i) => {
+    {regions.map((region, index) => {
       return (
-        <div style={{ display: "flex", flexDirection: 'column' }} >
-
-          <Space key={field.key} direction="horisontal" style={{ display: "flex" }} >
-
-            <Form.Item
-              name={`region_title`}
-              label={`Map-${i + 1}`}>
-              <Input placeholder="Title" name={`title`} onChange={(e) => handleInputChange(i, e)} />
-            </Form.Item>
-            <Form.Item
-              name={`region_url`}
-            >
-              <Input placeholder="Link" name={`region_url`} onChange={(e) => handleInputChange(i, e)}
-              />
-            </Form.Item>
-            <MinusCircleOutlined style={{ height: 40, color: 'red' }} onClick={() => removeRegion(i)} />
-          </Space>
+        <div style={{ display: "flex", flexDirection: 'row', gap: "10px", alignItems: "center", marginTop: 15 }} size={12} >
+          <label id="title" style={{ width: 110 }}>{`Map-${index + 1}`}: </label>
+          <Input
+            placeholder="title"
+            name="title"
+            value={region.title}
+            onChange={(e) => handleInputChange(index, e)}
+          />
+          <Input
+            placeholder="Link"
+            name="link"
+            value={region.link}
+            onChange={(e) => handleInputChange(index, e)}
+          />
+          <MinusCircleOutlined style={{ fontSize: 20, color: 'red' }} onClick={() => removeRegion(index)} />
         </div>
-      )
-    })} */}
 
+      )
+    })}
 
   </Modal>
 }

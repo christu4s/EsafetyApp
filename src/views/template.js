@@ -115,7 +115,7 @@ export const PageTemplate = ({
                             <DescField editMode={editMode} value={desc} name={descName} />
                         </div>}
                         {editMode && <Space>
-                            {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
+                            {imageName && <ButtonUpload imageMap name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                             {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                             {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
                             {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
