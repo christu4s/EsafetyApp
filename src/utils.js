@@ -13,6 +13,8 @@ import 'react-quill/dist/quill.snow.css';
 import { useHistory } from "react-router-dom";
 import { base_url } from "./ajax";
 import axios from "axios";
+import RegionSelect from "react-region-select";
+
 
 export const BoxHolder = ({ title, img, active, url }) => {
   return (<Link to={url}>
@@ -47,6 +49,9 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
   const [isImageModalVisible, setImageIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
   const [url, setUrl] = useState("")
+
+
+
   async function onSave() {
     if (typeof onSubmit == 'function') await onSubmit();
     toggleModal();
@@ -79,47 +84,104 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
 
       {children}
       {name === "image" && <ImageMapModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} url={url} />}
-      {name === "image" ?
-        <Button type="primary" onClick={() => setImageIsModalVisible(!isImageModalVisible)}> Map image</Button> :
-        <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
+      {name !== "image" && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
       }
     </Modal>
   </div>
 }
 export function ImageMapModal({ isImageModalVisible, close, url }) {
+  const [regions, setRegions] = useState([]);
+
+
+  function onChange(newRegions) {
+    setRegions(newRegions);
+  }
+
+  function regionRenderer({ index, ...props }) {
+    const { title = "" } = regions[index];
+    return <div style={{ textAlign: "center" }}>{title}</div>;
+  }
+
+  function handleInputChange(index, e) {
+    regions[index][e.target.name] = e.target.value;
+    setRegions([...regions]);
+    console.log(regions[index][e.target.name])
+  }
+  console.log(regions)
+  function removeRegion(index) {
+    regions.splice(index, 1);
+    setRegions([...regions]);
+  }
   return <Modal visible={isImageModalVisible} onCancel={close} width="max-content">
 
-    <img style={{ marginTop: 10 }} src={url} alt="" />
-    <br />
-    <Form.List name="image-maps">
-      {(fields, { add, remove }) => (
-        <>
-          {fields.map((field, i) => {
-            return (
-              <div style={{ display: "flex", flexDirection: 'column' }} >
+    <RegionSelect
+      regions={regions}
+      onChange={onChange}
+      regionRenderer={regionRenderer}
+    >
+      <img src={url} alt="" />
+    </RegionSelect>
 
-                <Space key={field.key} direction="horisontal" size={12}>
-                  <Form.Item
-                    name={[field.name, "title"]}
-                    label={`Map-${i + 1}`}>
-                    <Input placeholder="Title" />
-                  </Form.Item>
-                  <Form.Item
-                    name={[field.name, "link"]}
-                  >
-                    <Input placeholder="Link" />
-                  </Form.Item>
-                  <MinusCircleOutlined style={{ height: 40, color: 'red' }} onClick={() => remove(field.name)} />
-                </Space>
-              </div>
-            )
-          })}
-          <Form.Item>
-            <Button icon={<PlusCircleOutlined />} type='dashed' onClick={() => add()}>Add Image Map</Button>
-          </Form.Item>
-        </>
+    {/* <img style={{ marginTop: 10 }} src={url} alt="" /> */}
+    <br />
+
+    <Form.List>
+      {() => (
+        <div>
+          {regions.map((field, i) => (
+            <div style={{ display: "flex", flexDirection: 'column' }} >
+
+              <Space key={field.key} direction="horisontal" style={{ display: "flex" }} >
+
+                <Form.Item
+                  label={`Map-${i + 1}`}
+                  name={`region_title`}
+                  onChange={(e) => handleInputChange(i, e)}
+                >
+                  <Input placeholder="Title" />
+                </Form.Item>
+                <Form.Item
+                  name={`region_url`}
+                  onChange={(e) => handleInputChange(i, e)}
+                >
+                  <Input placeholder="Link" />
+                </Form.Item>
+                <MinusCircleOutlined style={{ height: 40, color: 'red' }} onClick={() => removeRegion(i)} />
+              </Space>
+            </div>
+
+            // <Form.Item {...field}>
+            //   <Input />
+            // </Form.Item>
+          ))}
+        </div>
       )}
     </Form.List>
+
+    {/* {regions.map((field, i) => {
+      return (
+        <div style={{ display: "flex", flexDirection: 'column' }} >
+
+          <Space key={field.key} direction="horisontal" style={{ display: "flex" }} >
+
+            <Form.Item
+              name={`region_title`}
+              label={`Map-${i + 1}`}>
+              <Input placeholder="Title" name={`title`} onChange={(e) => handleInputChange(i, e)} />
+            </Form.Item>
+            <Form.Item
+              name={`region_url`}
+            >
+              <Input placeholder="Link" name={`region_url`} onChange={(e) => handleInputChange(i, e)}
+              />
+            </Form.Item>
+            <MinusCircleOutlined style={{ height: 40, color: 'red' }} onClick={() => removeRegion(i)} />
+          </Space>
+        </div>
+      )
+    })} */}
+
+
   </Modal>
 }
 export function FileViewer({ images = [], index = 0 }) {

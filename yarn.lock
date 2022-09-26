@@ -7032,7 +7032,7 @@
 "oauth-sign@~0.9.0":
   "version" "0.9.0"
 
-"object-assign@^4.0.1", "object-assign@^4.1.0", "object-assign@^4.1.1":
+"object-assign@*", "object-assign@^4.0.1", "object-assign@^4.1.0", "object-assign@^4.1.1":
   "version" "4.1.1"
 
 "object-copy@^0.1.0":
@@ -7998,7 +7998,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@^15.0.0", "prop-types@^15.5.10", "prop-types@^15.5.8", "prop-types@^15.6.2", "prop-types@^15.7.2":
+"prop-types@^15.0.0", "prop-types@^15.5.10", "prop-types@^15.5.8", "prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.2":
   "version" "15.7.2"
   dependencies:
     "loose-envify" "^1.4.0"
@@ -8515,6 +8515,14 @@
 "react-refresh@^0.8.3", "react-refresh@>=0.8.3 <0.10.0":
   "version" "0.8.3"
 
+"react-region-select@^2.3.0":
+  "integrity" "sha512-WcGgt5mgd96glKUyRK2lZ7K885eED1xgQXBieblzOJufNtAu0b/kVw+aINF/HGuhcvln8QND27Lntn3adgI1ow=="
+  "resolved" "https://registry.npmjs.org/react-region-select/-/react-region-select-2.3.0.tgz"
+  "version" "2.3.0"
+  dependencies:
+    "object-assign" "*"
+    "prop-types" "^15.6.0"
+
 "react-router-dom@^5.2.0":
   "version" "5.2.0"
   dependencies:
@@ -8610,7 +8618,7 @@
     "classnames" "^2.2.6"
     "tiny-invariant" "^1.1.0"
 
-"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.0 || ^15.0.0 || ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0", "react@^0.14.9 || ^15.3.0 || ^16.0.0", "react@^15.0.0 || >=16.0.0", "react@^16.3.0 || ^17.0.0-0", "react@^16.9.0", "react@^17.0.2", "react@>= 16", "react@>= 16.9.0", "react@>=15", "react@>=16", "react@>=16.0.0", "react@>=16.9.0", "react@17.0.2":
+"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.0 || ^15.0.0 || ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0", "react@^0.14.6 || 15.x || 16.x", "react@^0.14.9 || ^15.3.0 || ^16.0.0", "react@^15.0.0 || >=16.0.0", "react@^16.3.0 || ^17.0.0-0", "react@^16.9.0", "react@^17.0.2", "react@>= 16", "react@>= 16.9.0", "react@>=15", "react@>=16", "react@>=16.0.0", "react@>=16.9.0", "react@17.0.2":
   "version" "17.0.2"
   dependencies:
     "loose-envify" "^1.1.0"
