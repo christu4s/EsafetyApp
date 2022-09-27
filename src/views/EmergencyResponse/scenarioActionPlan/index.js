@@ -24,7 +24,8 @@ export const ScenarioActionPlan = () => {
         pdfName="scenario_pdf"
         videoName="scenario_video"
         tableName="table_detail"
-    >{(content, editMode, form) => <TableScenario content={content} editMode={editMode} form={form} />}
+    >
+        {(content, editMode, form) => <TableScenario content={content} editMode={editMode} form={form} />}
     </PageTemplate>
 }
 
@@ -35,8 +36,18 @@ function TableScenario({ editMode }) {
     const [now, setNow] = useState();
     const refresh = () => setNow(new Date());
     const [editingRowId, setEditingRowId] = useState(null);
+    const [totalPages, setTotalPages] = useState(1);
+    const [page, setPage] = useState(1);
+    const perPage = 10 //for pagination & Api
 
-    useEffect(() => { ajax.get('/scenario_action_flow').then(res => res && setData(res.data)); }, [now]);
+
+    useEffect(() => {
+        ajax.get('/scenario_action_flow', { count: perPage, page })
+            .then(res => {
+                setTotalPages(res.total)
+                res && setData(res.data)
+            });
+    }, [page, now]);
 
     const onSave = () => {
         ajax.post('/scenario_action_flow/' + editingRowId, getFormFields(form)).then(refresh);
@@ -108,7 +119,11 @@ function TableScenario({ editMode }) {
         <div class="esafty-table">
             <Form form={form}>
 
-                <Table dataSource={data} columns={columns} />
+                <Table dataSource={data} columns={columns} pagination={{
+                    total: totalPages,
+                    pageSize: perPage,
+                    onChange: (v) => setPage(v)
+                }} />
             </Form>
         </div>
     </div>
