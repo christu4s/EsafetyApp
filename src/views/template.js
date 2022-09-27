@@ -38,7 +38,6 @@ export const PageTemplate = ({
     const [_, setMenuTitle] = useMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
-
     //get the order
     function getOrder() {
         var stored = window.localStorage.getItem(order_storage_key);
@@ -59,7 +58,7 @@ export const PageTemplate = ({
     if (videoName) viewers[videoName] = <VideoViewer videoName={videoName} form={form} editMode={editMode} videos={video} />;
 
 
-    const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: 'move' }} key={item}>{viewers[item]}</div>));
+    const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: `${editMode ? 'move' : "unset"}` }} key={item}>{viewers[item]}</div>));
 
     async function saveData() {
         await ajax.post(api, getFormFields(form)).then(res => {
@@ -123,7 +122,7 @@ export const PageTemplate = ({
                         <div style={{ margin: 20 }} />
 
                         {
-                            !editMode ? sortView : <ReactSortable group="groupName" list={order.map(id => ({ id }))} setList={items => setOrder(items.map(item => item.id))}>
+                            !editMode ? sortView : <ReactSortable className='sortable' group="groupName" list={order.map(id => ({ id }))} setList={items => setOrder(items.map(item => item.id))}>
                                 {sortView}
                             </ReactSortable>
                         }
