@@ -59,7 +59,7 @@ export const PageTemplate = ({
     if (videoName) viewers[videoName] = <VideoViewer videoName={videoName} form={form} editMode={editMode} videos={video} />;
 
 
-    const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: 'move' }} key={item}>{viewers[item]}</div>));
+    const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: `${editMode ? 'move' : "unset"}` }} key={item}>{viewers[item]}</div>));
 
     async function saveData() {
         await ajax.post(api, getFormFields(form)).then(res => {
