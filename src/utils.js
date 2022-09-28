@@ -44,11 +44,10 @@ export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
   </>
 
 
-export function ButtonUpload({ children, imageMap, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
+export function ButtonUpload({ children, imageMap = false, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isImageModalVisible, setImageIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
-  const [url, setUrl] = useState("")
   const [uploadFile, setUploadFile] = useState({})
 
 
@@ -62,16 +61,16 @@ export function ButtonUpload({ children, imageMap, name, onSubmit, addMore = fal
       <h3 className='modal--title text-center'>Upload Files</h3>
       <Form.Item hidden name={'update_file_' + name} initialValue={1} />
       <Form.Item name={name}>
-        <Upload.Dragger beforeUpload={(file) => {
-          const imageAction = () => {
-            setUploadFile(file)
-            var imgUrl = URL.createObjectURL(file);
-            imageMap && setUrl(imgUrl)
-            setImageIsModalVisible(true)
-          }
-          imageMap && file && imageAction()
-          return false
-        }} {...props}  >
+        <Upload.Dragger maxCount={imageMap ? 1 : 100}
+          beforeUpload={(file) => {
+            const showImagePreviwe = () => {
+              setUploadFile(file)
+              setImageIsModalVisible(true)
+            }
+            imageMap && file && showImagePreviwe()
+            return false
+          }}
+          {...props}  >
           <p className="ant-upload-drag-icon">
             <img width='50' src={computing} />
           </p>
@@ -82,14 +81,15 @@ export function ButtonUpload({ children, imageMap, name, onSubmit, addMore = fal
       </Form.Item>
 
       {children}
-      {imageMap && <ImageMapModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} url={url} file={uploadFile} toggleModal={toggleModal} />}
-      {name !== "image" && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
+      {isImageModalVisible && <ImageMapModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} file={uploadFile} toggleModal={toggleModal} />}
+      {!imageMap && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
       }
     </Modal>
   </div>
 }
-export function ImageMapModal({ isImageModalVisible, close, url, file, toggleModal }) {
+export function ImageMapModal({ isImageModalVisible, close, file, toggleModal }) {
   const [regions, setRegions] = useState([]);
+  const imgUrl = URL.createObjectURL(file);
 
   function onChange(newRegions) {
     setRegions(newRegions);
@@ -119,15 +119,16 @@ export function ImageMapModal({ isImageModalVisible, close, url, file, toggleMod
     width="max-content"
     onOk={onSave}
     okText="Upload"
+    style={{ minWidth: 800 }}
   >
 
     <RegionSelect
       regions={regions}
       onChange={onChange}
       regionRenderer={regionRenderer}
-      regionStyle={{ background: "#aca8a347" }}
+      regionStyle={{ background: "rgb(38 37 37 / 54%)" }}
     >
-      <img src={url} alt="" />
+      <img src={imgUrl} alt="" />
     </RegionSelect>
 
     <br />
@@ -136,9 +137,10 @@ export function ImageMapModal({ isImageModalVisible, close, url, file, toggleMod
     {regions.map((region, index) => {
       return (
         <div style={{ display: "flex", flexDirection: 'row', gap: "10px", alignItems: "center", marginTop: 15 }} size={12} >
-          <label id="title" style={{ width: 110 }}>{`Map-${index + 1}`}: </label>
+          <label htmlFor="title" style={{ width: 110 }}>{`Map-${index + 1}`}: </label>
           <Input
-            placeholder="title"
+            id="title"
+            placeholder="Title"
             name="title"
             value={region.title}
             onChange={(e) => handleInputChange(index, e)}

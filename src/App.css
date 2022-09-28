@@ -25217,7 +25217,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .upload--modal .ant-modal-body {
   padding: 24px 54px;
 }
-.upload--modal .ant-modal-close-x {
+.ant-modal-close-x {
   background: #454343;
   font-family: 'Lato', sans-serif;
   padding: 2;
