@@ -144,7 +144,7 @@ export function SearchBar() {
     // scenario_action_flow       ==> add
     // facility_area               ==> add
     // written_safety_case_      ==> add
-    // safetycriticalproced
+    // safetycriticalproced ==> add
     // facility_manning_title
     // facility_title
     // identification_risk_identification_title
@@ -184,6 +184,18 @@ export function SearchBar() {
         break;
       case 'safety_critical_equipment_subtitle':
         ret.path = "/safety-critical/equipment";
+        ret.label = json.title;
+        break;
+      case 'facility_manning_title':
+        ret.path = "/facility-overview/manning";
+        ret.label = json.title;
+        break;
+      case 'facilities_process_title':
+        ret.path = "/facility-overview/process";
+        ret.label = json.title;
+        break;
+      case 'facility_subtitle':
+        ret.path = "/facility-overview/area";
         ret.label = json.title;
         break;
       // ==============================================/
