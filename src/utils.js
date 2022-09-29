@@ -137,8 +137,56 @@ export function SearchBar() {
 
   function massageData(json) {
     var ret = { value: json.id };
+    // scenario_action_flow
+    // console.log(json.title + json.subtype)
 
+    // safety_critical_procedure_title
+    // scenario_action_flow       ==> add
+    // facility_area               ==> add
+    // written_safety_case_      ==> add
+    // safetycriticalproced
+    // facility_manning_title
+    // facility_title
+    // identification_risk_identification_title
+    // safety_critical_element_title                  ==>exist
+    // safety_critical_equipment_subtitle    ==> add
+    // safety_critical_equipment_title                  ==>exist
+    // safety_critical_personnel_subtitle
+    // safety_critical_personnel_title                  ==>exist
+    // safety_critical_procedure_subtitle      ==> add
+    // safety_critical_procedure_title                  ==>exist
+    // safety_management_title
+    // scenario_action_plan_subtitle
+    // scenario_action_plan_title
+    // written_safety_case_title                   ==>exist
+    // scenario_action_flow
     switch (json.subtype) {
+      case 'scenario_action_flow':
+        ret.path = "/emergency-response/scenario";
+        ret.label = json.title;
+        break;
+      case 'facility_area':
+        ret.path = "/facility-overview/area";
+        ret.label = json.title;
+        break;
+
+      case 'written_safety_case_':
+        ret.path = "/writen-safety";
+        ret.label = json.title;
+        break;
+      case 'safetycriticalproced':
+        ret.path = "/safety-critical/procedure";
+        ret.label = json.title + ` (${json.subtype})`;
+        break;
+      case 'safety_critical_procedure_subtitle':
+        ret.path = "/safety-critical/procedure";
+        ret.label = json.title;
+        break;
+      case 'safety_critical_equipment_subtitle':
+        ret.path = "/safety-critical/equipment";
+        ret.label = json.title;
+        break;
+      // ==============================================/
       case 'risk_assessment_item':
         ret.path = '/risk-assessment/' + json.id;
         ret.label = json.title + ' (Risk Assessment)';
@@ -165,7 +213,7 @@ export function SearchBar() {
         ret.label = json.title;
         break;
       case 'safety_critical_procedure_title':
-        ret.path = 'safety-critical/procedure';// this should be changed to name
+        ret.path = '/safety-critical/procedure';// this should be changed to name
         ret.label = json.title;
         break;
       case 'safety_critical_personnel_title':
@@ -187,14 +235,17 @@ export function SearchBar() {
         ret.label = json.title;
         ret.path = '/';
     }
-
+    // console.log(`${json.subtype}: ` + ret.path)
     return ret;
   }
+
 
   const onSearch = (search) => {
 
     axios.get(base_url + '/wp-json/wp/v2/search', { params: { search } }).then(res => {
       setData(res.data.map(massageData));
+      // setData(res.data.filter(item => item.url !== '').map(massageData));
+
     });
   };
 
