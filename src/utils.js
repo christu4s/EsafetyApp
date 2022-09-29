@@ -176,7 +176,7 @@ export function SearchBar() {
         break;
       case 'safetycriticalproced':
         ret.path = "/safety-critical/procedure";
-        ret.label = json.title + ` (${json.subtype})`;
+        ret.label = json.title;
         break;
       case 'safety_critical_procedure_subtitle':
         ret.path = "/safety-critical/procedure";
@@ -196,6 +196,34 @@ export function SearchBar() {
         break;
       case 'facility_subtitle':
         ret.path = "/facility-overview/area";
+        ret.label = json.title;
+        break;
+      case 'major_accident_hazards_title':
+        ret.path = "/accidents-hazards";
+        ret.label = json.title;
+        break;
+      case 'risk_assessment_title':
+        ret.path = "/risk-assessment";
+        ret.label = json.title;
+        break;
+      case 'emergency_respons_title':
+        ret.path = "/emergency-response";
+        ret.label = json.title;
+        break;
+      case 'emer_response_tiers_title':
+        ret.path = "/emergency-response/tiers";
+        ret.label = json.title;
+        break;
+      case 'emer_response_organisation_title':
+        ret.path = "/emergency-response/organisation";
+        ret.label = json.title;
+        break;
+      case 'emer_response_plan_title':
+        ret.path = "/emergency-response/plan";
+        ret.label = json.title;
+        break;
+      case 'scenario_action_plan_title':
+        ret.path = "/emergency-response/scenario";
         ret.label = json.title;
         break;
       // ==============================================/
