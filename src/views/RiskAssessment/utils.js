@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button,  Input, Form, Space, InputNumber } from 'antd';
+import { Row, Col, Card, Button, Input, Form, Space, InputNumber } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import ReactECharts from 'echarts-for-react';
@@ -11,9 +11,9 @@ export function IndividualGraph({ content, editMode, form }) {
     const option = {
         tooltip: { trigger: 'item' },
         legend: { orient: 'vertical', left: 'right', top: 'center' },
-        xAxis: {type: 'category'},
-        yAxis: {type: 'value'},
-        series: series.map(v=> ({...v, type: 'bar',stack: 'total',label: {show: true}}))
+        xAxis: { type: 'category' },
+        yAxis: { type: 'value' },
+        series: series.map(v => ({ ...v, type: 'bar', stack: 'total', label: { show: true } }))
     };
 
     useEffect(() => {
@@ -83,10 +83,10 @@ function RiskCard({ data, add, remove, update }) {
         {current && <Form form={form} layout="vertical">
             <Form.Item label="User" name="name"><Input /></Form.Item>
             <Form.List name="data">
-                {(fields, { add, remove }) =><> 
-                    {fields.map(({key, name, fieldKey, ...restField })=>
+                {(fields, { add, remove }) => <>
+                    {fields.map(({ key, name, fieldKey, ...restField }) =>
                         <Space key={key} align="baseline">
-                            <Form.Item label="Name of risk" name={[ name, "name"]}><Input /></Form.Item>
+                            <Form.Item label="Name of risk" name={[name, "name"]}><Input /></Form.Item>
                             <Form.Item label="Value" name={[name, "value"]}><Input type="number" /></Form.Item>
                             <MinusCircleOutlined onClick={() => remove(name)} />
                         </Space>)}
@@ -117,8 +117,8 @@ function RiskForm({ onFinish }) {
                 {(fields, { add, remove }) => (
                     <>
                         {fields.map(({ key, name, fieldKey, ...restField }) => {
-                            return <div key={key} style={{border: '1px solid', padding: 10, borderRadius:4, margin: '15px 0'}}>
-                                <div style={{textAlign:'right', padding:10}}><MinusCircleOutlined onClick={() => remove(name)} /></div>
+                            return <div key={key} style={{ border: '1px solid', padding: 10, borderRadius: 4, margin: '15px 0' }}>
+                                <div style={{ textAlign: 'right', padding: 10 }}><MinusCircleOutlined onClick={() => remove(name)} /></div>
                                 <Form.Item
                                     {...restField}
                                     name={[name, 'name']}
@@ -128,7 +128,7 @@ function RiskForm({ onFinish }) {
                                 >
                                     <Input />
                                 </Form.Item>
-                                <Form.List name={[name,"data"]}>
+                                <Form.List name={[name, "data"]}>
                                     {(fields, { add, remove }) => (
                                         <>
                                             {fields.map(({ key, name, fieldKey, ...restField }) => {
@@ -136,7 +136,7 @@ function RiskForm({ onFinish }) {
                                                     <Form.Item
                                                         {...restField}
                                                         name={[name, 'name']}
-                                                        fieldKey={[ fieldKey, 'name']}
+                                                        fieldKey={[fieldKey, 'name']}
                                                         // rules={[{ required: true, message: 'Missing Risk' }]}
                                                         label="Name of risk"
                                                     >
@@ -145,7 +145,7 @@ function RiskForm({ onFinish }) {
                                                     <Form.Item
                                                         {...restField}
                                                         name={[name, 'value']}
-                                                        fieldKey={[ fieldKey, 'value']}
+                                                        fieldKey={[fieldKey, 'value']}
                                                         // rules={[{ required: true, message: 'Missing Value' }]}
                                                         label="Value"
                                                     >

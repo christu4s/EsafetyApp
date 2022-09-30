@@ -35,10 +35,9 @@ export const PageTemplate = ({
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({});
     const [order, setOrder] = useState(getOrder());
-    const [_, setMenuTitle] = useMenuContext();
+    const [_, setMenuTitle, setDeletedPage] = useMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
-
     //get the order
     function getOrder() {
         var stored = window.localStorage.getItem(order_storage_key);
@@ -72,6 +71,8 @@ export const PageTemplate = ({
 
 
     function deleteItem() {
+        console.log("item deleted:  " + api)
+        // setDeletedPage(true)
         ajax.delete(api).then(() => history.goBack());
     }
 
