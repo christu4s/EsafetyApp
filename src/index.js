@@ -4,10 +4,13 @@ import App from './App';
 import { HashRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import { MenuProvider } from './provider';
+import { SiteMenuProvider } from './siteMenuProvider';
 
 ReactDOM.render(
   <HashRouter>
-    <MenuProvider><App /></MenuProvider>
+    <SiteMenuProvider>
+      <MenuProvider><App /></MenuProvider>
+    </SiteMenuProvider>
   </HashRouter>,
   document.getElementById('root')
 );

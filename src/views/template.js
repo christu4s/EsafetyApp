@@ -9,6 +9,7 @@ import { ArrowLeftOutlined, SaveOutlined, DeleteOutlined, TableOutlined } from '
 import { useMenuContext } from '../provider';
 import { ReactSortable, Options, Sortable } from "react-sortablejs";
 import { useLocation } from 'react-router-dom';
+import { useSiteMenuContext } from '../siteMenuProvider';
 
 
 
@@ -36,6 +37,7 @@ export const PageTemplate = ({
     const [content, setContent] = useState({});
     const [order, setOrder] = useState(getOrder());
     const [_, setMenuTitle, setDeletedPage] = useMenuContext();
+    const { deleteMenu } = useSiteMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
     //get the order
@@ -73,7 +75,10 @@ export const PageTemplate = ({
     function deleteItem() {
         console.log("item deleted:  " + api)
         // setDeletedPage(true)
-        ajax.delete(api).then(() => history.goBack());
+        ajax.delete(api).then(() =>{ 
+            deleteMenu(api);
+            history.goBack();
+        });
     }
 
 

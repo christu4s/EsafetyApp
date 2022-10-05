@@ -7,6 +7,7 @@ import { UserOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { userName } from './constants';
 import { MenuTitle, SearchBar } from './utils';
 import logo from './assets/logo.jpeg';
+import SiteMenuContext, { SiteMenuProvider } from './siteMenuProvider';
 
 
 const { Content, Footer, Sider, Header } = Layout;
@@ -20,9 +21,9 @@ class App extends React.Component {
     search: '',
   };
 
-  componentDidMount() {
-    getMenu().then(menus => this.setState({ menus }));
-  }
+  // componentDidMount() {
+  //   getMenu().then(menus => this.setState({ menus }));
+  // }
 
   onCollapse = collapsed => this.setState({ collapsed });
   redirect = p => {
@@ -42,12 +43,15 @@ class App extends React.Component {
     );
 
 
-    const selected = getSelectedMenuItem(menus);
-    const handleChange = (event) => {
-      this.setState({ search: event.target.value });
-    };
+    // const selected = getSelectedMenuItem(menus);
+    // const handleChange = (event) => {
+    //   this.setState({ search: event.target.value });
+    // };
     return (
-      <Layout>
+      <SiteMenuContext.Consumer>
+        {({menu})=>{
+      const selected = getSelectedMenuItem(menu);
+      return <Layout>
         <Header className="header">
           <div className="logo" >
             <Link to="/"><img src={logo} alt="Esafety logo" style={{ width: 130 }} /></Link>
@@ -65,7 +69,7 @@ class App extends React.Component {
         <Layout style={{ minHeight: '100vh' }}>
           <Sider width={300}>
             <Menu selectedKeys={selected} className='menu--holder' onClick={this.redirect} mode="inline">
-              {customMenu(menus)}
+              {customMenu(menu)}
             </Menu>
           </Sider>
           <Layout className="site-layout">
@@ -79,6 +83,8 @@ class App extends React.Component {
           </Layout>
         </Layout>
       </Layout>
+      }}
+      </SiteMenuContext.Consumer>
     );
   }
 }

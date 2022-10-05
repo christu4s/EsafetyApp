@@ -68,11 +68,9 @@ export const menus = [
     { title: 'Dashboard', icon: < HomeFilled />, exact: true, url: '#/' },
     {
         title: 'Facilities Overview',
-        icon: < img src={facilityImg} alt="facility" />,
+        icon: <img src={facilityImg} alt="facility" />,
         url: '#/facility-overview',
         api: '/facility_overview',
-        // childApi: '/facility_overview',
-
         children: [
             { title: 'Area', exact: true, url: '#/facility-overview/area', api: '/facility_overview', titleKey: 'subtitle' },
             { title: 'Process', exact: true, url: '#/facility-overview/process', api: '/facilities_process' },
@@ -80,8 +78,11 @@ export const menus = [
         ]
     },
     {
-        title: 'Major Accident Hazards', icon: < img src={HazardsImg}
-            alt="Major Accident Hazards" />, url: '#/accidents-hazards', api: '/major_accident_hazards'
+        title: 'Major Accident Hazards', 
+        icon: <img src={HazardsImg} alt="Major Accident Hazards" />, 
+        url: '#/accidents-hazards', 
+        api: '/major_accident_hazards',
+        childApi: '/major_accident_hazards_item'
     },
     {
         title: 'Risk Assessment',
