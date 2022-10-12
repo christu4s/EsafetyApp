@@ -42,6 +42,7 @@ export const CriticalEquipmentItem = ({ match }) => {
     return <PageTemplate
         canDelete
         backButton
+        updateData={id}
         iconUrl={alert}
         title={"Safety Critical Equipment (" + equipment.title + ")"}
         subtitle={TitleEdit}

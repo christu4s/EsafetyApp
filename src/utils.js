@@ -246,6 +246,26 @@ export function SearchBar() {
         ret.path = '/accidents-hazards/' + json.id;// this should be changed to name
         ret.label = json.title;
         break;
+      case 'equipment_emegency_r':
+        ret.path = '/safety-critical/equipment/emergencyResponse/' + json.id;// this should be changed to name
+        ret.label = json.title;
+        break;
+      case 'prevention_add_sce':
+        ret.path = '/safety-critical/equipment/prevention/' + json.id;// this should be changed to name
+        ret.label = json.title;
+        break;
+      case 'detection_add_sce':
+        ret.path = '/safety-critical/equipment/detection/' + json.id;// this should be changed to name
+        ret.label = json.title;
+        break;
+      case 'control_add_sce':
+        ret.path = '/safety-critical/equipment/control/' + json.id;// this should be changed to name
+        ret.label = json.title;
+        break;
+      case 'mitigation_add_sce':
+        ret.path = '/safety-critical/equipment/mitigation/' + json.id;// this should be changed to name
+        ret.label = json.title;
+        break;
 
 
 

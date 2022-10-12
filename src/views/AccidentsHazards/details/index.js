@@ -13,6 +13,8 @@ export const AccidentsHazardItem = ({ match }) => {
     const { id } = match.params;
     return <PageTemplate
         canDelete
+        updateData={id}
+        updateMenu
         iconUrl={fire}
         title="Major Accident Hazards"
         subtitle={TitleEdit}

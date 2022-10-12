@@ -1,3 +1,4 @@
+import { Spin } from 'antd';
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { getMenu } from './config';
 const SiteMenuContext = createContext();
@@ -28,7 +29,9 @@ export function SiteMenuProvider({ children }) {
     setMenu(nestedDeleteByApi(menu, api));
   }
 
-  if(!menu) return null;
+  if(!menu) return <div style={{height:'100vh',display: 'flex', alignItems:'center', justifyContent: 'center'}}>
+    <Spin />
+  </div>;
   
   return <SiteMenuContext.Provider value={{menu, deleteMenu }}>
     {children}
