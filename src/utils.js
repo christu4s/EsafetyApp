@@ -44,7 +44,7 @@ export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
   </>
 
 
-export function ButtonUpload({ children, imageMap = false, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
+export function ButtonUpload({ children, imageMap, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isImageModalVisible, setImageIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
@@ -61,13 +61,13 @@ export function ButtonUpload({ children, imageMap = false, name, onSubmit, addMo
       <h3 className='modal--title text-center'>Upload Files</h3>
       <Form.Item hidden name={'update_file_' + name} initialValue={1} />
       <Form.Item name={name}>
-        <Upload.Dragger maxCount={imageMap ? 1 : 100}
+        <Upload.Dragger maxCount={name === "clickable_image" ? 1 : 100}
           beforeUpload={(file) => {
             const showImagePreviwe = () => {
               setUploadFile(file)
               setImageIsModalVisible(true)
             }
-            imageMap && file && showImagePreviwe()
+            name === "clickable_image" && file && showImagePreviwe()
             return false
           }}
           {...props}  >
@@ -81,13 +81,13 @@ export function ButtonUpload({ children, imageMap = false, name, onSubmit, addMo
       </Form.Item>
 
       {children}
-      {isImageModalVisible && <ImageMapModal isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} file={uploadFile} toggleModal={toggleModal} />}
-      {!imageMap && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
+      {isImageModalVisible && <ImageMapModal onSubmit={onSubmit} isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} file={uploadFile} toggleModal={toggleModal} />}
+      {name !== "clickable_image" && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
       }
     </Modal>
   </div>
 }
-export function ImageMapModal({ isImageModalVisible, close, file, toggleModal }) {
+export function ImageMapModal({ onSubmit, isImageModalVisible, close, file, toggleModal }) {
   const [regions, setRegions] = useState([]);
   const imgUrl = URL.createObjectURL(file);
 
@@ -109,10 +109,16 @@ export function ImageMapModal({ isImageModalVisible, close, file, toggleModal })
     regions.splice(index, 1);
     setRegions([...regions]);
   }
-  function onSave() {
-    console.log({ file, regions })
-    // toggleModal()
+  // function onSave() {
+  //   console.log({ file, regions })
+  //   // toggleModal()
+  //   close()
+  // }
+  async function onSave() {
+    // if (typeof onSubmit == 'function') await onSubmit();
+    await console.log({ file, regions })
     close()
+    toggleModal();
   }
   return <Modal visible={isImageModalVisible}
     onCancel={close}
