@@ -44,7 +44,7 @@ export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
   </>
 
 
-export function ButtonUpload({ children, imageMap, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
+export function ButtonUpload({ children, imageMap, name, form, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isImageModalVisible, setImageIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
@@ -81,13 +81,13 @@ export function ButtonUpload({ children, imageMap, name, onSubmit, addMore = fal
       </Form.Item>
 
       {children}
-      {isImageModalVisible && <ImageMapModal onSubmit={onSubmit} isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} file={uploadFile} toggleModal={toggleModal} />}
+      {isImageModalVisible && <ImageMapModal onSubmit={onSubmit} form={form} isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} file={uploadFile} toggleModal={toggleModal} />}
       {name !== "clickable_image" && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
       }
     </Modal>
   </div>
 }
-export function ImageMapModal({ onSubmit, isImageModalVisible, close, file, toggleModal }) {
+export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file, toggleModal }) {
   const [regions, setRegions] = useState([]);
   const imgUrl = URL.createObjectURL(file);
 
@@ -109,14 +109,24 @@ export function ImageMapModal({ onSubmit, isImageModalVisible, close, file, togg
     regions.splice(index, 1);
     setRegions([...regions]);
   }
-  // function onSave() {
-  //   console.log({ file, regions })
-  //   // toggleModal()
-  //   close()
-  // }
+
   async function onSave() {
-    // if (typeof onSubmit == 'function') await onSubmit();
-    await console.log({ file, regions })
+    await axios.post("https://esafety-dev.actsyn.com/v2/wp-json/wp/v2/media",
+      {
+        file, map_detail: regions
+
+      },
+      // {
+      //   headers: { 'Authorization': "Basic YWRtaW46SVdibiBZb1ZIIGNuUjEgTEZOeSBCM2s3IHd1UHQ=" },
+      // }
+    )
+      .then(res => {
+        // form.setFieldsValue({ ["_clickable_image"]: res.id });
+        // typeof onSubmit == 'function' && onSubmit();
+
+        res && console.log(res);
+      })
+
     close()
     toggleModal();
   }
