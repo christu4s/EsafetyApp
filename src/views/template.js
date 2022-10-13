@@ -119,7 +119,7 @@ export const PageTemplate = ({
                             {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                             {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
                             {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
-                            {clickableName && <ButtonUpload name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />}
+                            {clickableName && <ButtonUpload clickableImage name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />}
                         </Space>}
                         <div style={{ margin: 20 }} />
 

@@ -44,7 +44,7 @@ export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
   </>
 
 
-export function ButtonUpload({ children, imageMap, name, form, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
+export function ButtonUpload({ children, clickableImage, name, form, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isImageModalVisible, setImageIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
@@ -61,13 +61,13 @@ export function ButtonUpload({ children, imageMap, name, form, onSubmit, addMore
       <h3 className='modal--title text-center'>Upload Files</h3>
       <Form.Item hidden name={'update_file_' + name} initialValue={1} />
       <Form.Item name={name}>
-        <Upload.Dragger maxCount={name === "clickable_image" ? 1 : 100}
+        <Upload.Dragger maxCount={clickableImage ? 1 : 100}
           beforeUpload={(file) => {
             const showImagePreviwe = () => {
               setUploadFile(file)
               setImageIsModalVisible(true)
             }
-            name === "clickable_image" && file && showImagePreviwe()
+            clickableImage && file && showImagePreviwe()
             return false
           }}
           {...props}  >
@@ -82,7 +82,7 @@ export function ButtonUpload({ children, imageMap, name, form, onSubmit, addMore
 
       {children}
       {isImageModalVisible && <ImageMapModal onSubmit={onSubmit} form={form} isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} file={uploadFile} toggleModal={toggleModal} />}
-      {name !== "clickable_image" && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
+      {!clickableImage && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
       }
     </Modal>
   </div>
@@ -112,12 +112,15 @@ export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file
 
   async function onSave() {
     await axios.post("https://esafety-dev.actsyn.com/v2/wp-json/wp/v2/media",
+      { file, map_detail: regions },
       {
-        file, map_detail: regions
-
-      },
+        headers: { 'Authorization': "Basic YWRtaW46SVdibiBZb1ZIIGNuUjEgTEZOeSBCM2s3IHd1UHQ=" },
+      }
       // {
-      //   headers: { 'Authorization': "Basic YWRtaW46SVdibiBZb1ZIIGNuUjEgTEZOeSBCM2s3IHd1UHQ=" },
+      //   auth: {
+      //     username: 'admin',
+      //     password: 'IWbn YoVH cnR1 LFNy B3k7 wuPt'
+      //   }
       // }
     )
       .then(res => {
