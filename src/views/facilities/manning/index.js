@@ -22,7 +22,7 @@ import { PageTemplate } from './../../template';
 
 
 export const FacilityManning = () => {
-        return <PageTemplate
+    return <PageTemplate
         iconUrl={group}
         title="Facilities Overview"
         updateMenu
@@ -32,6 +32,7 @@ export const FacilityManning = () => {
         pdfName="pdf"
         videoName="video"
         tableName="tabledata"
+        clickableName="clickable_image"
     />
 
 

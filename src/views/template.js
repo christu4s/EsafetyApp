@@ -23,6 +23,7 @@ export const PageTemplate = ({
     imageName,
     videoName,
     tableName,
+    clickableName,
     iconUrl,
     backButton,
     children,
@@ -120,16 +121,17 @@ export const PageTemplate = ({
                         {descName && <div className='box--facility area--box--facility'>
                             <DescField editMode={editMode} value={desc} name={descName} />
                         </div>}
-                        {editMode && <Space>
+                        {editMode && <Space style={{ flexWrap: "wrap" }}>
                             {imageName && <ButtonUpload name={imageName} onSubmit={saveData} buttonText="Upload Images" multiple accept="image/*" />}
                             {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                             {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
                             {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
+                            {clickableName && <ButtonUpload clickableImage name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />}
                         </Space>}
                         <div style={{ margin: 20 }} />
 
                         {
-                            !editMode ? sortView : <ReactSortable group="groupName" list={order.map(id => ({ id }))} setList={items => setOrder(items.map(item => item.id))}>
+                            !editMode ? sortView : <ReactSortable className='sortable' group="groupName" list={order.map(id => ({ id }))} setList={items => setOrder(items.map(item => item.id))}>
                                 {sortView}
                             </ReactSortable>
                         }

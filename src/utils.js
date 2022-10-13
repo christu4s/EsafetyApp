@@ -2,7 +2,7 @@ import { Card, Button, Modal, Upload, Form, Input, Space, Select } from "antd";
 import { useEffect, useState, React } from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { PushpinFilled, PushpinOutlined, CloudUploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { PushpinFilled, PushpinOutlined, CloudUploadOutlined, PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
 import { isAdmin } from "./constants";
@@ -13,6 +13,8 @@ import 'react-quill/dist/quill.snow.css';
 import { useHistory } from "react-router-dom";
 import { base_url } from "./ajax";
 import axios from "axios";
+import RegionSelect from "react-region-select";
+
 
 export const BoxHolder = ({ title, img, active, url }) => {
   return (<Link to={url}>
@@ -42,22 +44,33 @@ export const CardHolder = ({ url, image, title, pin, onChangePin }) =>
   </>
 
 
-export function ButtonUpload({ children, name, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
+export function ButtonUpload({ children, clickableImage, name, form, onSubmit, addMore = false, buttonText = 'Upload Files', ...props }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isImageModalVisible, setImageIsModalVisible] = useState(false);
   const toggleModal = () => setIsModalVisible(!isModalVisible);
+  const [uploadFile, setUploadFile] = useState({})
+
 
   async function onSave() {
     if (typeof onSubmit == 'function') await onSubmit();
     toggleModal();
   }
-
   return <div className={addMore ? 'addmore--button' : null}>
     <Button type={addMore ? 'default' : "primary"} icon={addMore ? <PlusCircleOutlined /> : <CloudUploadOutlined />} onClick={toggleModal}>{buttonText}</Button>
     <Modal title="" className='upload--modal' visible={isModalVisible} onOk={toggleModal} onCancel={toggleModal}>
       <h3 className='modal--title text-center'>Upload Files</h3>
       <Form.Item hidden name={'update_file_' + name} initialValue={1} />
       <Form.Item name={name}>
-        <Upload.Dragger beforeUpload={() => false} {...props}>
+        <Upload.Dragger maxCount={clickableImage ? 1 : 100}
+          beforeUpload={(file) => {
+            const showImagePreviwe = () => {
+              setUploadFile(file)
+              setImageIsModalVisible(true)
+            }
+            clickableImage && file && showImagePreviwe()
+            return false
+          }}
+          {...props}  >
           <p className="ant-upload-drag-icon">
             <img width='50' src={computing} />
           </p>
@@ -66,12 +79,105 @@ export function ButtonUpload({ children, name, onSubmit, addMore = false, button
           </p>
         </Upload.Dragger>
       </Form.Item>
+
       {children}
-      <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
+      {isImageModalVisible && <ImageMapModal onSubmit={onSubmit} form={form} isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} file={uploadFile} toggleModal={toggleModal} />}
+      {!clickableImage && <Button type="primary" onClick={onSave} icon={addMore ? null : <CloudUploadOutlined />}>{addMore ? 'Create' : 'Upload'}</Button>
+      }
     </Modal>
   </div>
 }
+export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file, toggleModal }) {
+  const [regions, setRegions] = useState([]);
+  const imgUrl = URL.createObjectURL(file);
 
+  function onChange(newRegions) {
+    setRegions(newRegions);
+  }
+
+  function regionRenderer({ index, ...props }) {
+    const { title = "" } = regions[index];
+    return <p style={{ textAlign: "start", fontWeight: 600, color: "white", fontSize: "20px" }}>{title}</p>;
+  }
+
+  function handleInputChange(index, e) {
+    regions[index][e.target.name] = e.target.value;
+    setRegions([...regions]);
+  }
+
+  function removeRegion(index) {
+    regions.splice(index, 1);
+    setRegions([...regions]);
+  }
+
+  async function onSave() {
+    await axios.post("https://esafety-dev.actsyn.com/v2/wp-json/wp/v2/media",
+      { file, map_detail: regions },
+      {
+        headers: { 'Authorization': "Basic YWRtaW46SVdibiBZb1ZIIGNuUjEgTEZOeSBCM2s3IHd1UHQ=" },
+      }
+      // {
+      //   auth: {
+      //     username: 'admin',
+      //     password: 'IWbn YoVH cnR1 LFNy B3k7 wuPt'
+      //   }
+      // }
+    )
+      .then(res => {
+        // form.setFieldsValue({ ["_clickable_image"]: res.id });
+        // typeof onSubmit == 'function' && onSubmit();
+
+        res && console.log(res);
+      })
+
+    close()
+    toggleModal();
+  }
+  return <Modal visible={isImageModalVisible}
+    onCancel={close}
+    width="max-content"
+    onOk={onSave}
+    okText="Upload"
+    style={{ minWidth: 800 }}
+  >
+
+    <RegionSelect
+      regions={regions}
+      onChange={onChange}
+      regionRenderer={regionRenderer}
+      regionStyle={{ background: "rgb(38 37 37 / 54%)" }}
+    >
+      <img src={imgUrl} alt="" />
+    </RegionSelect>
+
+    <br />
+
+
+    {regions.map((region, index) => {
+      return (
+        <div style={{ display: "flex", flexDirection: 'row', gap: "10px", alignItems: "center", marginTop: 15 }} size={12} >
+          <label htmlFor="title" style={{ width: 110 }}>{`Map-${index + 1}`}: </label>
+          <Input
+            id="title"
+            placeholder="Title"
+            name="title"
+            value={region.title}
+            onChange={(e) => handleInputChange(index, e)}
+          />
+          <Input
+            placeholder="Link"
+            name="link"
+            value={region.link}
+            onChange={(e) => handleInputChange(index, e)}
+          />
+          <MinusCircleOutlined style={{ fontSize: 20, color: 'red' }} onClick={() => removeRegion(index)} />
+        </div>
+
+      )
+    })}
+
+  </Modal>
+}
 export function FileViewer({ images = [], index = 0 }) {
   if (!images || !images[index]) return null;
 
