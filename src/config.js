@@ -157,18 +157,6 @@ export async function getMenu() {
             var childrens = res.data.map(v => ({ title: v.title, exact: true, url: menu.url + '/' + v.id, api: menu.childApi + '/' + v.id }));
             menu.children = childrens;
         }
-        // if (menu.children && menu.children.api) {
-        //     var res = await ajax.get(menu.children.api, { count: -1 });
-        //     var apiInchildrens = res.data.map(v2 => ({ title: v2.title, exact: true, url: menu.url, api: menu.children.api }));
-        //     menu.children = apiInchildrens; 
-        // }
-
-        // if (menu.api && menu.children) {
-        //     var res = await ajax.get(menu.api, { count: -1 });
-        //     console.log('resres: '+JSON.stringify(res));
-        //     var apiMenu = res.data.map(v1 => ({ title: v1.title ? v1.title : null, exact: true, url: menu.url, api: menu.api }));
-        //     menu.children = apiMenu; 
-        // }
     }
     return menus;
 }

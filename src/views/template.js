@@ -10,6 +10,7 @@ import { useMenuContext } from '../provider';
 import { ReactSortable, Options, Sortable } from "react-sortablejs";
 import { useLocation } from 'react-router-dom';
 import { useSiteMenuContext } from '../siteMenuProvider';
+import { ImageMapViewer } from './TemplateComponents/ImageMap/ImageMapView';
 
 
 
@@ -52,13 +53,14 @@ export const PageTemplate = ({
     useEffect(() => { window.localStorage.setItem(order_storage_key, order.join(',')); }, [order])
 
 
-    const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName], tableData = content[tableName];
+    const desc = content[descName], image = content[imageName], pdf = content[pdfName], video = content[videoName], tableData = content[tableName], clickableData = content[clickableName];
     var viewers = {};
 
     if (imageName) viewers[imageName] = <ImageViewer editMode={editMode} form={form} imageName={imageName} images={image} />;
     if (pdfName) viewers[pdfName] = <PdfViewer files={pdf} pdfName={'_' + pdfName} editMode={editMode} form={form} />;
     if (tableName) viewers[tableName] = <TableViewer tableName={tableName} data={tableData} editMode={editMode} form={form} />;
     if (videoName) viewers[videoName] = <VideoViewer videoName={videoName} form={form} editMode={editMode} videos={video} />;
+    if (clickableName) viewers[clickableName] = <ImageMapViewer name={clickableName} form={form} editMode={editMode} data={clickableData} />;
 
 
     const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: `${editMode ? 'move' : "unset"}` }} key={item}>{viewers[item]}</div>));
@@ -127,6 +129,7 @@ export const PageTemplate = ({
                             {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
                             {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
                             {clickableName && <ButtonUpload clickableImage name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />}
+                            {/* {clickableName && <ButtonUploadImageMap clickableImage name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />} */}
                         </Space>}
                         <div style={{ margin: 20 }} />
 

@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import axios from 'axios';
 
-export const base_url = '//esafety-dev.actsyn.com';
+export const base_url = '//esafety-dev.actsyn.com/v2';
 var ajax_url = base_url + '/api';
 
 export default class ajax {

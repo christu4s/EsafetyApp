@@ -7,7 +7,7 @@ import computing from './assets/cloud-computing@3x.png';
 import pdf from './assets/pdf-1@3x.png';
 import { isAdmin } from "./constants";
 import { useMenuContext } from "./provider";
-import ajax from "./ajax";
+import ajax, { setFormData } from "./ajax";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { useHistory } from "react-router-dom";
@@ -87,6 +87,8 @@ export function ButtonUpload({ children, clickableImage, name, form, onSubmit, a
     </Modal>
   </div>
 }
+
+
 export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file, toggleModal }) {
   const [regions, setRegions] = useState([]);
   const imgUrl = URL.createObjectURL(file);
@@ -111,27 +113,21 @@ export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file
   }
 
   async function onSave() {
-    await axios.post("https://esafety-dev.actsyn.com/v2/wp-json/wp/v2/media",
-      { file, map_detail: regions },
-      {
+    // var formData = new FormData();
+    // formData.append("file", file);
+    var formData = setFormData(new FormData(), {map_detail: regions, file});
+    // formData.append('map_detail', regions);
+    // return console.log(formData);
+    axios.post("https://esafety-dev.actsyn.com/v2/wp-json/wp/v2/media", formData,{
         headers: { 'Authorization': "Basic YWRtaW46SVdibiBZb1ZIIGNuUjEgTEZOeSBCM2s3IHd1UHQ=" },
       }
-      // {
-      //   auth: {
-      //     username: 'admin',
-      //     password: 'IWbn YoVH cnR1 LFNy B3k7 wuPt'
-      //   }
-      // }
-    )
-      .then(res => {
-        // form.setFieldsValue({ ["_clickable_image"]: res.id });
-        // typeof onSubmit == 'function' && onSubmit();
-
+    ).then(res => {
         res && console.log(res);
-      })
-
-    close()
-    toggleModal();
+        form.setFieldsValue({_clickable_image: res.data.id });
+        typeof onSubmit == 'function' && onSubmit();
+        close();
+        toggleModal();
+      });
   }
   return <Modal visible={isImageModalVisible}
     onCancel={close}
@@ -140,7 +136,6 @@ export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file
     okText="Upload"
     style={{ minWidth: 800 }}
   >
-
     <RegionSelect
       regions={regions}
       onChange={onChange}
@@ -149,10 +144,7 @@ export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file
     >
       <img src={imgUrl} alt="" />
     </RegionSelect>
-
     <br />
-
-
     {regions.map((region, index) => {
       return (
         <div style={{ display: "flex", flexDirection: 'row', gap: "10px", alignItems: "center", marginTop: 15 }} size={12} >
