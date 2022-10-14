@@ -62,7 +62,6 @@ export const PageTemplate = ({
     if (videoName) viewers[videoName] = <VideoViewer videoName={videoName} form={form} editMode={editMode} videos={video} />;
     if (clickableName) viewers[clickableName] = <ImageMapViewer name={clickableName} form={form} editMode={editMode} data={clickableData} />;
 
-
     const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: `${editMode ? 'move' : "unset"}` }} key={item}>{viewers[item]}</div>));
 
     async function saveData() {
@@ -78,7 +77,7 @@ export const PageTemplate = ({
     function deleteItem() {
         console.log("item deleted:  " + api)
         // setDeletedPage(true)
-        ajax.delete(api).then(() =>{ 
+        ajax.delete(api).then(() => {
             deleteMenu(api);
             history.goBack();
         });
