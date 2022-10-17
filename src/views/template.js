@@ -46,10 +46,10 @@ export const PageTemplate = ({
     function getOrder() {
         var stored = window.localStorage.getItem(order_storage_key);
         var keys = [imageName, pdfName, videoName, tableName, clickableName];
-        if (stored){ 
+        if (stored) {
             var orderArr = stored.split(',');
-            for(var key of keys){
-                if(key && !orderArr.includes(key)) 
+            for (var key of keys) {
+                if (key && !orderArr.includes(key))
                     orderArr.push(key);
             }
             return orderArr;
@@ -72,7 +72,6 @@ export const PageTemplate = ({
 
     const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: `${editMode ? 'move' : "unset"}` }} key={item}>{viewers[item]}</div>));
 
-    console.log('Order', order);
 
     async function saveData() {
         await ajax.post(api, getFormFields(form)).then(res => {
@@ -300,7 +299,7 @@ export function TableViewer({ tableName, data, editMode, form }) {
             jsonData = JSON.parse(data);
             const { dataSource, columns } = jsonData || null;
             setTable({ dataSource, columns })
-            form.setFieldsValue({ [tableName]: data});
+            form.setFieldsValue({ [tableName]: data });
         } catch (e) {
             return null;
         }

@@ -67,7 +67,7 @@ export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file
         {regions.map((region, index) => {
             return (
                 <div style={{ display: "flex", flexDirection: 'row', gap: "10px", alignItems: "center", marginTop: 15 }} size={12} >
-                    <label htmlFor="title" style={{ width: 110 }}>{`Map-${index + 1}`}: </label>
+                    <label htmlFor="title" style={{ width: 110 }}>{index + 1}: </label>
                     <Input
                         id="title"
                         placeholder="Title"

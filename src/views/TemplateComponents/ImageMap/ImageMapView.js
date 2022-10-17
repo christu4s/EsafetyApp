@@ -14,29 +14,27 @@ export function ImageMapViewer({ name, data, editMode, form }) {
         // alert(tip);
     };
     // useEffect(() => {
-        // let newdata = data?.map(d => d.map_detail[0])
+    // let newdata = data?.map(d => d.map_detail[0])
 
-        let newmapARea = map_detail.map(d => ({
-            left: d.x + 'em',
-            top: d.y + 'em',
-            height: d.height + 'em',
-            width: d.width + 'em',
-            style: { background: "rgba(255, 0, 0, 0.5)" },
-            render: (area, index) => (
-                <a href={d.link} target="_blank"
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "rgba(255, 255, 0, 0.5)"
-                    }}
-                >
-                    {d.title}
-                </a>
-            ),
-            // onMouseOver: () => console.log("map onMouseOver")
-        }))
-        // setMapArea(newmapARea)
+    let newmapARea = map_detail.map(d => ({
+        left: `${d.x}%`,
+        top: `${d.y}%`,
+        height: `${d.height}%`,
+        width: `${d.width}%`,
+        style: { background: "rgb(38 37 37 / 54%)" },
+        render: (area, index) => (
+            <p style={{
+                display: "flex",
+                alignItems: "flex-start",
+                // justifyContent: "center",
+
+            }}>
+                <a style={{ color: "white", fontWeight: "600", fontSize: 20 }} href={d.link} target="_blank">{d.title}</a>
+            </p>
+        ),
+        // onMouseOver: () => console.log("map onMouseOver")
+    }))
+    // setMapArea(newmapARea)
     // }, [])
 
     // const mapArea2 = [
@@ -86,10 +84,10 @@ export function ImageMapViewer({ name, data, editMode, form }) {
     //     [img]
     // );
     return <div><ImageMap
-    className="usage-map"
-    src={src}
-    map={newmapARea}
-    // map={mapArea}
-    onMapClick={onMapClick}
-/></div>
+        className="usage-map"
+        src={src}
+        map={newmapARea}
+        // map={mapArea}
+        onMapClick={onMapClick}
+    /></div>
 } 
