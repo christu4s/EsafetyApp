@@ -61,7 +61,7 @@ export function ButtonUpload({ children, clickableImage, name, form, onSubmit, a
     <Modal title="" className='upload--modal' visible={isModalVisible} onOk={toggleModal} onCancel={toggleModal}>
       <h3 className='modal--title text-center'>Upload Files</h3>
       <Form.Item hidden name={'update_file_' + name} initialValue={1} />
-      <Form.Item name={name}>
+      <Form.Item name={clickableImage ? null : name}>
         <Upload.Dragger maxCount={clickableImage ? 1 : 100}
           beforeUpload={(file) => {
             const showImagePreviwe = () => {

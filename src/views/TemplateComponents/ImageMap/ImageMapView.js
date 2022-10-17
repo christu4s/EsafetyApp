@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 export function ImageMapViewer({ name, data, editMode, form }) {
     const [mapArea, setMapArea] = useState([])
+    console.log('ImageViewer', data)
     // console.log(data) // clickable_image
     // if (!data) return null;
     // const { map_detail, src } = data[0]
@@ -11,30 +12,30 @@ export function ImageMapViewer({ name, data, editMode, form }) {
         console.log(tip);
         // alert(tip);
     };
-    useEffect(() => {
-        let newdata = data?.map(d => d.map_detail[0])
-        let newmapARea = newdata.map(d => ({
-            left: d.x,
-            top: d.y,
-            height: d.height,
-            width: d.width,
-            style: { background: "rgba(255, 0, 0, 0.5)" },
-            render: (area, index) => (
-                <a href={d.link} target="_blank"
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "rgba(255, 255, 0, 0.5)"
-                    }}
-                >
-                    {d.title}
-                </a>
-            ),
-            // onMouseOver: () => console.log("map onMouseOver")
-        }))
-        setMapArea(newmapARea)
-    }, [])
+    // useEffect(() => {
+    //     let newdata = data?.map(d => d.map_detail[0])
+    //     let newmapARea = newdata.map(d => ({
+    //         left: d.x,
+    //         top: d.y,
+    //         height: d.height,
+    //         width: d.width,
+    //         style: { background: "rgba(255, 0, 0, 0.5)" },
+    //         render: (area, index) => (
+    //             <a href={d.link} target="_blank"
+    //                 style={{
+    //                     display: "flex",
+    //                     alignItems: "center",
+    //                     justifyContent: "center",
+    //                     background: "rgba(255, 255, 0, 0.5)"
+    //                 }}
+    //             >
+    //                 {d.title}
+    //             </a>
+    //         ),
+    //         // onMouseOver: () => console.log("map onMouseOver")
+    //     }))
+    //     setMapArea(newmapARea)
+    // }, [])
 
     const mapArea2 = [
         {

@@ -1,4 +1,4 @@
-import { Input, Modal } from "antd";
+import { Form, Input, Modal } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import RegionSelect from "react-region-select";
@@ -54,6 +54,7 @@ export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file
         okText="Upload"
         style={{ minWidth: 800 }}
     >
+        <Form.Item hidden name={'_clickable_image'} />
         <RegionSelect
             regions={regions}
             onChange={onChange}

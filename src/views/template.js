@@ -45,8 +45,16 @@ export const PageTemplate = ({
     //get the order
     function getOrder() {
         var stored = window.localStorage.getItem(order_storage_key);
-        if (stored) return stored.split(',');
-        return [imageName, pdfName, videoName, tableName].filter(Boolean);
+        var keys = [imageName, pdfName, videoName, tableName, clickableName];
+        if (stored){ 
+            var orderArr = stored.split(',');
+            for(var key of keys){
+                if(key && !orderArr.includes(key)) 
+                    orderArr.push(key);
+            }
+            return orderArr;
+        }
+        return keys.filter(Boolean);
     }
 
     //save order to localStorage once changed
@@ -63,6 +71,8 @@ export const PageTemplate = ({
     if (clickableName) viewers[clickableName] = <ImageMapViewer name={clickableName} form={form} editMode={editMode} data={clickableData} />;
 
     const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: `${editMode ? 'move' : "unset"}` }} key={item}>{viewers[item]}</div>));
+
+    console.log('Order', order);
 
     async function saveData() {
         await ajax.post(api, getFormFields(form)).then(res => {
@@ -290,6 +300,7 @@ export function TableViewer({ tableName, data, editMode, form }) {
             jsonData = JSON.parse(data);
             const { dataSource, columns } = jsonData || null;
             setTable({ dataSource, columns })
+            form.setFieldsValue({ [tableName]: data});
         } catch (e) {
             return null;
         }
