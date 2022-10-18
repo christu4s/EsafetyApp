@@ -89,88 +89,40 @@ export function ButtonUpload({ children, clickableImage, name, form, onSubmit, a
   </div>
 }
 
+export default function ButtonUploadImageMap({ data, form, onSubmit, accept, name, buttonText, ...props }) {
+  const [uploadFile, setUploadFile] = useState({})
+  const [isImageModalVisible, setImageIsModalVisible] = useState(false);
 
-// export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file, toggleModal }) {
-//   const [regions, setRegions] = useState([]);
-//   const imgUrl = URL.createObjectURL(file);
 
-//   function onChange(newRegions) {
-//     setRegions(newRegions);
-//   }
+  async function onSave() {
+    if (typeof onSubmit == 'function') await onSubmit();
+    setImageIsModalVisible(false)
+  }
+  return <div>
+    <Upload type="primary" maxCount={1}
+      showUploadList={false}
+      accept={accept}
 
-//   function regionRenderer({ index, ...props }) {
-//     const { title = "" } = regions[index];
-//     return <p style={{ textAlign: "start", fontWeight: 600, color: "white", fontSize: "20px" }}>{title}</p>;
-//   }
+      beforeUpload={(file) => {
+        const showImagePreviwe = () => {
+          setUploadFile(file)
+          setImageIsModalVisible(true)
+        }
+        file && showImagePreviwe()
+        return false
+      }}
+      {...props}
+    >
+      <Button type='primary' icon={<CloudUploadOutlined />}>
+        {buttonText}
+      </Button>
+    </Upload>
+    {isImageModalVisible && <ImageMapModal onSubmit={onSave} form={form} isImageModalVisible={isImageModalVisible} close={() => setImageIsModalVisible(false)} file={uploadFile} />}
+  </div>
+}
 
-//   function handleInputChange(index, e) {
-//     regions[index][e.target.name] = e.target.value;
-//     setRegions([...regions]);
-//   }
 
-//   function removeRegion(index) {
-//     regions.splice(index, 1);
-//     setRegions([...regions]);
-//   }
 
-//   async function onSave() {
-//     // var formData = new FormData();
-//     // formData.append("file", file);
-//     var formData = setFormData(new FormData(), {map_detail: regions, file});
-//     // formData.append('map_detail', regions);
-//     // return console.log(formData);
-//     axios.post("https://esafety-dev.actsyn.com/v2/wp-json/wp/v2/media", formData,{
-//         headers: { 'Authorization': "Basic YWRtaW46SVdibiBZb1ZIIGNuUjEgTEZOeSBCM2s3IHd1UHQ=" },
-//       }
-//     ).then(res => {
-//         res && console.log(res);
-//         form.setFieldsValue({_clickable_image: res.data.id });
-//         typeof onSubmit == 'function' && onSubmit();
-//         close();
-//         toggleModal();
-//       });
-//   }
-//   return <Modal visible={isImageModalVisible}
-//     onCancel={close}
-//     width="max-content"
-//     onOk={onSave}
-//     okText="Upload"
-//     style={{ minWidth: 800 }}
-//   >
-//     <RegionSelect
-//       regions={regions}
-//       onChange={onChange}
-//       regionRenderer={regionRenderer}
-//       regionStyle={{ background: "rgb(38 37 37 / 54%)" }}
-//     >
-//       <img src={imgUrl} alt="" />
-//     </RegionSelect>
-//     <br />
-//     {regions.map((region, index) => {
-//       return (
-//         <div style={{ display: "flex", flexDirection: 'row', gap: "10px", alignItems: "center", marginTop: 15 }} size={12} >
-//           <label htmlFor="title" style={{ width: 110 }}>{`Map-${index + 1}`}: </label>
-//           <Input
-//             id="title"
-//             placeholder="Title"
-//             name="title"
-//             value={region.title}
-//             onChange={(e) => handleInputChange(index, e)}
-//           />
-//           <Input
-//             placeholder="Link"
-//             name="link"
-//             value={region.link}
-//             onChange={(e) => handleInputChange(index, e)}
-//           />
-//           <MinusCircleOutlined style={{ fontSize: 20, color: 'red' }} onClick={() => removeRegion(index)} />
-//         </div>
-
-//       )
-//     })}
-
-//   </Modal>
-// }
 export function FileViewer({ images = [], index = 0 }) {
   if (!images || !images[index]) return null;
 

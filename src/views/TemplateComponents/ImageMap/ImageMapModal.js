@@ -43,7 +43,7 @@ export function ImageMapModal({ onSubmit, form, isImageModalVisible, close, file
             res && console.log(res);
             form.setFieldsValue({ _clickable_image: res.data.id });
             typeof onSubmit == 'function' && onSubmit();
-            toggleModal();
+            // toggleModal();
             close();
         });
     }

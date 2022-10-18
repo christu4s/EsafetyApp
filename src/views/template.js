@@ -1,7 +1,7 @@
 import { Row, Col, Form, Space, Image, Popconfirm, Select, Input, Button, Modal, Table, Pagination } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ajax from '../ajax';
-import { ButtonUpload, CardHolder, DescField, EditButtons, VideoInput } from '../utils';
+import ButtonUploadImageMap, { ButtonUpload, CardHolder, DescField, EditButtons, VideoInput } from '../utils';
 import imagePdf from '../assets/pdf-1@3x.png';
 import image from '../assets/image.png';
 import { useHistory } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { ReactSortable, Options, Sortable } from "react-sortablejs";
 import { useLocation } from 'react-router-dom';
 import { useSiteMenuContext } from '../siteMenuProvider';
 import { ImageMapViewer } from './TemplateComponents/ImageMap/ImageMapView';
+
 
 
 
@@ -38,7 +39,7 @@ export const PageTemplate = ({
     const [editMode, setEditMode] = useState(false);
     const [content, setContent] = useState({});
     const [order, setOrder] = useState(getOrder());
-    const [_, setMenuTitle, setDeletedPage] = useMenuContext();
+    const [_, setMenuTitle] = useMenuContext();
     const { deleteMenu } = useSiteMenuContext();
     const [form] = Form.useForm();
     const history = useHistory();
@@ -69,7 +70,8 @@ export const PageTemplate = ({
     if (tableName) viewers[tableName] = <TableViewer tableName={tableName} data={tableData} editMode={editMode} form={form} />;
     if (videoName) viewers[videoName] = <VideoViewer videoName={videoName} form={form} editMode={editMode} videos={video} />;
     if (clickableName) viewers[clickableName] = <ImageMapViewer name={clickableName} form={form} editMode={editMode} data={clickableData} />;
-
+    // console.log("content", content)
+    // console.log("form", getFormFields(form))
     const sortView = order.map((item) => (<div style={{ margin: '20px 0', cursor: `${editMode ? 'move' : "unset"}` }} key={item}>{viewers[item]}</div>));
 
 
@@ -136,8 +138,8 @@ export const PageTemplate = ({
                             {pdfName && <ButtonUpload name={pdfName} onSubmit={saveData} buttonText="Upload PDF" accept="application/pdf" />}
                             {videoName && <ButtonUpload name={videoName} onSubmit={saveData} buttonText="Upload Video" accept=".mov,.mp4" />}
                             {tableName && <ButtonTable name={tableName} onSubmit={saveData} form={form} data={tableData} />}
-                            {clickableName && <ButtonUpload clickableImage name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />}
-                            {/* {clickableName && <ButtonUploadImageMap clickableImage name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />} */}
+                            {/* {clickableName && <ButtonUpload clickableImage name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />} */}
+                            {clickableName && <ButtonUploadImageMap name={clickableName} onSubmit={saveData} form={form} buttonText="Upload Clickable Image" accept="image/*" />}
                         </Space>}
                         <div style={{ margin: 20 }} />
 
@@ -159,6 +161,8 @@ export const PageTemplate = ({
         </div>
     );
 }
+
+
 
 function ButtonTable({ data, name, onSubmit, form }) {
     var jsonData;
