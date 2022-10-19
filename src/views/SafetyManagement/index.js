@@ -25,6 +25,7 @@ export const SafetyManagement = ({ history }) => {
         pdfName="safety_management_pdf"
         videoName="safety_management_video"
         tableName="table_detail"
+        clickableName="clickable_image"
     >
         {(content, editMode) => <ListItems
 

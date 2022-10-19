@@ -27,6 +27,7 @@ export const CriticalElement = () => {
         pdfName="critical_element_pdf"
         videoName="critical_element_video"
         tableName="table_detail"
+        clickableName="clickable_image"
     >
         <Row>
             {subpages.map((sub, i) => <Col key={i} span={8}><CardHolder {...sub} /></Col>)}

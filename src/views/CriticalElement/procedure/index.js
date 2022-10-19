@@ -20,6 +20,7 @@ export const CriticalProcedure = () => {
         pdfName="procedure_pdf"
         videoName="procedure_video"
         tableName="table_detail"
+        clickableName="clickable_image"
     >{(content, editMode) => <ProcedureTable editMode={editMode} />}
     </PageTemplate>
 }

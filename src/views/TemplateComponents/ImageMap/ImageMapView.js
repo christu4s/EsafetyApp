@@ -7,9 +7,10 @@ export function ImageMapViewer({ name, data, editMode, form }) {
     //     form.setFieldsValue({ [name]: [] });
     // }
     if (!data) return null;
-    const { map_detail, src } = data[0];
+    console.log('data - ' , data[0]);
+    
+    var { map_detail, src } = data[0] || [];
     if(!map_detail) map_detail = [];
-
 
     let newmapArea = map_detail.map(d => ({
         left: `${d.x}%`,

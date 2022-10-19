@@ -21,6 +21,7 @@ export const RiskAssessmentDetail = ({ match }) => {
         videoName="video"
         pdfName="pdf"
         tableName="table_detail"
+        clickableName="clickable_image"
         outside={(content, editMode, form) => content.component && riskUtil[content.component] && React.createElement(riskUtil[content.component], { content, editMode, form }, null)}
     />
 }

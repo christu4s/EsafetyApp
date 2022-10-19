@@ -24,6 +24,7 @@ export const ResponseOrganisation = () => {
     pdfName="organisation_pdf"
     videoName="organisation_video"
     tableName="table_detail"
+    clickableName="clickable_image"
   >
     {/* {(content, editMode, form) => <TableOrg content={content} editMode={editMode} form={form} />} */}
   </PageTemplate>

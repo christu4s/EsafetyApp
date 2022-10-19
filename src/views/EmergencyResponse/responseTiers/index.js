@@ -22,6 +22,7 @@ export const ResponseTiers = () => {
         pdfName="tiers_pdf"
         videoName="tiers_video"
         tableName="table_detail"
+        clickableName="clickable_image"
     />
         {/* {(content, editMode, form) => <TableTiers content={content} editMode={editMode} form={form} />} */}
     

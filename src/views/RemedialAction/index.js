@@ -19,6 +19,7 @@ export const RemedialAction = () => {
         pdfName="remedial_pdf"
         videoName="remedial_video"
         tableName="table_detail"
+        clickableName="clickable_image"
     />
    
 }

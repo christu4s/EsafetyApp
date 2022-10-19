@@ -22,6 +22,7 @@ export const PlanRiskBreakDown = () => {
         descName="plant_desc"
         imageName="plant_image"
         pdfName="plant_pdf"
+        clickableName="clickable_image"
         outside={(content, editMode, form) => <PlantGraph content={content} editMode={editMode} form={form} />}
     >
     </PageTemplate>

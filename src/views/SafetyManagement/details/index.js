@@ -24,6 +24,7 @@ export const SafetyManagementItem = ({ match }) => {
     pdfName="commitment_file_pdf"
     videoName="commitment_file_video"
     tableName="table_detail"
+    clickableName="clickable_image"
   >
     {/* {(content, editMode, form) => <TableOrg content={content} editMode={editMode} form={form} />} */}
   </PageTemplate>

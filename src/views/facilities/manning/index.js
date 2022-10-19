@@ -33,6 +33,7 @@ export const FacilityManning = () => {
         videoName="video"
         tableName="tabledata"
         clickableName="clickable_image"
+        
     />
 
 

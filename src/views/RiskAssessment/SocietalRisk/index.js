@@ -13,6 +13,7 @@ export const SocietalRisk = () => {
         descName="societal_desc"
         imageName="societal_image"
         pdfName="societal_pdf"
+        clickableName="clickable_image"
         >
     </PageTemplate>
 }

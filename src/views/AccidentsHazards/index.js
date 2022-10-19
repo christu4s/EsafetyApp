@@ -18,6 +18,7 @@ export const AccidentsHazard = () => {
         pdfName="mah_pdf"
         videoName="mah_video"
         tableName="table_detail"
+        clickableName="clickable_image"
         >{(content,editMode)=> <ListItems 
             api="/major_accident_hazards_item" 
             editMode={editMode} 

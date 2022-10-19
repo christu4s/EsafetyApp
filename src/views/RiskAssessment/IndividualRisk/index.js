@@ -23,6 +23,7 @@ export const IndividualRisk = () => {
         descName="individual_desc"
         imageName="individual_image"
         pdfName="individual_pdf"
+        clickableName="clickable_image"
         outside= {(content, editMode, form) => <IndividualGraph content={content} editMode={editMode} form={form} />}
     />
 }

@@ -23,6 +23,7 @@ export const FacilityAreaDetails = ({ match }) => {
         pdfName="pdf"
         videoName="video"
         tableName="table_detail"
+        clickableName="clickable_image"
     >
         {(content, editMode, form, saveData) => <LinkedHazards editMode={editMode} content={content} saveData={saveData} />}
     </PageTemplate>

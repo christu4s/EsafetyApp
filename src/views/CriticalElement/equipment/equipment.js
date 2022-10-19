@@ -21,6 +21,7 @@ export const CriticalEquipment = () => {
       pdfName="equipment_pdf"
       videoName="equipment_video"
       tableName="table_detail"
+      clickableName="clickable_image"
     >
       <div style={{ marginTop: 30 }}>
         <Timeline>

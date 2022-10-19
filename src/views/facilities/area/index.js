@@ -16,6 +16,7 @@ export const FacilityArea = () => {
         api="/facility_overview" 
         descName="area_desc"
         tableName="table_detail"
+        clickableName="clickable_image"
         >
         {(content,editMode)=> <ListItems 
             api="/facility-overview/area" 

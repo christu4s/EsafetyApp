@@ -25,6 +25,7 @@ export const LocationRisk = () => {
         descName="location_desc"
         imageName="location_image"
         pdfName="location_pdf"
+        clickableName="clickable_image"
     >{(content, editMode, form) => <LocationGraph content={content} editMode={editMode} form={form} />}</PageTemplate>
 }
 
