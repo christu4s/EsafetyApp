@@ -90,6 +90,7 @@ export const PageTemplate = ({
         // setDeletedPage(true)
         ajax.delete(api).then(() => {
             deleteMenu(api);
+            setEditMode(false);
             history.goBack();
         });
     }

@@ -4,7 +4,7 @@ var request = require('request');
 var filename = 'target.zip';
 
 // var putURL = 'http://esafety.enkuire.com/wp-admin/admin-ajax.php?action=deploy';
-var putURL = 'https://actsyn.com/esafety-dev/wp-admin/admin-ajax.php?action=deploy';
+var putURL = 'https://actsyn.com/esafety-dev/v2/wp-admin/admin-ajax.php?action=deploy';
 
 var output = fs.createWriteStream(filename);
 var archive = archiver('zip');

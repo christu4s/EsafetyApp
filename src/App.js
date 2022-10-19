@@ -8,11 +8,10 @@ import { userName } from './constants';
 import { MenuTitle, SearchBar } from './utils';
 import logo from './assets/logo.jpeg';
 import SiteMenuContext, { SiteMenuProvider } from './siteMenuProvider';
+import { base_url } from './ajax';
 
 
 const { Content, Footer, Sider, Header } = Layout;
-
-// const logo = 'http://esafety.enkuire.com/wp-content/uploads/2021/06/E-safety-02.png';
 
 class App extends React.Component {
   state = {
@@ -20,10 +19,6 @@ class App extends React.Component {
     menus: [],
     search: '',
   };
-
-  // componentDidMount() {
-  //   getMenu().then(menus => this.setState({ menus }));
-  // }
 
   onCollapse = collapsed => this.setState({ collapsed });
   redirect = p => {
@@ -38,7 +33,7 @@ class App extends React.Component {
     const userMenu = (
       <Menu>
         {/* <Menu.Item  key="u1"><a href="/#profile">Profile</a></Menu.Item> */}
-        <Menu.Item key="u2"><a href="/?logout=1">Logout</a></Menu.Item>
+        <Menu.Item key="u2"><a href={base_url + "?logout=1"}>Logout</a></Menu.Item>
       </Menu>
     );
 
