@@ -15,5 +15,7 @@ export const Facilities = () => {
         pdfName="pdf"
         videoName="video"
         tableName="table_detail"
+        clickableName="clickable_image"
+
         />
 }
